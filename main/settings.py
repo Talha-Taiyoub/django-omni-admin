@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "segment",
     "refuel",
+    "community",
     # customise app for general purpose
     "general_app",
 ]
