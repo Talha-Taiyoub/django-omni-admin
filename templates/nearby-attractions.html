@@ -1,0 +1,250 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block body %}
+
+                <div class="border-bottom-2 py-32pt position-relative z-1">
+                    <div class="container page__container d-flex flex-column flex-md-row align-items-center text-center text-sm-left">
+                        <div class="flex d-flex flex-column flex-sm-row align-items-center mb-24pt mb-md-0">
+
+                            <div class="mb-24pt mb-sm-0 mr-sm-24pt">
+                                <h2 class="mb-0">Nearby/Tourist Attractions</h2>
+
+                                <ol class="breadcrumb p-0 m-0">
+                                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+
+                                    <li class="breadcrumb-item active">
+
+                                        Nearby/Tourist Attractions
+
+                                    </li>
+
+                                </ol>
+
+                            </div>
+
+                            <div class="dropdown">
+                                <a href=""
+                                   class="border rounded d-flex align-items-center p-16pt"
+                                   data-toggle="dropdown"
+                                   data-caret="false">
+
+                                    <div class="avatar avatar-sm mr-8pt">
+
+                                        <span class="avatar-title rounded bg-primary">BN</span>
+
+                                    </div>
+
+                                    <small class="ml-4pt flex">
+                                        <span class="d-flex align-items-center">
+                                            <span class="flex d-flex flex-column">
+                                                <strong class="text-100">Omni Residency</strong>
+                                                <span class="text-50">Banani</span>
+                                            </span>
+                                            <i class="material-icons icon-16pt text-50 ml-4pt">arrow_drop_down</i>
+                                        </span>
+                                    </small>
+                                </a>
+                                <div class="dropdown-menu w-100">
+                                    <div class="dropdown-header"><strong>Select branch</strong></div>
+                                    <a href=""
+                                       class="dropdown-item active d-flex align-items-center">
+
+                                        <div class="avatar avatar-sm mr-8pt">
+
+                                            <span class="avatar-title rounded bg-primary">BN</span>
+
+                                        </div>
+
+                                        <small class="ml-4pt flex">
+                                            <span class="d-flex flex-column">
+                                                <strong class="text-black-100">Omni Residency</strong>
+                                                <span class="text-black-50">Banani</span>
+                                            </span>
+                                        </small>
+                                    </a>
+                                    <a href=""
+                                       class="dropdown-item d-flex align-items-center">
+
+                                        <div class="avatar avatar-sm mr-8pt">
+
+                                            <span class="avatar-title rounded bg-accent">BDH</span>
+
+                                        </div>
+
+                                        <small class="ml-4pt flex">
+                                            <span class="d-flex flex-column">
+                                                <strong class="text-black-100">Omni Residency</strong>
+                                                <span class="text-black-50">Baridhara</span>
+                                            </span>
+                                        </small>
+                                    </a>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="row"
+                             role="tablist">
+                            
+                            <div class="col-auto border-left">
+                                <a href="{% url 'crud_cms_attraction' %}"
+                                   class="btn btn-accent">Add Spot</a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="container page__container page__container page-section">
+                    
+                    
+
+                    
+
+                    <div class="posts-cards mb-24pt">
+
+                        <div class="card posts-card">
+                            <div class="posts-card__content d-flex align-items-center flex-wrap">
+                                <div class="avatar avatar-lg mr-3">
+                                    <a href=""><img src="static/assets/images/bashundhara-city.png"
+                                             alt="avatar"
+                                             class="avatar-img rounded"></a>
+                                </div>
+                                <div class="posts-card__title flex d-flex flex-column">
+                                    <h5 class="card-title m-0"><a href=""
+                                           class="headings-color">Bashundhara City</a></h5>
+                                    <small class="text-50">1.4 Km Away From</small>
+                                </div>
+                                <div class="d-flex align-items-center flex-column flex-sm-row posts-card__meta">
+                                    <div class="mr-3 text-50 text-uppercase posts-card__tag d-flex align-items-center">
+                                        <i class="material-icons text-muted-light mr-1">folder_open</i> Omni Residency, Banani
+                                    </div>
+                                    <div class="mr-3 text-50 posts-card__date">
+                                        <small>11 Nov, 2018 07:46 AM</small>
+                                    </div>
+                                    
+                                </div>
+                                <div class="dropdown ml-auto">
+                                    <a href="{% url 'crud_cms_sliders' %}"
+                                           class="text-50"><i class="material-icons">more_vert</i></a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card posts-card">
+                            <div class="posts-card__content d-flex align-items-center flex-wrap">
+                                <div class="avatar avatar-lg mr-3">
+                                    <a href=""><img src="static/assets/images/ahsan-manzil.png"
+                                             alt="avatar"
+                                             class="avatar-img rounded"></a>
+                                </div>
+                                <div class="posts-card__title flex d-flex flex-column">
+                                    <h5 class="card-title m-0"><a href=""
+                                           class="headings-color">Ahsan Manzil</a></h5>
+                                    <small class="text-50">800 meters away from</small>
+                                </div>
+                                <div class="d-flex align-items-center flex-column flex-sm-row posts-card__meta">
+                                    <div class="mr-3 text-50 text-uppercase posts-card__tag d-flex align-items-center">
+                                        <i class="material-icons text-muted-light mr-1">folder_open</i> Omni Iconic
+                                    </div>
+                                    <div class="mr-3 text-50 posts-card__date">
+                                        <small>11 Nov, 2018 07:46 AM</small>
+                                    </div>
+                                    
+                                </div>
+                                <div class="dropdown ml-auto">
+                                    <a href="{% url 'crud_cms_sliders' %}"
+                                           class="text-50"><i class="material-icons">more_vert</i></a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card posts-card">
+                                <div class="posts-card__content d-flex align-items-center flex-wrap">
+                                    <div class="avatar avatar-lg mr-3">
+                                        <a href=""><img src="static/assets/images/stories/256_rsz_clem-onojeghuo-193397-unsplash.jpg"
+                                                 alt="avatar"
+                                                 class="avatar-img rounded"></a>
+                                    </div>
+                                    <div class="posts-card__title flex d-flex flex-column">
+                                        <h5 class="card-title m-0"><a href=""
+                                               class="headings-color">Omni Residency Banani</a></h5>
+                                        <small class="text-50">35 views last week</small>
+                                    </div>
+                                    <div class="d-flex align-items-center flex-column flex-sm-row posts-card__meta">
+                                        <div class="mr-3 text-50 text-uppercase posts-card__tag d-flex align-items-center">
+                                            <i class="material-icons text-muted-light mr-1">folder_open</i> future
+                                        </div>
+                                        <div class="mr-3 text-50 posts-card__date">
+                                            <small>11 Nov, 2018 07:46 AM</small>
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="dropdown ml-auto">
+                                        <a href="{% url 'crud_cms_sliders' %}"
+                                               class="text-50"><i class="material-icons">more_vert</i></a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                        </div>
+
+
+                        
+
+                        <div class="card-footer p-8pt">
+
+                            <ul class="pagination justify-content-start pagination-xsm m-0">
+                                <li class="page-item disabled">
+                                    <a class="page-link"
+                                       href="#"
+                                       aria-label="Previous">
+                                        <span aria-hidden="true"
+                                              class="material-icons">chevron_left</span>
+                                        <span>Prev</span>
+                                    </a>
+                                </li>
+                                <li class="page-item dropdown">
+                                    <a class="page-link dropdown-toggle"
+                                       data-toggle="dropdown"
+                                       href="#"
+                                       aria-label="Page">
+                                        <span>1</span>
+                                    </a>
+                                    <div class="dropdown-menu">
+                                        <a href=""
+                                           class="dropdown-item active">1</a>
+                                        <a href=""
+                                           class="dropdown-item">2</a>
+                                        <a href=""
+                                           class="dropdown-item">3</a>
+                                        <a href=""
+                                           class="dropdown-item">4</a>
+                                        <a href=""
+                                           class="dropdown-item">5</a>
+                                    </div>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link"
+                                       href="#"
+                                       aria-label="Next">
+                                        <span>Next</span>
+                                        <span aria-hidden="true"
+                                              class="material-icons">chevron_right</span>
+                                    </a>
+                                </li>
+                            </ul>
+    
+                        </div>
+
+                    </div>
+
+                    
+                </div>    
+
+
+{% endblock %}
+
+            

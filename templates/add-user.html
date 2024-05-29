@@ -1,0 +1,290 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block body %}
+
+                <div class="border-bottom-2 py-32pt position-relative z-1">
+                    <div class="container page__container d-flex flex-column flex-md-row align-items-center text-center text-sm-left">
+                        <div class="flex d-flex flex-column flex-sm-row align-items-center mb-24pt mb-md-0">
+
+                            <div class="mb-24pt mb-sm-0 mr-sm-24pt">
+                                <h2 class="mb-0">Add User</h2>
+
+                                <ol class="breadcrumb p-0 m-0">
+                                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+
+                                    <li class="breadcrumb-item">
+
+                                        <a href="booking.html">Users</a>
+
+                                    </li>
+
+                                    <li class="breadcrumb-item active">
+
+                                        Add User
+
+                                    </li>
+
+                                </ol>
+
+                            </div>
+
+                            <div class="dropdown">
+                                <a href=""
+                                   class="border rounded d-flex align-items-center p-16pt"
+                                   data-toggle="dropdown"
+                                   data-caret="false">
+
+                                    <div class="avatar avatar-sm mr-8pt">
+
+                                        <span class="avatar-title rounded bg-primary">BN</span>
+
+                                    </div>
+
+                                    <small class="ml-4pt flex">
+                                        <span class="d-flex align-items-center">
+                                            <span class="flex d-flex flex-column">
+                                                <strong class="text-100">Omni Residency</strong>
+                                                <span class="text-50">Banani</span>
+                                            </span>
+                                            <i class="material-icons icon-16pt text-50 ml-4pt">arrow_drop_down</i>
+                                        </span>
+                                    </small>
+                                </a>
+                                <div class="dropdown-menu w-100">
+                                    <div class="dropdown-header"><strong>Select branch</strong></div>
+                                    <a href=""
+                                       class="dropdown-item active d-flex align-items-center">
+
+                                        <div class="avatar avatar-sm mr-8pt">
+
+                                            <span class="avatar-title rounded bg-primary">BN</span>
+
+                                        </div>
+
+                                        <small class="ml-4pt flex">
+                                            <span class="d-flex flex-column">
+                                                <strong class="text-black-100">Omni Residency</strong>
+                                                <span class="text-black-50">Banani</span>
+                                            </span>
+                                        </small>
+                                    </a>
+                                    <a href=""
+                                       class="dropdown-item d-flex align-items-center">
+
+                                        <div class="avatar avatar-sm mr-8pt">
+
+                                            <span class="avatar-title rounded bg-accent">BDH</span>
+
+                                        </div>
+
+                                        <small class="ml-4pt flex">
+                                            <span class="d-flex flex-column">
+                                                <strong class="text-black-100">Omni Residency</strong>
+                                                <span class="text-black-50">Baridhara</span>
+                                            </span>
+                                        </small>
+                                    </a>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="row"
+                             role="tablist">
+                            <!-- <div class="col-auto d-flex flex-column">
+                                <h6 class="m-0">&dollar;12.3k</h6>
+                                <p class="text-50 mb-0 d-flex align-items-center">
+                                    Earnings
+                                    <i class="material-icons text-accent ml-4pt icon-16pt">keyboard_arrow_up</i>
+                                </p>
+                            </div>
+                            <div class="col-auto border-left">
+                                <h6 class="m-0">264</h6>
+                                <p class="text-50 mb-0 d-flex align-items-center">
+                                    Sales
+                                    <i class="material-icons text-accent ml-4pt icon-16pt">keyboard_arrow_up</i>
+                                </p>
+                            </div> -->
+                            <div class="col-auto">
+                                <a href="add-edit-branch.html"
+                                   class="btn btn-accent">Delete</a>
+                            </div>
+                            <div class="col-auto border-left">
+                                <a href="add-edit-branch.html"
+                                   class="btn btn-accent">Add</a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            <div class="container page__container page-section">
+                
+
+                <div class="row mb-32pt">
+                    <div class="col-lg-3">
+                        <div class="page-separator">
+                            <div class="page-separator__text">Personal Info</div>
+                        </div>
+                        <p class="card-subtitle text-70 mb-16pt mb-lg-0">
+                            Basic information of the user.</p>
+                    </div>
+                    <div class="col-lg-9 d-flex align-items-center">
+                        <div class="flex"
+                                 style="max-width: 100%">
+
+                                 <div class="form-group">
+                                    <label class="form-label"
+                                           for="exampleInputEmail1">Full Name</label>
+                                    <input type="text"
+                                           class="form-control"
+                                           id="exampleInputEmail1"
+                                           placeholder="Enter guest name here..">
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label"
+                                           for="exampleInputEmail1">Username</label>
+                                    <input type="text"
+                                           class="form-control"
+                                           id="exampleInputEmail1"
+                                           placeholder="Enter guest name here..">
+                                </div>
+                                                                
+                                <div class="form-group">
+                                    <label class="form-label"
+                                           for="exampleInputEmail1">User email:</label>
+                                    <input type="email"
+                                           class="form-control"
+                                           id="exampleInputEmail1"
+                                           placeholder="Enter your email address ..">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label"
+                                           for="exampleInputEmail1">Phone Number:</label>
+                                    <input type="text"
+                                           class="form-control"
+                                           id="exampleInputEmail1"
+                                           placeholder="Enter your phone number ..">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label"
+                                           for="exampleInputPassword1">User password:</label>
+                                    <input type="password"
+                                           class="form-control"
+                                           id="exampleInputPassword1"
+                                           placeholder="Enter your password ..">
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label"
+                                           for="select01">Role</label>
+                                    <select id="select01"
+                                            data-toggle="select"
+                                            class="form-control">
+                                        <option selected="">Operations</option>
+                                        <option>Sales</option>
+                                        <option>HR</option>
+                                        <option>Branch Manager</option>                                        
+                                    </select>
+                                </div>
+
+                            </div>
+                    </div>
+                </div>
+
+                <div class="row mb-32pt">
+                    <div class="col-lg-3">
+                        <div class="page-separator">
+                            <div class="page-separator__text">Residential Info</div>
+                        </div>
+                        <p class="card-subtitle text-70 mb-16pt mb-lg-0">
+                            User Address & Image.</p>
+                    </div>
+                    <div class="col-lg-9 d-flex align-items-center">
+                        <div class="flex"
+                                 style="max-width: 100%">
+
+                                 <div class="form-group">
+                                    <label class="form-label"
+                                           for="exampleInputEmail1">User Address</label>
+                                    <input type="text"
+                                           class="form-control"
+                                           id="exampleInputEmail1"
+                                           placeholder="Enter guest name here..">
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div class="col-12 col-md-6 mb-3">
+                                        <label class="form-label"
+                                               for="validationSample03">Country</label>
+                                        <input type="text"
+                                               class="form-control"
+                                               id="validationSample03"
+                                               placeholder="City"
+                                               required="">
+                                        <div class="invalid-feedback">Please provide a counry city.</div>
+                                        <div class="valid-feedback">Looks good!</div>
+                                    </div>
+                                    <div class="col-12 col-md-6 mb-3">
+                                        <label class="form-label"
+                                               for="validationSample04">State</label>
+                                        <input type="text"
+                                               class="form-control"
+                                               id="validationSample04"
+                                               placeholder="State"
+                                               required="">
+                                        <div class="invalid-feedback">Please provide a valid state.</div>
+                                        <div class="valid-feedback">Looks good!</div>
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="col-12 col-md-6 mb-3">
+                                        <label class="form-label"
+                                               for="validationSample03">City</label>
+                                        <input type="text"
+                                               class="form-control"
+                                               id="validationSample03"
+                                               placeholder="City"
+                                               required="">
+                                        <div class="invalid-feedback">Please provide a valid city.</div>
+                                        <div class="valid-feedback">Looks good!</div>
+                                    </div>
+                                    <div class="col-12 col-md-6 mb-3">
+                                        <label class="form-label"
+                                               for="validationSample04">Postal Code</label>
+                                        <input type="text"
+                                               class="form-control"
+                                               id="validationSample04"
+                                               placeholder="Postal Code"
+                                               required="">
+                                        <div class="invalid-feedback">Please provide a valid postal code.</div>
+                                        <div class="valid-feedback">Looks good!</div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group m-0">
+                                    <div class="custom-file">
+                                        <input type="file"
+                                               id="file"
+                                               class="custom-file-input">
+                                        <label for="file"
+                                               class="custom-file-label">User Image</label>
+                                    </div>
+                                </div>
+
+                            </div>
+                    </div>
+                </div>
+
+                
+
+            </div>    
+
+{% endblock %}
+                
+
+            

@@ -1,0 +1,269 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block body %}
+
+
+             <!-- Modal -->
+<div class="modal" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+         Modal Body
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Custom Modal -->
+  <div class="cmodal">
+    <div class="cmodal-content">
+        <span class="close-button">×</span>
+        <h2>Room 101</h2>
+        <h4>Guest Info</h4>
+        <p>Premium Deluxe <br> Mr. Rakibul Alam</p>
+        <h4>Stay Info</h4>
+        <p>Status: Reserved <br> Arrival : 1/2/2024 <br> Depearture : 3/2/2024 <br> Nights : 2</p>
+        <div class="cmodal-button"><a href="">Booking Details</a> <a href="">Edit Room</a></div>
+        
+    </div>
+</div>
+
+                <div style="text-align: center;" class="border-bottom-2 py-32pt position-relative z-1">
+                    <div class="container page__container d-flex flex-column flex-md-row align-items-center text-center text-sm-left">
+                        <div class="flex d-flex flex-column flex-sm-row align-items-center mb-24pt mb-md-0">
+
+                            <div class="mb-24pt mb-sm-0 mr-sm-24pt">
+                                <h2 class="mb-0">All Rooms</h2>
+
+                                <ol class="breadcrumb p-0 m-0">
+                                    <li class="breadcrumb-item"><a href="">Home</a></li>
+
+                                    <li class="breadcrumb-item active">
+
+                                        All Rooms
+
+                                    </li>
+
+                                </ol>
+
+                            </div>
+
+                            <div class="dropdown">
+                                <a href=""
+                                   class="border rounded d-flex align-items-center p-16pt"
+                                   data-toggle="dropdown"
+                                   data-caret="false">
+
+                                    <div class="avatar avatar-sm mr-8pt">
+
+                                        <span class="avatar-title rounded bg-primary">BN</span>
+
+                                    </div>
+
+                                    <small class="ml-4pt flex">
+                                        <span class="d-flex align-items-center">
+                                            <span class="flex d-flex flex-column">
+                                                <strong class="text-100">Omni Residency</strong>
+                                                <span class="text-50">Banani</span>
+                                            </span>
+                                            <i class="material-icons icon-16pt text-50 ml-4pt">arrow_drop_down</i>
+                                        </span>
+                                    </small>
+                                </a>
+                                <div class="dropdown-menu w-100">
+                                    <div class="dropdown-header"><strong>Select branch</strong></div>
+                                    <a href=""
+                                       class="dropdown-item active d-flex align-items-center">
+
+                                        <div class="avatar avatar-sm mr-8pt">
+
+                                            <span class="avatar-title rounded bg-primary">BN</span>
+
+                                        </div>
+
+                                        <small class="ml-4pt flex">
+                                            <span class="d-flex flex-column">
+                                                <strong class="text-black-100">Omni Residency</strong>
+                                                <span class="text-black-50">Banani</span>
+                                            </span>
+                                        </small>
+                                    </a>
+                                    <a href=""
+                                       class="dropdown-item d-flex align-items-center">
+
+                                        <div class="avatar avatar-sm mr-8pt">
+
+                                            <span class="avatar-title rounded bg-accent">BDH</span>
+
+                                        </div>
+
+                                        <small class="ml-4pt flex">
+                                            <span class="d-flex flex-column">
+                                                <strong class="text-black-100">Omni Residency</strong>
+                                                <span class="text-black-50">Baridhara</span>
+                                            </span>
+                                        </small>
+                                    </a>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        
+
+                        <div class="row"
+                             role="tablist">
+                            <!-- <div class="col-auto d-flex flex-column">
+                                <h6 class="m-0">&dollar;12.3k</h6>
+                                <p class="text-50 mb-0 d-flex align-items-center">
+                                    Earnings
+                                    <i class="material-icons text-accent ml-4pt icon-16pt">keyboard_arrow_up</i>
+                                </p>
+                            </div>
+                            <div class="col-auto border-left">
+                                <h6 class="m-0">264</h6>
+                                <p class="text-50 mb-0 d-flex align-items-center">
+                                    Sales
+                                    <i class="material-icons text-accent ml-4pt icon-16pt">keyboard_arrow_up</i>
+                                </p>
+                            </div> -->
+                            <div class="col-auto border-left">
+                                <a href="{% url 'crud_room_categories' %}"
+                                   class="btn btn-accent">Add Room</a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            <div class="container page__container page-section">
+
+                <div class="border-bottom-2 py-32pt">
+                    <div class="row mb-16pt">
+                        <div class="col-lg-2">
+                            <a  class="trigger room-card" style="background-color: yellow;" >101</a>
+                        </div>
+                        <div class="col-lg-2">
+                            <a class="room-card" style="background-color: yellow;" href="" >101</a>
+                        </div>
+                        <div class="col-lg-2">
+                            <a class="room-card" style="background-color: yellow;" href="" >101</a>
+                        </div>
+                        <div class="col-lg-2">
+                            <a class="room-card" style="background-color: yellow;" href="" >101</a>
+                        </div>
+                        <div class="col-lg-2">
+                            <a class="room-card" style="background-color: yellow;" href="" >101</a>
+                        </div>
+                        <div class="col-lg-2">
+                            <a class="room-card" style="background-color: yellow;" href="" >101</a>
+                        </div>                    
+                    </div>
+    
+                    <div class="row mb-16pt">
+                        <div class="col-lg-2">
+                            <a class="room-card" style="background-color: yellow;" href="" >101</a>
+                        </div>
+                        <div class="col-lg-2">
+                            <a class="room-card" style="background-color: yellow;" href="" >101</a>
+                        </div>
+                        <div class="col-lg-2">
+                            <a class="room-card" style="background-color: yellow;" href="" >101</a>
+                        </div>
+                        <div class="col-lg-2">
+                            <a class="room-card" style="background-color: yellow;" href="" >101</a>
+                        </div>
+                        <div class="col-lg-2">
+                            <a class="room-card" style="background-color: yellow;" href="" >101</a>
+                        </div>
+                        <div class="col-lg-2">
+                            <a class="room-card" style="background-color: yellow;" href="" >101</a>
+                        </div>                    
+                    </div>
+    
+                    <div class="row mb-16pt">
+                        <div class="col-lg-2">
+                            <a class="room-card" style="background-color: yellow;" href="" >101</a>
+                        </div>
+                        <div class="col-lg-2">
+                            <a class="room-card" style="background-color: yellow;" href="" >101</a>
+                        </div>
+                        <div class="col-lg-2">
+                            <a class="room-card" style="background-color: yellow;" href="" >101</a>
+                        </div>
+                                           
+                    </div>
+                </div>
+
+                <div class="row mt-24pt">
+
+                    <div class="col-lg-3 room-def-block">
+                        <h6>Occupied</h6> <div style="background-color: red;" class="room-def"></div>
+                    </div>
+
+                    <div class="col-lg-3 room-def-block">
+                        <h6>T.Checkin</h6> <div style="background-color: palevioletred;" class="room-def"></div>
+                    </div>
+
+                    <div class="col-lg-3 room-def-block">
+                        <h6>V.C</h6> <div style="background-color: green;" class="room-def"></div>
+                    </div>
+
+                    <div class="col-lg-3 room-def-block">
+                        <h6>House Use</h6> <div style="background-color: lightgreen;" class="room-def"></div>
+                    </div>
+
+                </div>
+
+                <div class="row mb-24pt">
+
+                    <div class="col-lg-3 room-def-block">
+                        <h6>E.Depearture</h6> <div style="background-color: pink;" class="room-def"></div>
+                    </div>
+
+                    <div class="col-lg-3 room-def-block">
+                        <h6>V.D</h6> <div style="background-color: brown;" class="room-def"></div>
+                    </div>
+
+                    <div class="col-lg-3 room-def-block">
+                        <h6>Expected Arrival</h6> <div style="background-color: orange;" class="room-def"></div>
+                    </div>
+
+                    <div class="col-lg-3 room-def-block">
+                        <h6>D.A</h6> <div style="background-color: lightsalmon;" class="room-def"></div>
+                    </div>
+
+                </div>
+
+                <div class="row mb-24pt">
+
+                    <div class="col-lg-3 room-def-block">
+                        <h6>Out Of Service</h6> <div style="background-color: teal;" class="room-def"></div>
+                    </div>
+
+                    <div class="col-lg-3 room-def-block">
+                        <h6>Occupancy</h6> <h5>88.9%</h5>
+                    </div>                    
+
+                </div>
+                
+                
+                
+            </div>    
+
+
+           
+
+            {% endblock %}         

@@ -1,0 +1,376 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block body %}
+
+
+<div class="border-bottom-2 py-32pt position-relative z-1">
+    <div class="container page__container d-flex flex-column flex-md-row align-items-center text-center text-sm-left">
+        <div class="flex d-flex flex-column flex-sm-row align-items-center mb-24pt mb-md-0">
+
+            <div class="mb-24pt mb-sm-0 mr-sm-24pt">
+                <h2 class="mb-0">Add Restaurant</h2>
+
+                <ol class="breadcrumb p-0 m-0">
+                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+
+                    <li class="breadcrumb-item active">
+
+                        Add Restaurant
+
+                    </li>
+
+                </ol>
+
+            </div>
+
+            <div class="dropdown">
+                <a href=""
+                   class="border rounded d-flex align-items-center p-16pt"
+                   data-toggle="dropdown"
+                   data-caret="false">
+
+                    <div class="avatar avatar-sm mr-8pt">
+
+                        <span class="avatar-title rounded bg-primary">BN</span>
+
+                    </div>
+
+                    <small class="ml-4pt flex">
+                        <span class="d-flex align-items-center">
+                            <span class="flex d-flex flex-column">
+                                <strong class="text-100">Omni Residency</strong>
+                                <span class="text-50">Banani</span>
+                            </span>
+                            <i class="material-icons icon-16pt text-50 ml-4pt">arrow_drop_down</i>
+                        </span>
+                    </small>
+                </a>
+                <div class="dropdown-menu w-100">
+                    <div class="dropdown-header"><strong>Select branch</strong></div>
+                    <a href=""
+                       class="dropdown-item active d-flex align-items-center">
+
+                        <div class="avatar avatar-sm mr-8pt">
+
+                            <span class="avatar-title rounded bg-primary">BN</span>
+
+                        </div>
+
+                        <small class="ml-4pt flex">
+                            <span class="d-flex flex-column">
+                                <strong class="text-black-100">Omni Residency</strong>
+                                <span class="text-black-50">Banani</span>
+                            </span>
+                        </small>
+                    </a>
+                    <a href=""
+                       class="dropdown-item d-flex align-items-center">
+
+                        <div class="avatar avatar-sm mr-8pt">
+
+                            <span class="avatar-title rounded bg-accent">BDH</span>
+
+                        </div>
+
+                        <small class="ml-4pt flex">
+                            <span class="d-flex flex-column">
+                                <strong class="text-black-100">Omni Residency</strong>
+                                <span class="text-black-50">Baridhara</span>
+                            </span>
+                        </small>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
+        
+
+        <div class="row"
+             role="tablist">
+            <!-- <div class="col-auto d-flex flex-column">
+                <h6 class="m-0">&dollar;12.3k</h6>
+                <p class="text-50 mb-0 d-flex align-items-center">
+                    Earnings
+                    <i class="material-icons text-accent ml-4pt icon-16pt">keyboard_arrow_up</i>
+                </p>
+            </div>
+            <div class="col-auto border-left">
+                <h6 class="m-0">264</h6>
+                <p class="text-50 mb-0 d-flex align-items-center">
+                    Sales
+                    <i class="material-icons text-accent ml-4pt icon-16pt">keyboard_arrow_up</i>
+                </p>
+            </div> -->
+            <div class="col-auto border-left">
+                <a href="add-edit-branch.html"
+                   class="btn btn-accent">Publish Restaurant</a>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="container page__container page-section">
+    <div class="row mb-32pt">
+        <div class="col-lg-3">
+            <div class="page-separator">
+                <div class="page-separator__text">Restaurant Info</div>
+            </div>
+            <p class="card-subtitle text-70 mb-16pt mb-lg-0">
+                Basic information related to the restaurant</p>
+        </div>
+        <div class="col-lg-9 d-flex align-items-center">
+            <div class="flex"
+                 style="max-width: 100%">
+
+                <div class="form-group">
+                    <label class="form-label"
+                           for="exampleInputEmail1">Restaurant Name</label>
+                    <input type="text"
+                           class="form-control"
+                           id="exampleInputEmail1"
+                           placeholder="Enter branch name here ..">
+                </div>                
+                                                
+                <div class="form-group">
+                    <label class="form-label"
+                           for="custom-select">Status</label>
+                    <select id="custom-select"
+                            class="form-control custom-select">
+                        <option selected>Open this select menu</option>
+                        <option value="1">Active</option>
+                        <option value="2">Out Of Order</option>
+                    </select>
+                </div>
+                <div class="form-group m-0">
+                    <div class="custom-file">
+                        <input type="file"
+                               id="file"
+                               class="custom-file-input">
+                        <label for="file"
+                               class="custom-file-label">Featured Image</label>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="row mb-32pt">
+        <div class="col-lg-3">
+            <div class="page-separator">
+                <div class="page-separator__text">Restaurant Description</div>
+            </div>
+            <p class="card-subtitle text-70 mb-16pt mb-lg-0">
+                Describe and give a few information about the branch</p>
+        </div>
+        <div class="col-lg-9 d-flex align-items-center">
+            <div class="flex"
+                     style="max-width: 100%">
+
+                    <label class="form-label">Write an overview about the room</label>
+                    <div style="height: 150px;"
+                         data-toggle="quill"
+                         data-quill-placeholder="Quill WYSIWYG editor">
+                        <h1>Hello World!</h1>
+                        <p>Some initial <strong>bold</strong> text</p>
+                        <p><br></p>
+                    </div>
+
+                
+
+                </div>
+        </div>
+    </div>
+    <div class="row mb-32pt">
+        <div class="col-lg-3">
+            <div class="page-separator">
+                <div class="page-separator__text">Generic Content</div>
+            </div>
+            <p class="card-subtitle text-70 mb-16pt mb-lg-0">
+                Gallery</p>
+        </div>
+        <div class="col-lg-9 d-flex align-items-center">
+            <div class="flex"
+                                 style="max-width: 100%">
+
+                                
+                                <div class="dropzone dropzone-multiple w-100 mb-24pt"
+                                     data-toggle="dropzone"
+                                     data-dropzone-multiple
+                                     data-dropzone-url="{% static '' %}"
+                                     data-dropzone-files='["static/assets/images/256_daniel-gaffey-1060698-unsplash.jpg", "static/assets/images/256_rsz_clem-onojeghuo-150467-unsplash.jpg", "static/assets/images/256_rsz_florian-perennes-594195-unsplash.jpg"]'>
+
+
+                                     <label class="form-label"
+                                     for="exampleInputEmail1">Gallery</label>
+                                    <div class="fallback">
+                                        <div class="custom-file">
+                                            <input type="file"
+                                                   class="custom-file-input"
+                                                   id="customFileUploadMultiple"
+                                                   multiple>
+                                            <label class="custom-file-label"
+                                                   for="customFileUploadMultiple">Choose file</label>
+                                        </div>
+                                    </div>
+
+                                    <ul class="dz-preview dz-preview-multiple list-group list-group-flush mt-16pt">
+                                        <li class="list-group-item">
+                                            <div class="form-row align-items-center">
+                                                <div class="col-auto">
+                                                    <div class="avatar">
+                                                        <img src="{% static '' %}assets/images/256_daniel-gaffey-1060698-unsplash.jpg"
+                                                             class="avatar-img rounded"
+                                                             alt="..."
+                                                             data-dz-thumbnail>
+                                                    </div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="font-weight-bold"
+                                                         data-dz-name>...</div>
+                                                    <p class="small text-muted mb-0"
+                                                       data-dz-size>...</p>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <a href="#"
+                                                       class="text-muted-light"
+                                                       data-dz-remove>
+                                                        <i class="material-icons">close</i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+
+                                </div>
+
+
+                                
+
+                                <div class="form-group">
+                                    <label class="form-label"
+                                           for="select03">Cuisine</label>
+                                    <select id="select03"
+                                            data-toggle="select"
+                                            multiple
+                                            class="form-control">
+                                        <option selected="">CSS</option>
+                                        <option selected="">HTML</option>
+                                        <option>JavaScript</option>
+                                        <option>Bootstrap</option>
+                                    </select>
+                                </div>
+
+
+                            </div>
+        </div>
+    </div>
+    <div class="row mb-32pt">
+        <div class="col-lg-3">
+            <div class="page-separator">
+                <div class="page-separator__text">Timings</div>
+            </div>
+            <p class="card-subtitle text-70 mb-16pt mb-lg-0">
+                Opening & Closing Hours with dining info</p>
+        </div>
+        <div class="col-lg-9 d-flex align-items-center">
+            <div class="flex"
+                     style="max-width: 100%">
+
+                     <div class="form-group">
+                        <label class="form-label"
+                               for="maskSample01">Breakfast (Opening & Closing)</label>
+                               <div style="display: flex;">
+                                <input id="flatpickrSample05"
+                                           type="text"
+                                           class="form-control"
+                                           placeholder="Flatpickr time example"
+                                           data-toggle="flatpickr"
+                                           data-flatpickr-enable-time="true"
+                                           data-flatpickr-no-calendar="true"
+                                           data-flatpickr-alt-format="H:i"
+                                           data-flatpickr-date-format="H:i"
+                                           value="15:35"
+                                           style="margin-right: 5px;">
+                                           <input id="flatpickrSample05"
+                                           type="text"
+                                           class="form-control"
+                                           placeholder="Flatpickr time example"
+                                           data-toggle="flatpickr"
+                                           data-flatpickr-enable-time="true"
+                                           data-flatpickr-no-calendar="true"
+                                           data-flatpickr-alt-format="H:i"
+                                           data-flatpickr-date-format="H:i"
+                                           value="15:35">
+                               </div>
+                        
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label"
+                               for="maskSample01">Lunch (Opening & Closing)</label>
+                               <div style="display: flex;">
+                                <input id="flatpickrSample05"
+                                           type="text"
+                                           class="form-control"
+                                           placeholder="Flatpickr time example"
+                                           data-toggle="flatpickr"
+                                           data-flatpickr-enable-time="true"
+                                           data-flatpickr-no-calendar="true"
+                                           data-flatpickr-alt-format="H:i"
+                                           data-flatpickr-date-format="H:i"
+                                           value="15:35"
+                                           style="margin-right: 5px;">
+                                           <input id="flatpickrSample05"
+                                           type="text"
+                                           class="form-control"
+                                           placeholder="Flatpickr time example"
+                                           data-toggle="flatpickr"
+                                           data-flatpickr-enable-time="true"
+                                           data-flatpickr-no-calendar="true"
+                                           data-flatpickr-alt-format="H:i"
+                                           data-flatpickr-date-format="H:i"
+                                           value="15:35">
+                               </div>
+                        
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label"
+                               for="maskSample01">Dinner (Opening & Closing)</label>
+                               <div style="display: flex;">
+                                <input id="flatpickrSample05"
+                                           type="text"
+                                           class="form-control"
+                                           placeholder="Flatpickr time example"
+                                           data-toggle="flatpickr"
+                                           data-flatpickr-enable-time="true"
+                                           data-flatpickr-no-calendar="true"
+                                           data-flatpickr-alt-format="H:i"
+                                           data-flatpickr-date-format="H:i"
+                                           value="15:35"
+                                           style="margin-right: 5px;">
+                                           <input id="flatpickrSample05"
+                                           type="text"
+                                           class="form-control"
+                                           placeholder="Flatpickr time example"
+                                           data-toggle="flatpickr"
+                                           data-flatpickr-enable-time="true"
+                                           data-flatpickr-no-calendar="true"
+                                           data-flatpickr-alt-format="H:i"
+                                           data-flatpickr-date-format="H:i"
+                                           value="15:35">
+                               </div>
+                        
+                    </div>
+                    
+
+                </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}   

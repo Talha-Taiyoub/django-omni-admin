@@ -1,0 +1,607 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block body %}
+
+
+                <div class="border-bottom-2 py-32pt position-relative z-1">
+                    <div class="container page__container d-flex flex-column flex-md-row align-items-center text-center text-sm-left">
+                        <div class="flex d-flex flex-column flex-sm-row align-items-center mb-24pt mb-md-0">
+
+                            <div class="mb-24pt mb-sm-0 mr-sm-24pt">
+                                <h2 class="mb-0">Restaurants</h2>
+
+                                <ol class="breadcrumb p-0 m-0">
+                                    <li class="breadcrumb-item"><a href="">Home</a></li>
+
+                                    <li class="breadcrumb-item active">
+
+                                        Restaurants
+
+                                    </li>
+
+                                </ol>
+
+                            </div>
+
+                            <div class="dropdown">
+                                <a href=""
+                                   class="border rounded d-flex align-items-center p-16pt"
+                                   data-toggle="dropdown"
+                                   data-caret="false">
+
+                                    <div class="avatar avatar-sm mr-8pt">
+
+                                        <span class="avatar-title rounded bg-primary">BN</span>
+
+                                    </div>
+
+                                    <small class="ml-4pt flex">
+                                        <span class="d-flex align-items-center">
+                                            <span class="flex d-flex flex-column">
+                                                <strong class="text-100">Omni Residency</strong>
+                                                <span class="text-50">Banani</span>
+                                            </span>
+                                            <i class="material-icons icon-16pt text-50 ml-4pt">arrow_drop_down</i>
+                                        </span>
+                                    </small>
+                                </a>
+                                <div class="dropdown-menu w-100">
+                                    <div class="dropdown-header"><strong>Select branch</strong></div>
+                                    <a href=""
+                                       class="dropdown-item active d-flex align-items-center">
+
+                                        <div class="avatar avatar-sm mr-8pt">
+
+                                            <span class="avatar-title rounded bg-primary">BN</span>
+
+                                        </div>
+
+                                        <small class="ml-4pt flex">
+                                            <span class="d-flex flex-column">
+                                                <strong class="text-black-100">Omni Residency</strong>
+                                                <span class="text-black-50">Banani</span>
+                                            </span>
+                                        </small>
+                                    </a>
+                                    <a href=""
+                                       class="dropdown-item d-flex align-items-center">
+
+                                        <div class="avatar avatar-sm mr-8pt">
+
+                                            <span class="avatar-title rounded bg-accent">BDH</span>
+
+                                        </div>
+
+                                        <small class="ml-4pt flex">
+                                            <span class="d-flex flex-column">
+                                                <strong class="text-black-100">Omni Residency</strong>
+                                                <span class="text-black-50">Baridhara</span>
+                                            </span>
+                                        </small>
+                                    </a>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        
+
+                        <div class="row"
+                             role="tablist">
+                            <!-- <div class="col-auto d-flex flex-column">
+                                <h6 class="m-0">&dollar;12.3k</h6>
+                                <p class="text-50 mb-0 d-flex align-items-center">
+                                    Earnings
+                                    <i class="material-icons text-accent ml-4pt icon-16pt">keyboard_arrow_up</i>
+                                </p>
+                            </div>
+                            <div class="col-auto border-left">
+                                <h6 class="m-0">264</h6>
+                                <p class="text-50 mb-0 d-flex align-items-center">
+                                    Sales
+                                    <i class="material-icons text-accent ml-4pt icon-16pt">keyboard_arrow_up</i>
+                                </p>
+                            </div> -->
+                            <div class="col-auto border-left">
+                                <a href="{% url 'crud_restaurants' %}"
+                                   class="btn btn-accent">Add Restaurant</a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            <div class="container page__container page-section">
+                
+
+                <div class="card dashboard-area-tabs p-relative o-hidden mb-lg-32pt">
+                    <!-- <div class="card-header p-0 nav">
+                        <div class="row no-gutters"
+                             role="tablist">
+                            <div class="col-auto">
+                                <a href="#"
+                                   data-toggle="tab"
+                                   role="tab"
+                                   aria-selected="true"
+                                   class="dashboard-area-tabs__tab card-body d-flex flex-row align-items-center justify-content-start active">
+                                    <span class="h2 mb-0 mr-3">2</span>
+                                    <span class="flex d-flex flex-column">
+                                        <strong class="card-title">Active</strong>
+                                        <small class="card-subtitle text-50">Running</small>
+                                    </span>
+                                </a>
+                            </div>
+                            <div class="col-auto border-left border-right">
+                                <a href="#"
+                                   data-toggle="tab"
+                                   role="tab"
+                                   aria-selected="false"
+                                   class="dashboard-area-tabs__tab card-body d-flex flex-row align-items-center justify-content-start">
+                                    <span class="h2 mb-0 mr-3">1</span>
+                                    <span class="flex d-flex flex-column">
+                                        <strong class="card-title">Inactive</strong>
+                                        <small class="card-subtitle text-50">Coming Soon</small>
+                                    </span>
+                                </a>
+                            </div>
+                        </div>
+                    </div> -->
+
+                    <div class="table-responsive"
+                         data-toggle="lists"
+                         data-lists-sort-by="js-lists-values-date"
+                         data-lists-sort-desc="true"
+                         data-lists-values='["js-lists-values-lead", "js-lists-values-project", "js-lists-values-status", "js-lists-values-budget", "js-lists-values-date"]'>
+
+                        <table class="table mb-0 thead-border-top-0 table-nowrap">
+                            <thead>
+                                <tr>
+
+                                    <!-- <th style="width: 18px;"
+                                        class="pr-0">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox"
+                                                   class="custom-control-input js-toggle-check-all"
+                                                   data-target="#projects"
+                                                   id="customCheckAll">
+                                            <label class="custom-control-label"
+                                                   for="customCheckAll"><span class="text-hide">Toggle all</span></label>
+                                        </div>
+                                    </th> -->
+
+                                    <th style="width: 150px;">
+                                        <a href="javascript:void(0)"
+                                           class="sort"
+                                           data-sort="js-lists-values-project">Name</a>
+                                    </th>
+
+                                    
+
+                                    <th style="width: 48px;">
+                                        <a href="javascript:void(0)"
+                                           class="sort"
+                                           data-sort="js-lists-values-status">Status</a>
+                                    </th>
+
+                                    <th style="width: 48px;">
+                                        <a href="javascript:void(0)"
+                                           class="sort"
+                                           data-sort="js-lists-values-budget">Cuisine</a>
+                                    </th>
+
+                                    <th style="width: 48px;">
+                                        <a href="javascript:void(0)"
+                                           class="sort"
+                                           data-sort="js-lists-values-date">Description</a>
+                                    </th>
+                                    <th style="width: 24px;"></th>
+                                </tr>
+                            </thead>
+                            <tbody class="list"
+                                   id="projects">
+
+                                <tr>
+
+                                    <!-- <td class="pr-0">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox"
+                                                   class="custom-control-input js-check-selected-row"
+                                                   id="customCheck1_1">
+                                            <label class="custom-control-label"
+                                                   for="customCheck1_1"><span class="text-hide">Check</span></label>
+                                        </div>
+                                    </td> -->
+
+                                    <td>
+
+                                        <div class="media flex-nowrap align-items-center"
+                                             style="white-space: nowrap;">
+                                            <div class="avatar avatar-sm mr-32pt">
+                                                <img style="height: 40px; width: 60px;" src="{% static ''%}assets/images/fiddlehead.jpg" alt="">
+                                            </div>
+                                            <div class="media-body">
+                                                <div class="d-flex flex-column">
+                                                    <small class="js-lists-values-project"><strong>Fiddlehead Restaurant</strong></small>
+                                                    <small class="js-lists-values-location text-50">Banani</small>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </td>
+
+                                    
+
+                                    <td>
+                                        <div class="d-flex flex-column">
+                                            <small class="js-lists-values-status text-50 mb-4pt">Active</small>
+                                            <span class="indicator-line rounded bg-warning"></span>
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <div class="d-flex flex-column">
+                                            <small class="js-lists-values-budget"><strong>Thai, Chine..</strong></small>
+                                            <small class="text-50">Breakfast, Lunch & Dinner</small>
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <div class="d-flex flex-column">
+                                            <small class="js-lists-values-date"><strong>Baridhara, Gulshan..</strong></small>
+                                            <small class="text-50"><a href="#">Terrace Available for drinks only</a></small>
+                                        </div>
+                                    </td>
+                                    <td class="text-right">
+                                        <a href=""
+                                           class="text-50"><i class="material-icons">more_vert</i></a>
+                                    </td>
+                                </tr>
+
+                                <tr>
+
+                                   
+
+                                    <td>
+
+                                        <div class="media flex-nowrap align-items-center"
+                                             style="white-space: nowrap;">
+                                            <div class="avatar avatar-sm mr-32pt">
+                                                <img style="height: 40px;" src="{% static ''%}assets/images/roma.jpg" alt="">
+                                            </div>
+                                            <div class="media-body">
+                                                <div class="d-flex flex-column">
+                                                    <small class="js-lists-values-project"><strong>Cafe Roma</strong></small>
+                                                    <small class="js-lists-values-location text-50">Banani</small>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </td>
+
+                                    
+
+                                    <td>
+                                        <div class="d-flex flex-column">
+                                            <small class="js-lists-values-status text-50 mb-4pt">Closed</small>
+                                            <span class="indicator-line rounded bg-accent"></span>
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <div class="d-flex flex-column">
+                                            <small class="js-lists-values-budget"><strong>Hot & Cold Beverages</strong></small>
+                                            <small class="text-50"><s></s></small>
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <div class="d-flex flex-column">
+                                            <small class="js-lists-values-date"><strong>Banani 11..</strong></small>
+                                            <small class="text-danger"><a href="#">No Terrace</a></small>
+                                        </div>
+                                    </td>
+                                    <td class="text-right">
+                                        <a href=""
+                                           class="text-50"><i class="material-icons">more_vert</i></a>
+                                    </td>
+                                </tr>
+
+                                <!-- <tr>
+
+                                    <td class="pr-0">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox"
+                                                   class="custom-control-input js-check-selected-row"
+                                                   id="customCheck1_3">
+                                            <label class="custom-control-label"
+                                                   for="customCheck1_3"><span class="text-hide">Check</span></label>
+                                        </div>
+                                    </td>
+
+                                    <td>
+
+                                        <div class="media flex-nowrap align-items-center"
+                                             style="white-space: nowrap;">
+                                            <div class="avatar avatar-sm mr-8pt">
+                                                <span class="avatar-title rounded bg-warning text-white">AD</span>
+                                            </div>
+                                            <div class="media-body">
+                                                <div class="d-flex flex-column">
+                                                    <small class="js-lists-values-project"><strong>Advertising Platform</strong></small>
+                                                    <small class="js-lists-values-location text-50">Facebook</small>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </td>
+
+                                    <td>
+
+                                        <div class="media flex-nowrap align-items-center"
+                                             style="white-space: nowrap;">
+                                            <div class="avatar avatar-32pt mr-8pt">
+
+                                                <img src="assets/images/people/110/guy-1.jpg"
+                                                     alt="Avatar"
+                                                     class="avatar-img rounded-circle">
+
+                                            </div>
+                                            <div class="media-body">
+
+                                                <div class="d-flex align-items-center">
+                                                    <div class="flex d-flex flex-column">
+                                                        <p class="mb-0"><strong class="js-lists-values-lead">Gilbert Barrett</strong></p>
+                                                        <small class="js-lists-values-email text-50">Marketing</small>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                    </td>
+
+                                    <td>
+                                        <div class="d-flex flex-column">
+                                            <small class="js-lists-values-status text-50 mb-4pt">Finished</small>
+                                            <span class="indicator-line rounded bg-accent"></span>
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <div class="d-flex flex-column">
+                                            <small class="js-lists-values-budget"><strong>&dollar;7,100</strong></small>
+                                            <small class="text-50">Paid</small>
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <div class="d-flex flex-column">
+                                            <small class="js-lists-values-date"><strong>17/02/2019</strong></small>
+                                            <small class="text-50">15 days</small>
+                                        </div>
+                                    </td>
+                                    <td class="text-right">
+                                        <a href=""
+                                           class="text-50"><i class="material-icons">more_vert</i></a>
+                                    </td>
+                                </tr>
+
+                                <tr>
+
+                                    <td class="pr-0">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox"
+                                                   class="custom-control-input js-check-selected-row"
+                                                   id="customCheck1_4">
+                                            <label class="custom-control-label"
+                                                   for="customCheck1_4"><span class="text-hide">Check</span></label>
+                                        </div>
+                                    </td>
+
+                                    <td>
+
+                                        <div class="media flex-nowrap align-items-center"
+                                             style="white-space: nowrap;">
+                                            <div class="avatar avatar-sm mr-8pt">
+                                                <span class="avatar-title rounded bg-light text-black-100">FD</span>
+                                            </div>
+                                            <div class="media-body">
+                                                <div class="d-flex flex-column">
+                                                    <small class="js-lists-values-project"><strong>Frontend Development</strong></small>
+                                                    <small class="js-lists-values-location text-50">Trello</small>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </td>
+
+                                    <td>
+
+                                        <div class="media flex-nowrap align-items-center"
+                                             style="white-space: nowrap;">
+                                            <div class="avatar avatar-32pt mr-8pt">
+
+                                                <img src="assets/images/people/110/guy-2.jpg"
+                                                     alt="Avatar"
+                                                     class="avatar-img rounded-circle">
+
+                                            </div>
+                                            <div class="media-body">
+
+                                                <div class="d-flex align-items-center">
+                                                    <div class="flex d-flex flex-column">
+                                                        <p class="mb-0"><strong class="js-lists-values-lead">Ollie Wallace</strong></p>
+                                                        <small class="js-lists-values-email text-50">Design</small>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                    </td>
+
+                                    <td>
+                                        <div class="d-flex flex-column">
+                                            <small class="js-lists-values-status text-50 mb-4pt">Designing</small>
+                                            <span class="indicator-line rounded bg-primary"></span>
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <div class="d-flex flex-column">
+                                            <small class="js-lists-values-budget"><strong>&dollar;4,200</strong></small>
+                                            <small class="text-50">Paid</small>
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <div class="d-flex flex-column">
+                                            <small class="js-lists-values-date"><strong>16/02/2019</strong></small>
+                                            <small class="text-50">15 days</small>
+                                        </div>
+                                    </td>
+                                    <td class="text-right">
+                                        <a href=""
+                                           class="text-50"><i class="material-icons">more_vert</i></a>
+                                    </td>
+                                </tr>
+
+                                <tr class="selected">
+
+                                    <td class="pr-0">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox"
+                                                   class="custom-control-input js-check-selected-row"
+                                                   checked=""
+                                                   id="customCheck1_5">
+                                            <label class="custom-control-label"
+                                                   for="customCheck1_5"><span class="text-hide">Check</span></label>
+                                        </div>
+                                    </td>
+
+                                    <td>
+
+                                        <div class="media flex-nowrap align-items-center"
+                                             style="white-space: nowrap;">
+                                            <div class="avatar avatar-sm mr-8pt">
+                                                <span class="avatar-title rounded bg-light text-black-100">DU</span>
+                                            </div>
+                                            <div class="media-body">
+                                                <div class="d-flex flex-column">
+                                                    <small class="js-lists-values-project"><strong>Database Upgrade</strong></small>
+                                                    <small class="js-lists-values-location text-50">MySQL</small>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </td>
+
+                                    <td>
+
+                                        <div class="media flex-nowrap align-items-center"
+                                             style="white-space: nowrap;">
+                                            <div class="avatar avatar-32pt mr-8pt">
+
+                                                <img src="assets/images/people/110/guy-3.jpg"
+                                                     alt="Avatar"
+                                                     class="avatar-img rounded-circle">
+
+                                            </div>
+                                            <div class="media-body">
+
+                                                <div class="d-flex align-items-center">
+                                                    <div class="flex d-flex flex-column">
+                                                        <p class="mb-0"><strong class="js-lists-values-lead">Ricardo Bell</strong></p>
+                                                        <small class="js-lists-values-email text-50">Web Development</small>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                    </td>
+
+                                    <td>
+                                        <div class="d-flex flex-column">
+                                            <small class="js-lists-values-status text-50 mb-4pt">Waiting</small>
+                                            <span class="indicator-line rounded bg-danger"></span>
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <div class="d-flex flex-column">
+                                            <small class="js-lists-values-budget"><strong>&dollar;130</strong></small>
+                                            <small class="text-danger">Overdue</small>
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <div class="d-flex flex-column">
+                                            <small class="js-lists-values-date"><strong>01/12/2018</strong></small>
+                                            <small class="text-50">1 day</small>
+                                        </div>
+                                    </td>
+                                    <td class="text-right">
+                                        <a href=""
+                                           class="text-50"><i class="material-icons">more_vert</i></a>
+                                    </td>
+                                </tr> -->
+
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- <div class="card-footer p-8pt">
+
+                        <ul class="pagination justify-content-start pagination-xsm m-0">
+                            <li class="page-item disabled">
+                                <a class="page-link"
+                                   href="#"
+                                   aria-label="Previous">
+                                    <span aria-hidden="true"
+                                          class="material-icons">chevron_left</span>
+                                    <span>Prev</span>
+                                </a>
+                            </li>
+                            <li class="page-item dropdown">
+                                <a class="page-link dropdown-toggle"
+                                   data-toggle="dropdown"
+                                   href="#"
+                                   aria-label="Page">
+                                    <span>1</span>
+                                </a>
+                                <div class="dropdown-menu">
+                                    <a href=""
+                                       class="dropdown-item active">1</a>
+                                    <a href=""
+                                       class="dropdown-item">2</a>
+                                    <a href=""
+                                       class="dropdown-item">3</a>
+                                    <a href=""
+                                       class="dropdown-item">4</a>
+                                    <a href=""
+                                       class="dropdown-item">5</a>
+                                </div>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link"
+                                   href="#"
+                                   aria-label="Next">
+                                    <span>Next</span>
+                                    <span aria-hidden="true"
+                                          class="material-icons">chevron_right</span>
+                                </a>
+                            </li>
+                        </ul>
+
+                    </div> -->
+                    <!-- <div class="card-body bordet-top text-right">
+15 <span class="text-50">of 1,430</span> <a href="#" class="text-50"><i class="material-icons ml-1">arrow_forward</i></a>
+</div> -->
+
+                </div>
+            </div>    
+
+            {% endblock %}         

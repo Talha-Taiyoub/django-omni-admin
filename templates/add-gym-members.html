@@ -1,0 +1,251 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block body %}
+
+
+<div class="border-bottom-2 py-32pt position-relative z-1">
+    <div class="container page__container d-flex flex-column flex-md-row align-items-center text-center text-sm-left">
+        <div class="flex d-flex flex-column flex-sm-row align-items-center mb-24pt mb-md-0">
+
+            <div class="mb-24pt mb-sm-0 mr-sm-24pt">
+                <h2 class="mb-0">Add GYM Member</h2>
+
+                <ol class="breadcrumb p-0 m-0">
+                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+
+                    <li class="breadcrumb-item active">
+
+                        Add GYM Member
+
+                    </li>
+
+                </ol>
+
+            </div>
+
+            <!-- <div class="dropdown">
+                <a href=""
+                   class="border rounded d-flex align-items-center p-16pt"
+                   data-toggle="dropdown"
+                   data-caret="false">
+
+                    <div class="avatar avatar-sm mr-8pt">
+
+                        <span class="avatar-title rounded bg-primary">BN</span>
+
+                    </div>
+
+                    <small class="ml-4pt flex">
+                        <span class="d-flex align-items-center">
+                            <span class="flex d-flex flex-column">
+                                <strong class="text-100">Omni Residency</strong>
+                                <span class="text-50">Banani</span>
+                            </span>
+                            <i class="material-icons icon-16pt text-50 ml-4pt">arrow_drop_down</i>
+                        </span>
+                    </small>
+                </a>
+                <div class="dropdown-menu w-100">
+                    <div class="dropdown-header"><strong>Select branch</strong></div>
+                    <a href=""
+                       class="dropdown-item active d-flex align-items-center">
+
+                        <div class="avatar avatar-sm mr-8pt">
+
+                            <span class="avatar-title rounded bg-primary">BN</span>
+
+                        </div>
+
+                        <small class="ml-4pt flex">
+                            <span class="d-flex flex-column">
+                                <strong class="text-black-100">Omni Residency</strong>
+                                <span class="text-black-50">Banani</span>
+                            </span>
+                        </small>
+                    </a>
+                    <a href=""
+                       class="dropdown-item d-flex align-items-center">
+
+                        <div class="avatar avatar-sm mr-8pt">
+
+                            <span class="avatar-title rounded bg-accent">BDH</span>
+
+                        </div>
+
+                        <small class="ml-4pt flex">
+                            <span class="d-flex flex-column">
+                                <strong class="text-black-100">Omni Residency</strong>
+                                <span class="text-black-50">Baridhara</span>
+                            </span>
+                        </small>
+                    </a>
+                </div>
+            </div> -->
+
+        </div>
+
+        
+
+        <div class="row"
+             role="tablist">
+             <div class="col-auto border-left">
+                <a href="add-edit-branch.html"
+                   class="btn btn-accent">Delete Member</a>
+            </div>
+            <div class="col-auto border-left">
+                <a href="add-edit-branch.html"
+                   class="btn btn-accent">Save</a>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="container page__container page-section">
+    <div class="row mb-32pt">
+        <div class="col-lg-3">
+            <div class="page-separator">
+                <div class="page-separator__text">Basic Info</div>
+            </div>
+            <p class="card-subtitle text-70 mb-16pt mb-lg-0">
+                Basic information related to the GYM Member</p>
+        </div>
+        <div class="col-lg-9 d-flex align-items-center">
+            <div class="flex"
+                 style="max-width: 100%">
+
+                <div class="form-group">
+                    <label class="form-label"
+                           for="exampleInputEmail1">Choose GYM</label>
+                           <select id="custom-select"
+                           class="form-control custom-select">
+                       <option selected>Open this select menu</option>
+                       <option value="1">Fiddlehead</option>
+                       <option value="2">Caferoma</option>
+                   </select>
+                </div>                
+                                                
+                <div class="form-group">
+                    <label class="form-label"
+                           for="custom-select">Status</label>
+                    <select id="custom-select"
+                            class="form-control custom-select">
+                        <option selected>Open this select menu</option>
+                        <option value="1">Pending</option>
+                        <option value="2">Confirm</option>
+                        <option value="3">Completed</option>
+                    </select>
+                </div>                
+
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-32pt">
+        <div class="col-lg-3">
+            <div class="page-separator">
+                <div class="page-separator__text">Personal Info</div>
+            </div>
+            <p class="card-subtitle text-70 mb-16pt mb-lg-0">
+                Basic information related to the restaurant</p>
+        </div>
+        <div class="col-lg-9 d-flex align-items-center">
+            <div class="flex"
+                 style="max-width: 100%">
+
+                <div class="form-group">
+                    <label class="form-label"
+                           for="exampleInputEmail1">Member Name</label>
+                    <input type="text"
+                           class="form-control"
+                           id="exampleInputEmail1"
+                           placeholder="Enter branch name here ..">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label"
+                           for="exampleInputEmail1">Gender</label>
+                           <select id="custom-select"
+                           class="form-control custom-select">
+                       <option selected>Open this select menu</option>
+                       <option value="1">Male</option>
+                       <option value="2">Female</option>
+                   </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label"
+                           for="exampleInputEmail1">Member Age</label>
+                    <input type="text"
+                           class="form-control"
+                           id="exampleInputEmail1"
+                           placeholder="Enter branch name here ..">
+                </div> 
+                
+                <div class="form-group">
+                    <label class="form-label"
+                           for="exampleInputEmail1">Member Phone</label>
+                    <input type="text"
+                           class="form-control"
+                           id="exampleInputEmail1"
+                           placeholder="Enter branch name here ..">
+                </div> 
+
+                <div class="form-group">
+                    <label class="form-label"
+                           for="exampleInputEmail1">Member Email</label>
+                    <input type="text"
+                           class="form-control"
+                           id="exampleInputEmail1"
+                           placeholder="Enter branch name here ..">
+                </div> 
+                                                
+                <div class="form-group">
+                    <label class="form-label"
+                           for="maskSample01">Monthly Fees</label>
+                    <input id="maskSample01"
+                           type="text"
+                           class="form-control"
+                           placeholder="Number: 2.342,42"
+                           data-mask="#.##0,00"
+                           data-mask-reverse="true">
+                </div>                
+
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-32pt">
+        <div class="col-lg-3">
+            <div class="page-separator">
+                <div class="page-separator__text">Member Description</div>
+            </div>
+            <p class="card-subtitle text-70 mb-16pt mb-lg-0">
+                Describe and give a few information about the branch</p>
+        </div>
+        <div class="col-lg-9 d-flex align-items-center">
+            <div class="flex"
+                     style="max-width: 100%">
+
+                    <label class="form-label">Write an overview about the room</label>
+                    <div style="height: 150px;"
+                         data-toggle="quill"
+                         data-quill-placeholder="Quill WYSIWYG editor">
+                        <h1>Hello World!</h1>
+                        <p>Some initial <strong>bold</strong> text</p>
+                        <p><br></p>
+                    </div>
+
+                
+
+                </div>
+        </div>
+    </div>
+
+    
+</div>
+
+
+{% endblock %}   

@@ -1,0 +1,209 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block body %}
+
+                <div class="border-bottom-2 py-32pt position-relative z-1">
+                    <div class="container page__container d-flex flex-column flex-md-row align-items-center text-center text-sm-left">
+                        <div class="flex d-flex flex-column flex-sm-row align-items-center mb-24pt mb-md-0">
+
+                            <div class="mb-24pt mb-sm-0 mr-sm-24pt">
+                                <h2 class="mb-0">Sliders</h2>
+
+                                <ol class="breadcrumb p-0 m-0">
+                                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+
+                                    <li class="breadcrumb-item active">
+
+                                        Sliders
+
+                                    </li>
+
+                                </ol>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="container page__container page__container page-section">
+                    <div class="page-separator">
+                        <div class="page-separator__text">Universal - Home Slider</div>
+                    </div>
+
+                    <div class="posts-cards mb-24pt">
+
+                        <div class="card posts-card">
+                            <div class="posts-card__content d-flex align-items-center flex-wrap">
+                                <div class="avatar avatar-lg mr-3">
+                                    <a href=""><img src="static/assets/images/stories/256_rsz_clem-onojeghuo-193397-unsplash.jpg"
+                                             alt="avatar"
+                                             class="avatar-img rounded"></a>
+                                </div>
+                                <div class="posts-card__title flex d-flex flex-column">
+                                    <h5 class="card-title m-0"><a href=""
+                                           class="headings-color">Main Landing Page</a></h5>
+                                    <small class="text-50">Single Video</small>
+                                </div>
+                                <div class="d-flex align-items-center flex-column flex-sm-row posts-card__meta">
+                                    <div class="mr-3 text-50 text-uppercase posts-card__tag d-flex align-items-center">
+                                        <i class="material-icons text-muted-light mr-1">folder_open</i> published by admin
+                                    </div>
+                                    <div class="mr-3 text-50 posts-card__date">
+                                        <small>11 Nov, 2018 07:46 AM</small>
+                                    </div>
+                                    <!-- <div class="media mr-2 ml-sm-auto align-items-center">
+                                        <div class="media-left mr-2 avatar-group">
+
+                                            <div class="avatar avatar-xs"
+                                                 data-toggle="tooltip"
+                                                 data-placement="top"
+                                                 title="Janell D.">
+                                                <img src="static/assets/images/256_rsz_1andy-lee-642320-unsplash.jpg"
+                                                     alt="Avatar"
+                                                     class="avatar-img rounded-circle">
+                                            </div>
+
+                                            <div class="avatar avatar-xs"
+                                                 data-toggle="tooltip"
+                                                 data-placement="top"
+                                                 title="Janell D.">
+                                                <img src="static/assets/images/256_michael-dam-258165-unsplash.jpg"
+                                                     alt="Avatar"
+                                                     class="avatar-img rounded-circle">
+                                            </div>
+
+                                            <div class="avatar avatar-xs"
+                                                 data-toggle="tooltip"
+                                                 data-placement="top"
+                                                 title="Janell D.">
+                                                <img src="static/assets/images/256_luke-porter-261779-unsplash.jpg"
+                                                     alt="Avatar"
+                                                     class="avatar-img rounded-circle">
+                                            </div>
+
+                                        </div>
+                                        <div class="media-body">
+
+                                            <a href="">+2 more</a>
+
+                                        </div>
+                                    </div> -->
+                                </div>
+                                <div class="dropdown ml-auto">
+                                    <a href="{% url 'crud_cms_sliders' %}"
+                                           class="text-50"><i class="material-icons">more_vert</i></a>
+                                </div>
+                            </div>
+                        </div>
+
+                        
+
+                    </div>
+
+                    <div class="page-separator">
+                        <div class="page-separator__text">Branch Page Sliders</div>
+                    </div>
+
+                    <div class="posts-cards mb-24pt">
+
+                        <div class="card posts-card">
+                            <div class="posts-card__content d-flex align-items-center flex-wrap">
+                                <div class="avatar avatar-lg mr-3">
+                                    <a href=""><img src="static/assets/images/stories/256_rsz_clem-onojeghuo-193397-unsplash.jpg"
+                                             alt="avatar"
+                                             class="avatar-img rounded"></a>
+                                </div>
+                                <div class="posts-card__title flex d-flex flex-column">
+                                    <h5 class="card-title m-0"><a href=""
+                                           class="headings-color">Omni Residency Baridhara</a></h5>
+                                    <small class="text-50">2 Static Sliders</small>
+                                </div>
+                                <div class="d-flex align-items-center flex-column flex-sm-row posts-card__meta">
+                                    <div class="mr-3 text-50 text-uppercase posts-card__tag d-flex align-items-center">
+                                        <i class="material-icons text-muted-light mr-1">folder_open</i> future
+                                    </div>
+                                    <div class="mr-3 text-50 posts-card__date">
+                                        <small>11 Nov, 2018 07:46 AM</small>
+                                    </div>
+                                    
+                                </div>
+                                <div class="dropdown ml-auto">
+                                    <a href="{% url 'crud_cms_sliders' %}"
+                                           class="text-50"><i class="material-icons">more_vert</i></a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card posts-card">
+                            <div class="posts-card__content d-flex align-items-center flex-wrap">
+                                <div class="avatar avatar-lg mr-3">
+                                    <a href=""><img src="static/assets/images/stories/256_rsz_clem-onojeghuo-193397-unsplash.jpg"
+                                             alt="avatar"
+                                             class="avatar-img rounded"></a>
+                                </div>
+                                <div class="posts-card__title flex d-flex flex-column">
+                                    <h5 class="card-title m-0"><a href=""
+                                           class="headings-color">Omni Residency Banani</a></h5>
+                                    <small class="text-50">35 views last week</small>
+                                </div>
+                                <div class="d-flex align-items-center flex-column flex-sm-row posts-card__meta">
+                                    <div class="mr-3 text-50 text-uppercase posts-card__tag d-flex align-items-center">
+                                        <i class="material-icons text-muted-light mr-1">folder_open</i> future
+                                    </div>
+                                    <div class="mr-3 text-50 posts-card__date">
+                                        <small>11 Nov, 2018 07:46 AM</small>
+                                    </div>
+                                    
+                                </div>
+                                <div class="dropdown ml-auto">
+                                    <a href="{% url 'crud_cms_sliders' %}"
+                                           class="text-50"><i class="material-icons">more_vert</i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="card posts-card">
+                            <div class="posts-card__content d-flex align-items-center flex-wrap">
+                                <div class="avatar avatar-lg mr-3">
+                                    <a href=""><img src="static/assets/images/stories/256_rsz_clem-onojeghuo-193397-unsplash.jpg"
+                                             alt="avatar"
+                                             class="avatar-img rounded"></a>
+                                </div>
+                                <div class="posts-card__title flex d-flex flex-column">
+                                    <h5 class="card-title m-0"><a href=""
+                                           class="headings-color">Hotel Omni Iconic</a></h5>
+                                    <small class="text-50">35 views last week</small>
+                                </div>
+                                <div class="d-flex align-items-center flex-column flex-sm-row posts-card__meta">
+                                    <div class="mr-3 text-50 text-uppercase posts-card__tag d-flex align-items-center">
+                                        <i class="material-icons text-muted-light mr-1">folder_open</i> future
+                                    </div>
+                                    <div class="mr-3 text-50 posts-card__date">
+                                        <small>11 Nov, 2018 07:46 AM</small>
+                                    </div>
+                                    
+                                </div>
+                                <div class="dropdown ml-auto">
+                                    <a href="{% url 'crud_cms_sliders' %}"
+                                           class="text-50"><i class="material-icons">more_vert</i></a>
+                                </div>
+                            </div>
+                        </div>
+
+                        
+
+                    </div>
+
+                    
+                </div>    
+
+
+{% endblock %}
+
+            
