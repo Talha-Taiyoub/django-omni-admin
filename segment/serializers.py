@@ -32,3 +32,12 @@ class BranchSerializer(serializers.ModelSerializer):
             "sliders",
             "created_at",
         ]
+
+    def create(self, validated_data):
+        sliders = validated_data.pop("sliders", [])
+        branch = Branch.objects.create(**validated_data)
+
+        for slider in sliders:
+            Slider.objects.create(**slider, branch=branch)
+
+        return branch
