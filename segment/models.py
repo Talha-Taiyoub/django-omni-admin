@@ -69,3 +69,8 @@ class Branch(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Slider(models.Model):
+    branch = models.ForeignKey(Branch, on_delete=models.CASCADE, related_name="sliders")
+    image = models.ImageField(upload_to="segment/images")
