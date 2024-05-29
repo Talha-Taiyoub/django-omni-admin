@@ -3,6 +3,8 @@ from django.core.validators import MinValueValidator, RegexValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from general_app.validators import image_max_size
+
 
 class Destination(models.Model):
     title = models.CharField(max_length=255)
@@ -38,7 +40,7 @@ class Branch(models.Model):
     )
     address = models.CharField(max_length=255)
     status = models.CharField(max_length=1, choices=BRANCH_STATUS, default=COMING_SOON)
-    logo = models.ImageField(upload_to="segment/images")
+    logo = models.ImageField(upload_to="segment/images", validators=[image_max_size])
     overview = models.TextField()
     email = models.EmailField(unique=True)
     telephone = models.CharField(
@@ -73,4 +75,4 @@ class Branch(models.Model):
 
 class Slider(models.Model):
     branch = models.ForeignKey(Branch, on_delete=models.CASCADE, related_name="sliders")
-    image = models.ImageField(upload_to="segment/images")
+    image = models.ImageField(upload_to="segment/images", validators=[image_max_size])
