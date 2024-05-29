@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     "segment",
+    "refuel",
     # customise app for general purpose
     "general_app",
 ]
