@@ -24,7 +24,7 @@ COMING_SOON = "C"
 BRANCH_STATUS = [(ACTIVE, "Active"), (DRAFT, "Draft"), (COMING_SOON, "Coming Soon")]
 
 
-# branch manager will be a user_id,later both will be added
+# branch manager will be a user_id,later it will be added
 class Branch(models.Model):
     name = models.CharField(max_length=255)
     nick_name = models.CharField(max_length=255, null=True, blank=True)
