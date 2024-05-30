@@ -6,5 +6,4 @@ from . import views
 router = DefaultRouter()
 router.register("branches", views.BranchViewSet, basename="branch")
 
-
 urlpatterns = [path("", include(router.urls))]
