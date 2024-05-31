@@ -172,6 +172,7 @@ EMAIL_HOST_PASSWORD = "dipppxblryliunan"
 
 
 DJOSER = {
+    "LOGIN_FIELD": "email",
     "USER_CREATE_PASSWORD_RETYPE": True,
     "SEND_ACTIVATION_EMAIL": True,
     "ACTIVATION_URL": "activate/{uid}/{token}",
