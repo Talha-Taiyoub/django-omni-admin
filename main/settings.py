@@ -28,6 +28,10 @@ DEBUG = True
 ALLOWED_HOSTS = ["*"]
 
 
+SITE_ID = 1  # By 1 we're referring the site whose id is 1 in the sites table, if you go to the admin interface you can see it or change it.
+# Here id 1 is the id of our frontend site whose base url will be used to send activation mail and password reset confirm email.
+
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -37,6 +41,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.sites",
     "rest_framework",
     "djoser",
     "segment",
