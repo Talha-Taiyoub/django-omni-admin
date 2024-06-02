@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     "segment",
     "refuel",
     "community",
+    "account",
     "general_app",  # customize app for general purpose
 ]
 
