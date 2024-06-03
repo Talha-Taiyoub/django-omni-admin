@@ -1,4 +1,3 @@
-# Writing views to override methods of Djoser's views
 from django.contrib.auth import get_user_model
 from django.utils.timezone import now
 from djoser.compat import get_user_email
@@ -9,30 +8,34 @@ from rest_framework.decorators import action
 from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
 
-# This commented part works. We will use it to format response for validation error. We will understand it and then use it
-# def format_validation_error(errors):
-#     formatted_errors = {}
-#     for field, field_errors in errors.items():
-#         formatted_errors[field] = field_errors
-#     return {"message": "Validation Error", "errors": formatted_errors}
-
 User = get_user_model()
 
 
+# Method for formatting validation error response to our need
+def format_validation_error(errors):
+    formatted_errors = {}
+    for field, field_errors in errors.items():
+        formatted_errors[field] = field_errors
+    return {
+        "message": "Validation Error",
+        "errors": formatted_errors,
+        "status_code": 400,
+        "success": False,
+    }
+
+
 class CustomUserViewSet(UserViewSet):
+    def handle_exception(self, exc):
+        # Call parent's handle_exception to get the standard error response
+        response = super().handle_exception(exc)
 
-    # def handle_exception(self, exc):
-    #     # Call parent's handle_exception to get the standard error response
-    #     response = super().handle_exception(exc)
-
-    #     # Check if the exception is a validation error
-    #     if isinstance(exc, ValidationError):
-    #         # Format the validation errors
-    #         custom_response = format_validation_error(exc.detail)
-    #         # Create a new response with the formatted validation errors
-    #         response = Response(custom_response, status=response.status_code)
-
-    #     return response
+        # Check if the exception is a validation error
+        if isinstance(exc, ValidationError):
+            # Format the validation errors
+            custom_response = format_validation_error(exc.detail)
+            # Create a new response with the formatted validation errors
+            response = Response(custom_response, status=response.status_code)
+        return response
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
