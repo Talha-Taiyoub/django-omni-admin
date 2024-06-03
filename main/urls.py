@@ -20,7 +20,7 @@ from django.contrib import admin
 from django.urls import include, path
 from rest_framework_nested.routers import DefaultRouter
 
-from general_app.views import CustomUserViewSet
+from account.views import CustomUserViewSet
 
 router = DefaultRouter()
 router.register("users", CustomUserViewSet, basename="user")
