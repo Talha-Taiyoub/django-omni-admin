@@ -1,7 +1,7 @@
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, update_session_auth_hash
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.timezone import now
-from djoser import signals
+from djoser import signals, utils
 from djoser.compat import get_user_email
 from djoser.conf import settings
 from djoser.views import UserViewSet
@@ -178,7 +178,9 @@ class CustomUserViewSet(UserViewSet):
 
         if request.data["new_password"] != request.data["re_new_password"]:
             custom_response = format_error_data(
-                message="Passwords should match.", errors=[], status_code=400
+                message="Validation Error.",
+                errors=[{"password": ["Passwords should match"]}],
+                status_code=400,
             )
             return Response(
                 custom_response,
@@ -204,3 +206,25 @@ class CustomUserViewSet(UserViewSet):
             custom_response,
             status=status.HTTP_200_OK,
         )
+
+    @action(["post"], detail=False)
+    def set_password(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        self.request.user.set_password(serializer.data["new_password"])
+        self.request.user.save()
+
+        if settings.PASSWORD_CHANGED_EMAIL_CONFIRMATION:
+            context = {"user": self.request.user}
+            to = [get_user_email(self.request.user)]
+            settings.EMAIL.password_changed_confirmation(self.request, context).send(to)
+
+        if settings.LOGOUT_ON_PASSWORD_CHANGE:
+            utils.logout_user(self.request)
+        elif settings.CREATE_SESSION_ON_LOGIN:
+            update_session_auth_hash(self.request, self.request.user)
+        custom_response = format_response_data(
+            message="You password is changed successfully", data={}, status_code=200
+        )
+        return Response(custom_response, status=status.HTTP_200_OK)
