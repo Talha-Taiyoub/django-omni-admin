@@ -163,6 +163,7 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
+    "EXCEPTION_HANDLER": "general_app.exception_handlers.custom_exception_handler",  # Used this custom exception handler so that the error message of invalid token follows a format
 }
 
 
