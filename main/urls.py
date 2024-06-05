@@ -32,4 +32,5 @@ urlpatterns = [
     path("auth/", include("djoser.urls")),
     path("auth/", include("djoser.urls.jwt")),
     path("segments/", include("segment.urls")),
+    path("community/", include("community.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -16,7 +16,7 @@ from general_app.format_response import (
 # Create your views here.
 
 
-class GuestViewSet(RetrieveModelMixin, UpdateModelMixin, GenericViewSet):
+class GuestViewSet(ModelViewSet):
     def handle_exception(self, exc):
         response = super().handle_exception(exc)
 
@@ -26,13 +26,29 @@ class GuestViewSet(RetrieveModelMixin, UpdateModelMixin, GenericViewSet):
             response = Response(custom_response, status=response.status_code)
         return response
 
-    http_method_names = ["get", "patch"]
+    http_method_names = ["get", "put"]
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         return Guest.objects.filter(user=self.request.user).select_related("user")
 
     serializer_class = GuestSerializer
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        custom_response = format_response_data(
+            message="Guest is fetched successfully.",
+            data=serializer.data[0],
+            status_code=200,
+        )
+        return Response(custom_response, status=status.HTTP_200_OK)
 
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
