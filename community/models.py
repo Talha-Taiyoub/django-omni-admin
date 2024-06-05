@@ -1,6 +1,8 @@
 from django.conf import settings
 from django.db import models
 
+from general_app.validators import image_max_size
+
 User = settings.AUTH_USER_MODEL
 
 # Create your models here
@@ -19,6 +21,9 @@ class Guest(models.Model):
     state = models.CharField(max_length=30, null=True, blank=True)
     city = models.CharField(max_length=30, null=True, blank=True)
     postal_code = models.CharField(max_length=30, null=True, blank=True)
+    image = models.ImageField(
+        upload_to="community/images", validators=[image_max_size], null=True, blank=True
+    )
 
     class Meta:
         ordering = ["name"]
