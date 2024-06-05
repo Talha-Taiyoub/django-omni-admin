@@ -97,9 +97,7 @@ class CustomUserViewSet(UserViewSet):
                 to = [get_user_email(user)]
                 try:
                     settings.EMAIL.confirmation(self.request, context).send(to)
-                except (
-                    SMTPException
-                ) as e:  # Catch SMTPException for email sending errors
+                except SMTPException as e:
                     custom_response = format_error_data(
                         message="Failed to send activation email. Please try again later.",
                         status_code=500,
@@ -145,7 +143,17 @@ class CustomUserViewSet(UserViewSet):
         else:
             context = {"user": user}
             to = [get_user_email(user)]
-            settings.EMAIL.activation(self.request, context).send(to)
+            try:
+                settings.EMAIL.activation(self.request, context).send(to)
+            except SMTPException as e:
+                custom_response = format_error_data(
+                    message="Failed to send activation email. Please try again later.",
+                    status_code=500,
+                    errors=[],
+                )
+                return Response(
+                    custom_response, status=status.HTTP_500_INTERNAL_SERVER_ERROR
+                )
 
         custom_response = format_response_data(
             message="An email has been sent containing the activation link, kindly click on it.",
@@ -172,7 +180,17 @@ class CustomUserViewSet(UserViewSet):
         if user.is_active:
             context = {"user": user}
             to = [user.email]
-            settings.EMAIL.password_reset(self.request, context).send(to)
+            try:
+                settings.EMAIL.password_reset(self.request, context).send(to)
+            except SMTPException as e:
+                custom_response = format_error_data(
+                    message="Failed to send email. Please try again later.",
+                    status_code=500,
+                    errors=[],
+                )
+                return Response(
+                    custom_response, status=status.HTTP_500_INTERNAL_SERVER_ERROR
+                )
 
             custom_response = format_response_data(
                 message="An email has been sent to your email address. Check the spam folder if necessary.",
@@ -215,7 +233,19 @@ class CustomUserViewSet(UserViewSet):
         if settings.PASSWORD_CHANGED_EMAIL_CONFIRMATION:
             context = {"user": serializer.user}
             to = [get_user_email(serializer.user)]
-            settings.EMAIL.password_changed_confirmation(self.request, context).send(to)
+            try:
+                settings.EMAIL.password_changed_confirmation(
+                    self.request, context
+                ).send(to)
+            except SMTPException as e:
+                custom_response = format_error_data(
+                    message="Failed to send the confirmation email.",
+                    status_code=500,
+                    errors=[],
+                )
+                return Response(
+                    custom_response, status=status.HTTP_500_INTERNAL_SERVER_ERROR
+                )
 
         custom_response = format_response_data(
             message="Password has been changed successfully.", data={}, status_code=200
@@ -236,7 +266,19 @@ class CustomUserViewSet(UserViewSet):
         if settings.PASSWORD_CHANGED_EMAIL_CONFIRMATION:
             context = {"user": self.request.user}
             to = [get_user_email(self.request.user)]
-            settings.EMAIL.password_changed_confirmation(self.request, context).send(to)
+            try:
+                settings.EMAIL.password_changed_confirmation(
+                    self.request, context
+                ).send(to)
+            except SMTPException as e:
+                custom_response = format_error_data(
+                    message="Failed to send confirmation email. Please try again later.",
+                    status_code=500,
+                    errors=[],
+                )
+                return Response(
+                    custom_response, status=status.HTTP_500_INTERNAL_SERVER_ERROR
+                )
 
         if settings.LOGOUT_ON_PASSWORD_CHANGE:
             utils.logout_user(self.request)
