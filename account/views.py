@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model, update_session_auth_hash
 from django.core.exceptions import ObjectDoesNotExist
+from django.db import transaction
 from django.utils.timezone import now
 from djoser import signals, utils
 from djoser.compat import get_user_email
@@ -79,17 +80,19 @@ class CustomUserViewSet(UserViewSet):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.user
-        user.is_active = True
-        user.save()
 
-        signals.user_activated.send(
-            sender=self.__class__, user=user, request=self.request
-        )
+        with transaction.atomic():
+            user.is_active = True
+            user.save()
 
-        if settings.SEND_CONFIRMATION_EMAIL:
-            context = {"user": user}
-            to = [get_user_email(user)]
-            settings.EMAIL.confirmation(self.request, context).send(to)
+            signals.user_activated.send(
+                sender=self.__class__, user=user, request=self.request
+            )
+
+            if settings.SEND_CONFIRMATION_EMAIL:
+                context = {"user": user}
+                to = [get_user_email(user)]
+                settings.EMAIL.confirmation(self.request, context).send(to)
 
         custom_response = format_response_data(
             message="Your account is activated, now you can log in.",
