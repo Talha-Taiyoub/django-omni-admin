@@ -1,3 +1,5 @@
+from smtplib import SMTPException
+
 from django.contrib.auth import get_user_model, update_session_auth_hash
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import transaction
@@ -81,6 +83,7 @@ class CustomUserViewSet(UserViewSet):
         serializer.is_valid(raise_exception=True)
         user = serializer.user
 
+        # user saving,sending signal and sending email are within atomic block so that if any error occurs within this block, all the changes within this part will be rolled back
         with transaction.atomic():
             user.is_active = True
             user.save()
@@ -92,7 +95,19 @@ class CustomUserViewSet(UserViewSet):
             if settings.SEND_CONFIRMATION_EMAIL:
                 context = {"user": user}
                 to = [get_user_email(user)]
-                settings.EMAIL.confirmation(self.request, context).send(to)
+                try:
+                    settings.EMAIL.confirmation(self.request, context).send(to)
+                except (
+                    SMTPException
+                ) as e:  # Catch SMTPException for email sending errors
+                    custom_response = format_error_data(
+                        message="Failed to send activation email. Please try again later.",
+                        status_code=500,
+                        errors=[],
+                    )
+                    return Response(
+                        custom_response, status=status.HTTP_500_INTERNAL_SERVER_ERROR
+                    )
 
         custom_response = format_response_data(
             message="Your account is activated, now you can log in.",
