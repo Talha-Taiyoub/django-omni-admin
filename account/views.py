@@ -83,36 +83,47 @@ class CustomUserViewSet(UserViewSet):
         serializer.is_valid(raise_exception=True)
         user = serializer.user
 
-        # user saving,sending signal and sending email are within atomic block so that if any error occurs within this block, all the changes within this part will be rolled back
-        with transaction.atomic():
-            user.is_active = True
-            user.save()
+        # saving user,sending signal and sending email are within atomic block so that if any error occurs within this block, all the changes will be rolled back
+        try:
+            with transaction.atomic():
+                user.is_active = True
+                user.save()
 
-            signals.user_activated.send(
-                sender=self.__class__, user=user, request=self.request
+                signals.user_activated.send(
+                    sender=self.__class__, user=user, request=self.request
+                )
+
+                if settings.SEND_CONFIRMATION_EMAIL:
+                    context = {"user": user}
+                    to = [get_user_email(user)]
+                    settings.EMAIL.confirmation(self.request, context).send(to)
+
+            custom_response = format_response_data(
+                message="Your account is activated, now you can log in.",
+                status_code=200,
+                data={},
+            )
+            return Response(custom_response, status=status.HTTP_200_OK)
+
+        except SMTPException as e:
+            custom_response = format_error_data(
+                message="Failed to send activation email. Please try again later.",
+                status_code=500,
+                errors=[],
+            )
+            return Response(
+                custom_response, status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
 
-            if settings.SEND_CONFIRMATION_EMAIL:
-                context = {"user": user}
-                to = [get_user_email(user)]
-                try:
-                    settings.EMAIL.confirmation(self.request, context).send(to)
-                except SMTPException as e:
-                    custom_response = format_error_data(
-                        message="Failed to send activation email. Please try again later.",
-                        status_code=500,
-                        errors=[],
-                    )
-                    return Response(
-                        custom_response, status=status.HTTP_500_INTERNAL_SERVER_ERROR
-                    )
-
-        custom_response = format_response_data(
-            message="Your account is activated, now you can log in.",
-            status_code=200,
-            data={},
-        )
-        return Response(custom_response, status=status.HTTP_200_OK)
+        except Exception as e:
+            custom_response = format_error_data(
+                message="Failed to activate account. Please try again later.",
+                status_code=500,
+                errors=[],
+            )
+            return Response(
+                custom_response, status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
 
     @action(["post"], detail=False)
     def resend_activation(self, request, *args, **kwargs):
@@ -134,7 +145,7 @@ class CustomUserViewSet(UserViewSet):
 
         if user.is_active:
             custom_response = format_error_data(
-                message="This account is already activated. If you forgot your password, try Forgot Password option.",
+                message="This account is already activated. If you forgot your password, try 'Forgot Password' option.",
                 status_code=400,
                 errors=[],
             )
@@ -155,12 +166,12 @@ class CustomUserViewSet(UserViewSet):
                     custom_response, status=status.HTTP_500_INTERNAL_SERVER_ERROR
                 )
 
-        custom_response = format_response_data(
-            message="An email has been sent containing the activation link, kindly click on it.",
-            data={},
-            status_code=200,
-        )
-        return Response(custom_response, status=status.HTTP_200_OK)
+            custom_response = format_response_data(
+                message="An email has been sent containing the activation link, kindly click on it.",
+                data={},
+                status_code=200,
+            )
+            return Response(custom_response, status=status.HTTP_200_OK)
 
     @action(["post"], detail=False)
     def reset_password(self, request, *args, **kwargs):
@@ -184,7 +195,7 @@ class CustomUserViewSet(UserViewSet):
                 settings.EMAIL.password_reset(self.request, context).send(to)
             except SMTPException as e:
                 custom_response = format_error_data(
-                    message="Failed to send email. Please try again later.",
+                    message="Failed to send the email. Please try again later.",
                     status_code=500,
                     errors=[],
                 )
@@ -211,7 +222,6 @@ class CustomUserViewSet(UserViewSet):
 
     @action(["post"], detail=False)
     def reset_password_confirm(self, request, *args, **kwargs):
-
         if request.data["new_password"] != request.data["re_new_password"]:
             custom_response = format_error_data(
                 message="Validation Error.",
@@ -225,66 +235,95 @@ class CustomUserViewSet(UserViewSet):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        serializer.user.set_password(serializer.data["new_password"])
-        if hasattr(serializer.user, "last_login"):
-            serializer.user.last_login = now()
-        serializer.user.save()
+        # Used transaction.atomic() so that if any change doesn't happen, all the changes will rollback to maintain integrity
+        try:
+            with transaction.atomic():
+                serializer.user.set_password(serializer.data["new_password"])
+                if hasattr(serializer.user, "last_login"):
+                    serializer.user.last_login = now()
+                serializer.user.save()
 
-        if settings.PASSWORD_CHANGED_EMAIL_CONFIRMATION:
-            context = {"user": serializer.user}
-            to = [get_user_email(serializer.user)]
-            try:
-                settings.EMAIL.password_changed_confirmation(
-                    self.request, context
-                ).send(to)
-            except SMTPException as e:
-                custom_response = format_error_data(
-                    message="Failed to send the confirmation email.",
-                    status_code=500,
-                    errors=[],
-                )
-                return Response(
-                    custom_response, status=status.HTTP_500_INTERNAL_SERVER_ERROR
-                )
+                if settings.PASSWORD_CHANGED_EMAIL_CONFIRMATION:
+                    context = {"user": serializer.user}
+                    to = [get_user_email(serializer.user)]
+                    settings.EMAIL.password_changed_confirmation(
+                        self.request, context
+                    ).send(to)
 
-        custom_response = format_response_data(
-            message="Password has been changed successfully.", data={}, status_code=200
-        )
-        return Response(
-            custom_response,
-            status=status.HTTP_200_OK,
-        )
+            custom_response = format_response_data(
+                message="Password has been changed successfully.",
+                data={},
+                status_code=200,
+            )
+            return Response(
+                custom_response,
+                status=status.HTTP_200_OK,
+            )
 
+        except SMTPException as e:
+            custom_response = format_error_data(
+                message="Failed to send the confirmation email. Please try again later",
+                status_code=500,
+                errors=[],
+            )
+            return Response(
+                custom_response, status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+        except Exception as e:
+            custom_response = format_error_data(
+                message="Failed to change password. Please try again later.",
+                status_code=500,
+                errors=[],
+            )
+            return Response(
+                custom_response, status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+    # Used transaction.atomic() so that if any change doesn't happen, all the changes will rollback to maintain integrity
     @action(["post"], detail=False)
     def set_password(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        self.request.user.set_password(serializer.data["new_password"])
-        self.request.user.save()
+        try:
+            with transaction.atomic():
+                self.request.user.set_password(serializer.data["new_password"])
+                self.request.user.save()
 
-        if settings.PASSWORD_CHANGED_EMAIL_CONFIRMATION:
-            context = {"user": self.request.user}
-            to = [get_user_email(self.request.user)]
-            try:
-                settings.EMAIL.password_changed_confirmation(
-                    self.request, context
-                ).send(to)
-            except SMTPException as e:
-                custom_response = format_error_data(
-                    message="Failed to send confirmation email. Please try again later.",
-                    status_code=500,
-                    errors=[],
-                )
-                return Response(
-                    custom_response, status=status.HTTP_500_INTERNAL_SERVER_ERROR
-                )
+                if settings.PASSWORD_CHANGED_EMAIL_CONFIRMATION:
+                    context = {"user": self.request.user}
+                    to = [get_user_email(self.request.user)]
+                    settings.EMAIL.password_changed_confirmation(
+                        self.request, context
+                    ).send(to)
 
-        if settings.LOGOUT_ON_PASSWORD_CHANGE:
-            utils.logout_user(self.request)
-        elif settings.CREATE_SESSION_ON_LOGIN:
-            update_session_auth_hash(self.request, self.request.user)
-        custom_response = format_response_data(
-            message="You password is changed successfully", data={}, status_code=200
-        )
-        return Response(custom_response, status=status.HTTP_200_OK)
+                if settings.LOGOUT_ON_PASSWORD_CHANGE:
+                    utils.logout_user(self.request)
+                elif settings.CREATE_SESSION_ON_LOGIN:
+                    update_session_auth_hash(self.request, self.request.user)
+
+            custom_response = format_response_data(
+                message="You password is changed successfully", data={}, status_code=200
+            )
+            return Response(custom_response, status=status.HTTP_200_OK)
+
+        except SMTPException as e:
+            custom_response = format_error_data(
+                message="Failed to send the confirmation email and your password is not changed right now. Please try again later.",
+                status_code=500,
+                errors=[],
+            )
+            return Response(
+                custom_response, status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+        except Exception as e:
+            custom_response = format_error_data(
+                message="Failed to change password. Please try again later.",
+                status_code=500,
+                errors=[],
+            )
+            return Response(
+                custom_response, status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
