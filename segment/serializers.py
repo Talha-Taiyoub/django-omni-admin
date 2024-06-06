@@ -32,15 +32,15 @@ class BranchSerializer(serializers.ModelSerializer):
             "created_at",
         ]
 
-    def create(self, validated_data):
+    # def create(self, validated_data):
 
-        sliders = self.context["request"].FILES.getlist("sliders")
-        branch = Branch.objects.create(**validated_data)
+    #     sliders = self.context["request"].FILES.getlist("sliders")
+    #     branch = Branch.objects.create(**validated_data)
 
-        for slider in sliders:
-            Slider.objects.create(branch=branch, image=slider)
+    #     for slider in sliders:
+    #         Slider.objects.create(branch=branch, image=slider)
 
-        return branch
+    #     return branch
 
 
 class DestinationSerializer(serializers.ModelSerializer):
