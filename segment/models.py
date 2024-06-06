@@ -21,9 +21,9 @@ class Destination(models.Model):
         return self.title
 
 
-ACTIVE = "A"
-DRAFT = "D"
-COMING_SOON = "C"
+ACTIVE = "Active"
+DRAFT = "Draft"
+COMING_SOON = "Coming Soon"
 BRANCH_STATUS = [(ACTIVE, "Active"), (DRAFT, "Draft"), (COMING_SOON, "Coming Soon")]
 
 
@@ -35,7 +35,7 @@ class Branch(models.Model):
     )
     initial = models.CharField(max_length=7)
     address = models.CharField(max_length=255)
-    status = models.CharField(max_length=1, choices=BRANCH_STATUS, default=COMING_SOON)
+    status = models.CharField(max_length=15, choices=BRANCH_STATUS, default=COMING_SOON)
     logo = models.ImageField(upload_to="segment/images", validators=[image_max_size])
     overview = models.TextField()
     email = models.EmailField(unique=True)

@@ -2,11 +2,6 @@ from rest_framework import serializers
 
 from .models import Branch, BranchSlider, Destination
 
-# class SliderSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Slider
-#         fields = ["image"]
-
 
 class SimpleDestinationSerializer(serializers.ModelSerializer):
     class Meta:
@@ -14,8 +9,15 @@ class SimpleDestinationSerializer(serializers.ModelSerializer):
         fields = ["id", "title"]
 
 
+class BranchSliderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BranchSlider
+        fields = "__all__"
+
+
 class BranchSerializer(serializers.ModelSerializer):
-    # sliders = SliderSerializer(many=True, required=False)
+    sliders = BranchSliderSerializer(many=True, read_only=True)
+    destination = SimpleDestinationSerializer(read_only=True)
     created_at = serializers.DateTimeField(format="%d-%m-%Y %H:%M:%S", read_only=True)
 
     class Meta:
@@ -34,10 +36,11 @@ class BranchSerializer(serializers.ModelSerializer):
             "telephone",
             "mobile",
             "location_iframe",
-            # "sliders",
+            "sliders",
             "created_at",
         ]
 
+    # We kept this method here so that in future if we need any method like this, it can help us.
     # def create(self, validated_data):
 
     #     sliders = self.context["request"].FILES.getlist("sliders")
@@ -49,8 +52,14 @@ class BranchSerializer(serializers.ModelSerializer):
     #     return branch
 
 
+class SimpleBranchSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Branch
+        fields = ["id", "name", "address", "status", "logo"]
+
+
 class DestinationSerializer(serializers.ModelSerializer):
-    branches = BranchSerializer(many=True, read_only=True)
+    branches = SimpleBranchSerializer(many=True, read_only=True)
 
     class Meta:
         model = Destination
