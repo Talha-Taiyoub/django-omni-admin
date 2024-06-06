@@ -136,6 +136,11 @@ class BranchSlider(models.Model):
         upload_to="segment/images", null=True, blank=True
     )
 
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+
 
 class BranchManager(models.Model):
     pass

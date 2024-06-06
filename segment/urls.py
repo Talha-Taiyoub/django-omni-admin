@@ -7,6 +7,6 @@ router = DefaultRouter()
 # We don't want to make destinations/destination_pk/branches because later it will be too nested. So we want to keep these separate
 router.register("destinations", views.DestinationViewSet, basename="destination")
 router.register("branches", views.BranchViewSet, basename="branch")
-
+router.register("branch_sliders", views.BranchSliderViewSet, basename="branch_slider")
 
 urlpatterns = [path("", include(router.urls))]
