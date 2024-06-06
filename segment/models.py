@@ -3,6 +3,7 @@ from django.core.validators import MinValueValidator, RegexValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from community.models import Staff
 from general_app.validators import image_max_size
 
 
@@ -142,5 +143,13 @@ class BranchSlider(models.Model):
         ordering = ["-created_at"]
 
 
-class BranchManager(models.Model):
-    pass
+class BranchStaff(models.Model):
+    branch = models.ForeignKey(Branch, on_delete=models.CASCADE)
+    staff = models.ForeignKey(Staff, on_delete=models.CASCADE)
+    date_joined = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ("branch", "staff")
+
+    def __str__(self):
+        return f"{self.staff.name} at {self.branch.name} as {self.staff.role}"
