@@ -33,3 +33,13 @@ class BranchAdmin(admin.ModelAdmin):
 class BranchSliderAdmin(admin.ModelAdmin):
     list_display = ["id", "branch", "type", "featured_image"]
     list_select_related = ["branch"]
+
+
+@admin.register(models.BranchStaff)
+class BranchStaffAdmin(admin.ModelAdmin):
+    fields = ["id", "branch", "staff", "role", "date_joined"]
+
+    list_select_related = ["branch", "staff"]
+
+    def role(self, obj):
+        return obj.staff.role
