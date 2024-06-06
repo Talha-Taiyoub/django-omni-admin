@@ -8,6 +8,12 @@ from .models import Branch, BranchSlider, Destination
 #         fields = ["image"]
 
 
+class SimpleDestinationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Destination
+        fields = ["id", "title"]
+
+
 class BranchSerializer(serializers.ModelSerializer):
     # sliders = SliderSerializer(many=True, required=False)
     created_at = serializers.DateTimeField(format="%d-%m-%Y %H:%M:%S", read_only=True)
@@ -48,4 +54,4 @@ class DestinationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Destination
-        fields = ["id", "description", "image", "branches", "created_at"]
+        fields = ["id", "title", "description", "image", "branches", "created_at"]
