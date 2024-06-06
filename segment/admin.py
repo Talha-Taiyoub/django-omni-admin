@@ -6,4 +6,24 @@ from . import models
 # Register your models here.
 @admin.register(models.Destination)
 class DestinationAdmin(admin.ModelAdmin):
-    list_display = ["id", "title", "description", "created_at"]
+    list_display = ["id", "title", "description", "image", "created_at"]
+
+
+@admin.register(models.Branch)
+class BranchAdmin(admin.ModelAdmin):
+    list_display = [
+        "id",
+        "name",
+        "nick_name",
+        "destination",
+        "initial",
+        "address",
+        "status",
+        "logo",
+        "overview",
+        "email",
+        "telephone",
+        "mobile",
+        "location_iframe",
+        "created_at",
+    ]
