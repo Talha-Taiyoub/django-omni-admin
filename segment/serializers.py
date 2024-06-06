@@ -1,16 +1,15 @@
 from rest_framework import serializers
 
-from .models import Branch, Destination, Slider
+from .models import Branch, BranchSlider, Destination
 
-
-class SliderSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Slider
-        fields = ["image"]
+# class SliderSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Slider
+#         fields = ["image"]
 
 
 class BranchSerializer(serializers.ModelSerializer):
-    sliders = SliderSerializer(many=True, required=False)
+    # sliders = SliderSerializer(many=True, required=False)
     created_at = serializers.DateTimeField(format="%d-%m-%Y %H:%M:%S", read_only=True)
 
     class Meta:
@@ -29,7 +28,7 @@ class BranchSerializer(serializers.ModelSerializer):
             "telephone",
             "mobile",
             "location_iframe",
-            "sliders",
+            # "sliders",
             "created_at",
         ]
 

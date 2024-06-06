@@ -7,8 +7,8 @@ User = settings.AUTH_USER_MODEL
 
 # Create your models here
 
-ACTIVE = "active"
-INACTIVE = "inactive"
+ACTIVE = "Active"
+INACTIVE = "Inactive"
 STATUS_CHOICES = [(ACTIVE, "Active"), (INACTIVE, "Inactive")]
 
 

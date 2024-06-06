@@ -51,9 +51,90 @@ class Branch(models.Model):
         return self.name
 
 
-class Slider(models.Model):
+class BranchSlider(models.Model):
     branch = models.ForeignKey(Branch, on_delete=models.CASCADE, related_name="sliders")
-    image = models.ImageField(upload_to="segment/images", validators=[image_max_size])
+    type = models.CharField(
+        max_length=15,
+        choices=[
+            ("Single Video", "Single Video"),
+            ("Static Sliders", "Static Sliders"),
+        ],
+    )
+    featured_image = models.ImageField(
+        upload_to="segment/images", validators=[image_max_size]
+    )
+    # video slider
+    video_slider_title = models.CharField(max_length=255, null=True, blank=True)
+    video_slider_subtitle = models.CharField(max_length=255, null=True, blank=True)
+    video_slider_button_one_title = models.CharField(
+        max_length=255, null=True, blank=True
+    )
+    video_slider_button_one_link = models.CharField(
+        max_length=255, null=True, blank=True
+    )
+    video_slider_button_two_title = models.CharField(
+        max_length=255, null=True, blank=True
+    )
+    video_slider_button_two_link = models.CharField(
+        max_length=255, null=True, blank=True
+    )
+    video_slider_youtube_link = models.CharField(max_length=255, null=True, blank=True)
+    # static slider one
+    static_slider_one_title = models.CharField(max_length=255, null=True, blank=True)
+    static_slider_one_subtitle = models.CharField(max_length=255, null=True, blank=True)
+    static_slider_one_button_one_title = models.CharField(
+        max_length=255, null=True, blank=True
+    )
+    static_slider_one_button_one_link = models.CharField(
+        max_length=255, null=True, blank=True
+    )
+    static_slider_one_button_two_title = models.CharField(
+        max_length=255, null=True, blank=True
+    )
+    static_slider_one_button_two_link = models.CharField(
+        max_length=255, null=True, blank=True
+    )
+    static_slider_one_image_link = models.ImageField(
+        upload_to="segment/images", null=True, blank=True
+    )
+    # static slider two
+    static_slider_two_title = models.CharField(max_length=255, null=True, blank=True)
+    static_slider_two_subtitle = models.CharField(max_length=255, null=True, blank=True)
+    static_slider_two_button_one_title = models.CharField(
+        max_length=255, null=True, blank=True
+    )
+    static_slider_two_button_one_link = models.CharField(
+        max_length=255, null=True, blank=True
+    )
+    static_slider_two_button_two_title = models.CharField(
+        max_length=255, null=True, blank=True
+    )
+    static_slider_two_button_two_link = models.CharField(
+        max_length=255, null=True, blank=True
+    )
+    static_slider_two_image_link = models.ImageField(
+        upload_to="segment/images", null=True, blank=True
+    )
+    # static slider three
+    static_slider_three_title = models.CharField(max_length=255, null=True, blank=True)
+    static_slider_three_subtitle = models.CharField(
+        max_length=255, null=True, blank=True
+    )
+    static_slider_three_button_one_title = models.CharField(
+        max_length=255, null=True, blank=True
+    )
+    static_slider_three_button_one_link = models.CharField(
+        max_length=255, null=True, blank=True
+    )
+    static_slider_three_button_two_title = models.CharField(
+        max_length=255, null=True, blank=True
+    )
+    static_slider_three_button_two_link = models.CharField(
+        max_length=255, null=True, blank=True
+    )
+    static_slider_three_image_link = models.ImageField(
+        upload_to="segment/images", null=True, blank=True
+    )
 
 
 class BranchManager(models.Model):
