@@ -42,3 +42,11 @@ class BranchSerializer(serializers.ModelSerializer):
             Slider.objects.create(branch=branch, image=slider)
 
         return branch
+
+
+class DestinationSerializer(serializers.ModelSerializer):
+    branches = BranchSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Destination
+        fields = ["id", "description", "image", "branches", "created_at"]
