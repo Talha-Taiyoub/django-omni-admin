@@ -27,3 +27,9 @@ class BranchAdmin(admin.ModelAdmin):
         "location_iframe",
         "created_at",
     ]
+
+
+@admin.register(models.BranchSlider)
+class BranchSliderAdmin(admin.ModelAdmin):
+    list_display = ["id", "branch", "type", "featured_image"]
+    list_select_related = ["branch"]
