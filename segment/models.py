@@ -154,7 +154,6 @@ class BranchStaff(models.Model):
         return f"{self.staff.name} at {self.branch.name} as {self.staff.role}"
 
 
-# amenities will be added later
 class RoomCategory(models.Model):
     ACTIVE = "Active"
     OUT_OF_ORDER = "Out Of Order"
@@ -189,3 +188,12 @@ class Amenities(models.Model):
 
     def __str__(self) -> str:
         return self.title
+
+
+class RoomAmenities(models.Model):
+    room_category = models.ForeignKey(RoomCategory, on_delete=models.CASCADE)
+    amenity = models.ForeignKey(Amenities, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ["room_category", "amenity"]
