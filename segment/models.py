@@ -174,3 +174,8 @@ class RoomCategory(models.Model):
         max_digits=9, decimal_places=2, default=0.00
     )
     created_at = models.DateTimeField(auto_now_add=True)
+
+
+class Gallery(models.Model):
+    room_category = models.ForeignKey(RoomCategory, on_delete=models.CASCADE)
+    image = models.ImageField(upload_to="segment/images")
