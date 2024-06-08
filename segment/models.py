@@ -174,6 +174,9 @@ class RoomCategory(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self) -> str:
+        return self.room_name
+
 
 class Gallery(models.Model):
     room_category = models.ForeignKey(RoomCategory, on_delete=models.CASCADE)
@@ -183,3 +186,6 @@ class Gallery(models.Model):
 class Amenities(models.Model):
     title = models.CharField(max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self) -> str:
+        return self.title
