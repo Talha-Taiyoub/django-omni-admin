@@ -42,3 +42,36 @@ class BranchStaffAdmin(admin.ModelAdmin):
 
     def role(self, obj):
         return obj.staff.role
+
+
+@admin.register(models.RoomCategory)
+class RoomCategoryAdmin(admin.ModelAdmin):
+    list_display = [
+        "id",
+        "room_name",
+        "status",
+        "branch",
+        "featured_image",
+        "adults",
+        "children",
+        "regular_price",
+        "discount_in_percentage",
+        "created_at",
+    ]
+
+    list_select_related = ["branch"]
+
+
+@admin.register(models.Gallery)
+class GalleryAdmin(admin.ModelAdmin):
+    list_display = [
+        "id",
+        "room_category",
+        "branch",
+        "image",
+    ]
+
+    list_select_related = ["room_category", "room_category__branch"]
+
+    def branch(self, instance):
+        return instance.room_category.branch.name
