@@ -20,7 +20,6 @@ class BranchAdmin(admin.ModelAdmin):
         "address",
         "status",
         "logo",
-        "overview",
         "email",
         "telephone",
         "mobile",

@@ -26,6 +26,7 @@ router = DefaultRouter()
 router.register("users", CustomUserViewSet, basename="user")
 
 urlpatterns = [
+    path("__debug__/", include("debug_toolbar.urls")),
     path("admin/", admin.site.urls),
     path("", include("general_app.urls")),
     path("auth/", include(router.urls)),
