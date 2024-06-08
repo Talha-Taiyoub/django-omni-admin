@@ -207,3 +207,26 @@ class RoomAmenities(models.Model):
 
     class Meta:
         unique_together = ["room_category", "amenity"]
+
+
+class Room(models.Model):
+    ACTIVE = "Active"
+    OUT_OF_ORDER = "Out Of Order"
+    OCCUPIED = "Occupied"
+    BOOKED = "Booked"
+    ROOM_STATUS_CHOICES = [
+        (ACTIVE, "Active"),
+        (OUT_OF_ORDER, "Out Of Order"),
+        (OCCUPIED, "Occupied"),
+        (BOOKED, "Booked"),
+    ]
+
+    room_number = models.CharField(max_length=15)
+    room_category = models.ForeignKey(RoomCategory, on_delete=models.CASCADE)
+    status = models.CharField(
+        max_length=15, choices=ROOM_STATUS_CHOICES, default=ACTIVE
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self) -> str:
+        return f"{self.room_number}-{self.room_category.room_name}-{self.room_category.branch.name}"
