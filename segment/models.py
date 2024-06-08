@@ -27,6 +27,7 @@ class Branch(models.Model):
     DRAFT = "Draft"
     COMING_SOON = "Coming Soon"
     BRANCH_STATUS = [(ACTIVE, "Active"), (DRAFT, "Draft"), (COMING_SOON, "Coming Soon")]
+
     name = models.CharField(max_length=255)
     nick_name = models.CharField(max_length=255, null=True, blank=True)
     destination = models.ForeignKey(
@@ -177,3 +178,8 @@ class RoomCategory(models.Model):
 class Gallery(models.Model):
     room_category = models.ForeignKey(RoomCategory, on_delete=models.CASCADE)
     image = models.ImageField(upload_to="segment/images")
+
+
+class Amenities(models.Model):
+    title = models.CharField(max_length=100)
+    created_at = models.DateTimeField(auto_now_add=True)
