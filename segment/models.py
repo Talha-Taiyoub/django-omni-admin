@@ -26,7 +26,11 @@ class Branch(models.Model):
     ACTIVE = "Active"
     DRAFT = "Draft"
     COMING_SOON = "Coming Soon"
-    BRANCH_STATUS = [(ACTIVE, "Active"), (DRAFT, "Draft"), (COMING_SOON, "Coming Soon")]
+    BRANCH_STATUS_CHOICES = [
+        (ACTIVE, "Active"),
+        (DRAFT, "Draft"),
+        (COMING_SOON, "Coming Soon"),
+    ]
 
     name = models.CharField(max_length=255)
     nick_name = models.CharField(max_length=255, null=True, blank=True)
@@ -35,7 +39,9 @@ class Branch(models.Model):
     )
     initial = models.CharField(max_length=7)
     address = models.CharField(max_length=255)
-    status = models.CharField(max_length=15, choices=BRANCH_STATUS, default=COMING_SOON)
+    status = models.CharField(
+        max_length=15, choices=BRANCH_STATUS_CHOICES, default=COMING_SOON
+    )
     logo = models.ImageField(upload_to="segment/images", validators=[image_max_size])
     overview = models.TextField()
     email = models.EmailField(unique=True)
@@ -157,10 +163,12 @@ class BranchStaff(models.Model):
 class RoomCategory(models.Model):
     ACTIVE = "Active"
     OUT_OF_ORDER = "Out Of Order"
-    ROOM_STATUS = [(ACTIVE, "Active"), (OUT_OF_ORDER, "Out Of order")]
+    ROOM_STATUS_CHOICES = [(ACTIVE, "Active"), (OUT_OF_ORDER, "Out Of order")]
 
     room_name = models.CharField(max_length=50)
-    status = models.CharField(max_length=15, choices=ROOM_STATUS, default=OUT_OF_ORDER)
+    status = models.CharField(
+        max_length=15, choices=ROOM_STATUS_CHOICES, default=OUT_OF_ORDER
+    )
     featured_image = models.ImageField(upload_to="segment/images")
     branch = models.ForeignKey(Branch, on_delete=models.PROTECT)
     overview = models.TextField()
