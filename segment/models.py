@@ -182,7 +182,7 @@ class RoomCategory(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self) -> str:
-        return self.room_name
+        return f"{self.room_name}-{self.branch.name}"
 
 
 class Gallery(models.Model):

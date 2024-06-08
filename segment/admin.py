@@ -66,12 +66,15 @@ class RoomCategoryAdmin(admin.ModelAdmin):
 class GalleryAdmin(admin.ModelAdmin):
     list_display = [
         "id",
-        "room_category",
+        "room_category_name",
         "branch",
         "image",
     ]
 
     list_select_related = ["room_category", "room_category__branch"]
+
+    def room_category_name(self, instance):
+        return instance.room_category.room_name
 
     def branch(self, instance):
         return instance.room_category.branch.name
@@ -84,9 +87,12 @@ class AmenitiesAdmin(admin.ModelAdmin):
 
 @admin.register(models.RoomAmenities)
 class RoomAmenitiesAdmin(admin.ModelAdmin):
-    list_display = ["id", "room_category", "branch", "amenity", "created_at"]
+    list_display = ["id", "room_category_name", "branch", "amenity", "created_at"]
 
     list_select_related = ["room_category", "amenity", "room_category__branch"]
+
+    def room_category_name(self, instance):
+        return instance.room_category.room_name
 
     def branch(self, instance):
         return instance.room_category.branch.name
