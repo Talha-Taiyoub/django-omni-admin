@@ -97,7 +97,7 @@ class RoomAmenitiesAdmin(admin.ModelAdmin):
         return instance.room_category.branch.name
 
 
-# @admin.register(models.Room)
-# class RoomAdmin(admin.ModelAdmin):
-#     list_display = ["id", "room_number", "room_category", "created_at"]
-#     list_select_related = ["room_category", "room_category__branch"]
+@admin.register(models.Room)
+class RoomAdmin(admin.ModelAdmin):
+    list_display = ["id", "room_number", "room_category", "created_at"]
+    list_select_related = ["room_category", "room_category__branch"]

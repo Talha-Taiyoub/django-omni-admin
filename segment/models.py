@@ -212,13 +212,10 @@ class RoomAmenities(models.Model):
 class Room(models.Model):
     ACTIVE = "Active"
     OUT_OF_ORDER = "Out Of Order"
-    OCCUPIED = "Occupied"
-    BOOKED = "Booked"
+
     ROOM_STATUS_CHOICES = [
         (ACTIVE, "Active"),
         (OUT_OF_ORDER, "Out Of Order"),
-        (OCCUPIED, "Occupied"),
-        (BOOKED, "Booked"),
     ]
 
     room_number = models.CharField(max_length=15)
