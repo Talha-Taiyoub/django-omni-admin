@@ -93,7 +93,9 @@ class RoomCategoryViewSet(ModelViewSet):
     http_method_names = ["get"]
 
     def get_queryset(self):
-        queryset = RoomCategory.objects.filter(status="Active")
+        queryset = RoomCategory.objects.filter(status="Active").filter(
+            branch__status="Active"
+        )
 
         branch_id = self.request.query_params.get("branch_id", None)
         if branch_id is not None:

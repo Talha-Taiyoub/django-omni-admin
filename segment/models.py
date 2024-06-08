@@ -163,7 +163,7 @@ class BranchStaff(models.Model):
 class RoomCategory(models.Model):
     ACTIVE = "Active"
     OUT_OF_ORDER = "Out Of Order"
-    ROOM_STATUS_CHOICES = [(ACTIVE, "Active"), (OUT_OF_ORDER, "Out Of order")]
+    ROOM_STATUS_CHOICES = [(ACTIVE, "Active"), (OUT_OF_ORDER, "Out Of Order")]
 
     room_name = models.CharField(max_length=50)
     status = models.CharField(
