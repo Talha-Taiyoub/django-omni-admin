@@ -22,13 +22,11 @@ class Destination(models.Model):
         return self.title
 
 
-ACTIVE = "Active"
-DRAFT = "Draft"
-COMING_SOON = "Coming Soon"
-BRANCH_STATUS = [(ACTIVE, "Active"), (DRAFT, "Draft"), (COMING_SOON, "Coming Soon")]
-
-
 class Branch(models.Model):
+    ACTIVE = "Active"
+    DRAFT = "Draft"
+    COMING_SOON = "Coming Soon"
+    BRANCH_STATUS = [(ACTIVE, "Active"), (DRAFT, "Draft"), (COMING_SOON, "Coming Soon")]
     name = models.CharField(max_length=255)
     nick_name = models.CharField(max_length=255, null=True, blank=True)
     destination = models.ForeignKey(
