@@ -1,6 +1,14 @@
 from rest_framework import serializers
 
-from .models import Branch, BranchSlider, Destination
+from .models import (
+    Amenities,
+    Branch,
+    BranchSlider,
+    Destination,
+    Gallery,
+    RoomAmenities,
+    RoomCategory,
+)
 
 
 class SimpleDestinationSerializer(serializers.ModelSerializer):
@@ -64,3 +72,41 @@ class DestinationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Destination
         fields = ["id", "title", "description", "image", "branches", "created_at"]
+
+
+class RoomAmenitiesSerializer(serializers.ModelSerializer):
+    amenity = serializers.StringRelatedField(read_only=True)
+
+    class Meta:
+        model = RoomAmenities
+        fields = ["amenity"]
+
+
+class GallerySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Gallery
+        fields = ["image"]
+
+
+class RoomCategorySerializer(serializers.ModelSerializer):
+    branch = SimpleBranchSerializer(read_only=True)
+    room_amenities_set = RoomAmenitiesSerializer(many=True, read_only=True)
+    gallery_set = GallerySerializer(many=True, read_only=True)
+
+    class Meta:
+        model = RoomCategory
+        fields = [
+            "id",
+            "room_name",
+            "branch",
+            "status",
+            "featured_image",
+            "overview",
+            "gallery_set",
+            "panorama",
+            "room_amenities_set",
+            "adults",
+            "children",
+            "regular_price",
+            "discount_in_percentage",
+        ]
