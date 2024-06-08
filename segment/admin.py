@@ -75,3 +75,18 @@ class GalleryAdmin(admin.ModelAdmin):
 
     def branch(self, instance):
         return instance.room_category.branch.name
+
+
+@admin.register(models.Amenities)
+class AmenitiesAdmin(admin.ModelAdmin):
+    list_display = ["id", "title", "created_at"]
+
+
+@admin.register(models.RoomAmenities)
+class RoomAmenitiesAdmin(admin.ModelAdmin):
+    list_display = ["id", "room_category", "branch", "amenity", "created_at"]
+
+    list_select_related = ["room_category", "amenity", "room_category__branch"]
+
+    def branch(self, instance):
+        return instance.room_category.branch.name
