@@ -153,3 +153,24 @@ class BranchStaff(models.Model):
 
     def __str__(self):
         return f"{self.staff.name} at {self.branch.name} as {self.staff.role}"
+
+
+# amenities will be added later
+class RoomCategory(models.Model):
+    ACTIVE = "Active"
+    OUT_OF_ORDER = "Out Of Order"
+    ROOM_STATUS = [(ACTIVE, "Active"), (OUT_OF_ORDER, "Out Of order")]
+
+    room_name = models.CharField(max_length=50)
+    status = models.CharField(max_length=15, choices=ROOM_STATUS, default=OUT_OF_ORDER)
+    featured_image = models.ImageField(upload_to="segment/images")
+    branch = models.ForeignKey(Branch, on_delete=models.PROTECT)
+    overview = models.TextField()
+    panorama = models.ImageField(upload_to="segment/images")
+    adults = models.PositiveSmallIntegerField(validators=[MinValueValidator(1)])
+    children = models.PositiveSmallIntegerField()
+    regular_price = models.DecimalField(max_digits=9, decimal_places=2)
+    discount_in_percentage = models.DecimalField(
+        max_digits=9, decimal_places=2, default=0.00
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
