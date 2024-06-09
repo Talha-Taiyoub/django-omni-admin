@@ -22,7 +22,6 @@ class DestinationViewSet(CustomResponseMixin, ModelViewSet):
     http_method_names = ["get"]
     queryset = Destination.objects.all().prefetch_related("branches")
     serializer_class = DestinationSerializer
-
     list_message = "All the destinations are fetched successfully."
     retrieve_message = "The destination is fetched successfully."
 
@@ -33,37 +32,20 @@ class BranchViewSet(CustomResponseMixin, ModelViewSet):
         Branch.objects.all().select_related("destination").prefetch_related("sliders")
     )
     serializer_class = BranchSerializer
-
     list_message = "Fetched all the branches successfully."
     retrieve_message = "Fetched the branch successfully."
 
 
 # Created this view so that the frontend dev can get all the sliders at once
-class BranchSliderViewSet(ModelViewSet):
+class BranchSliderViewSet(CustomResponseMixin, ModelViewSet):
     http_method_names = ["get"]
     queryset = BranchSlider.objects.all().select_related("branch")
     serializer_class = BranchSliderSerializer
-
-    def list(self, request, *args, **kwargs):
-        response = super().list(request, *args, **kwargs)
-        custom_response = format_response_data(
-            message="Fetched all the sliders for all the branches successfully.",
-            status_code=200,
-            data=response.data,
-        )
-        return Response(custom_response, status=status.HTTP_200_OK)
-
-    def retrieve(self, request, *args, **kwargs):
-        response = super().retrieve(request, *args, **kwargs)
-        custom_response = format_response_data(
-            message="Fetched the slider successfully.",
-            status_code=200,
-            data=response.data,
-        )
-        return Response(custom_response, status=status.HTTP_200_OK)
+    list_message = "Fetched all the sliders for all the branches successfully."
+    retrieve_message = "Fetched the slider successfully."
 
 
-class RoomCategoryViewSet(ModelViewSet):
+class RoomCategoryViewSet(CustomResponseMixin, ModelViewSet):
     http_method_names = ["get"]
 
     def get_queryset(self):
@@ -85,25 +67,5 @@ class RoomCategoryViewSet(ModelViewSet):
 
     serializer_class = RoomCategorySerializer
     pagination_class = CustomPagination
-
-    def list(self, request, *args, **kwargs):
-        queryset = self.filter_queryset(self.get_queryset())
-        # Paginate the queryset
-        page = self.paginate_queryset(queryset)
-        serializer = self.get_serializer(page, many=True)
-        paginated_response = self.get_paginated_response(serializer.data)
-        custom_response = format_response_data(
-            message="Fetched all the rooms that are available",
-            status_code=200,
-            data=paginated_response.data,
-        )
-        return Response(custom_response, status=status.HTTP_200_OK)
-
-    def retrieve(self, request, *args, **kwargs):
-        response = super().retrieve(request, *args, **kwargs)
-        custom_response = format_response_data(
-            message="Fetched the the room successfully.",
-            status_code=200,
-            data=response.data,
-        )
-        return Response(custom_response, status=status.HTTP_200_OK)
+    list_message = "Fetched all the rooms that are available"
+    retrieve_message = "Fetched the the room successfully."
