@@ -8,6 +8,11 @@ router = DefaultRouter()
 router.register("destinations", views.DestinationViewSet, basename="destination")
 router.register("branches", views.BranchViewSet, basename="branch")
 router.register("branch_sliders", views.BranchSliderViewSet, basename="branch_slider")
-router.register("room_categories", views.RoomCategoryViewSet, basename="room_category")
 
-urlpatterns = [path("", include(router.urls))]
+
+branch_router = NestedDefaultRouter(router, "branches", lookup="branch")
+branch_router.register(
+    "room_categories", views.RoomCategoryViewSet, basename="room_category"
+)
+
+urlpatterns = [path("", include(router.urls)), path("", include(branch_router.urls))]
