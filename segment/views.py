@@ -14,15 +14,14 @@ from .serializers import (
 )
 
 
-class DestinationViewSet(ModelViewSet):
-    http_method_names = ["get"]
-    queryset = Destination.objects.all().prefetch_related("branches")
-    serializer_class = DestinationSerializer
+class CustomResponseMixin:
+    list_message = "All the items are fetched successfully"
+    retrieve_message = "The item is fetched successfully"
 
     def list(self, request, *args, **kwargs):
         response = super().list(request, *args, **kwargs)
         custom_response = format_response_data(
-            message="Fetched all the destinations successfully.",
+            message=self.list_message,
             status_code=200,
             data=response.data,
         )
@@ -31,11 +30,20 @@ class DestinationViewSet(ModelViewSet):
     def retrieve(self, request, *args, **kwargs):
         response = super().retrieve(request, *args, **kwargs)
         custom_response = format_response_data(
-            message="Fetched the destination successfully.",
+            message=self.retrieve_message,
             status_code=200,
             data=response.data,
         )
         return Response(custom_response, status=status.HTTP_200_OK)
+
+
+class DestinationViewSet(CustomResponseMixin, ModelViewSet):
+    http_method_names = ["get"]
+    queryset = Destination.objects.all().prefetch_related("branches")
+    serializer_class = DestinationSerializer
+
+    list_message = "All the destinations are fetched successfully"
+    retrieve_message = "The destination is fetched successfully"
 
 
 class BranchViewSet(ModelViewSet):
@@ -101,6 +109,7 @@ class RoomCategoryViewSet(ModelViewSet):
         if branch_id is not None:
             queryset = queryset.filter(branch__id=branch_id)
 
+        # We will annotate room_count later which will be used to show how many rooms are left.
         queryset = (
             queryset.select_related("branch")
             .prefetch_related("room_amenities_set__amenity")
