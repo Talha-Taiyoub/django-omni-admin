@@ -1,3 +1,7 @@
+from rest_framework import status
+from rest_framework.response import Response
+
+
 # Method for formatting validation error response to our need
 def format_validation_error(errors):
     formatted_errors = []
@@ -30,3 +34,27 @@ def format_response_data(message, data, status_code):
         "status_code": status_code,
         "success": True,
     }
+
+
+# Class for overriding list and retrieve method of viewsets
+class CustomResponseMixin:
+    list_message = "All the items are fetched successfully"
+    retrieve_message = "The item is fetched successfully"
+
+    def list(self, request, *args, **kwargs):
+        response = super().list(request, *args, **kwargs)
+        custom_response = format_response_data(
+            message=self.list_message,
+            status_code=200,
+            data=response.data,
+        )
+        return Response(custom_response, status=status.HTTP_200_OK)
+
+    def retrieve(self, request, *args, **kwargs):
+        response = super().retrieve(request, *args, **kwargs)
+        custom_response = format_response_data(
+            message=self.retrieve_message,
+            status_code=200,
+            data=response.data,
+        )
+        return Response(custom_response, status=status.HTTP_200_OK)

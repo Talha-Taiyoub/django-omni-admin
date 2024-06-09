@@ -2,7 +2,11 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
-from general_app.format_response import format_error_data, format_response_data
+from general_app.format_response import (
+    CustomResponseMixin,
+    format_error_data,
+    format_response_data,
+)
 
 from .models import Branch, BranchSlider, Destination, RoomCategory
 from .paginations import CustomPagination
@@ -12,29 +16,6 @@ from .serializers import (
     DestinationSerializer,
     RoomCategorySerializer,
 )
-
-
-class CustomResponseMixin:
-    list_message = "All the items are fetched successfully"
-    retrieve_message = "The item is fetched successfully"
-
-    def list(self, request, *args, **kwargs):
-        response = super().list(request, *args, **kwargs)
-        custom_response = format_response_data(
-            message=self.list_message,
-            status_code=200,
-            data=response.data,
-        )
-        return Response(custom_response, status=status.HTTP_200_OK)
-
-    def retrieve(self, request, *args, **kwargs):
-        response = super().retrieve(request, *args, **kwargs)
-        custom_response = format_response_data(
-            message=self.retrieve_message,
-            status_code=200,
-            data=response.data,
-        )
-        return Response(custom_response, status=status.HTTP_200_OK)
 
 
 class DestinationViewSet(CustomResponseMixin, ModelViewSet):
