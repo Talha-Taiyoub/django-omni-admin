@@ -49,13 +49,12 @@ class RoomCategoryViewSet(CustomResponseMixin, ModelViewSet):
     http_method_names = ["get"]
 
     def get_queryset(self):
-        queryset = RoomCategory.objects.filter(status="Active").filter(
-            branch__status="Active"
+        branch_id = self.kwargs.get("branch_pk")
+        queryset = (
+            RoomCategory.objects.filter(branch__id=branch_id)
+            .filter(branch__status="Active")
+            .filter(status="Active")
         )
-
-        branch_id = self.request.query_params.get("branch_id", None)
-        if branch_id is not None:
-            queryset = queryset.filter(branch__id=branch_id)
 
         # We will annotate room_count later which will be used to show how many rooms are left.
         queryset = (
