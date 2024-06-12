@@ -212,7 +212,6 @@ class RoomAmenities(models.Model):
         unique_together = ["room_category", "amenity"]
 
 
-# Later, we will enforce a unique constraint so that no branch end up with same room number twice.
 class Room(models.Model):
     ACTIVE = "Active"
     OUT_OF_ORDER = "Out Of Order"
@@ -229,7 +228,8 @@ class Room(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)
 
-    # Same room number and same category of a branch will not be duplicated
+    # Right now a category of a branch will not have same room number twice.
+    # But this is not enough.Eventually we need to enforce a unique constraint so that no branch end up with same room number twice.
     class Meta:
         unique_together = ["room_number", "room_category"]
 
