@@ -181,6 +181,9 @@ class RoomCategory(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        unique_together = ["room_name", "branch"]
+
     def __str__(self) -> str:
         return f"{self.room_name}-{self.branch.name}"
 
