@@ -101,3 +101,59 @@ class RoomAmenitiesAdmin(admin.ModelAdmin):
 class RoomAdmin(admin.ModelAdmin):
     list_display = ["id", "room_number", "room_category", "created_at"]
     list_select_related = ["room_category", "room_category__branch"]
+
+
+@admin.register(models.Booking)
+class BookingAdmin(admin.ModelAdmin):
+    list_display = [
+        "id",
+        "full_name",
+        "email",
+        "mobile",
+        "guest",
+        "status",
+        "check_in",
+        "check_out",
+        "placed_at",
+    ]
+
+    list_select_related = ["guest"]
+
+
+@admin.register(models.BookingItem)
+class BookingItemAdmin(admin.ModelAdmin):
+    list_display = [
+        "id",
+        "booking_id",
+        "room_category",
+        "assigned_room",
+        "rack_rate",
+        "discount_in_percentage",
+        "created_at",
+    ]
+
+    list_select_related = [
+        "booking",
+        "room_category__branch",
+        "assigned_room__room_category__branch",
+    ]
+
+    def booking_id(self, instance):
+        return instance.booking.id
+
+
+@admin.register(models.Billing)
+class BillingAdmin(admin.ModelAdmin):
+    list_display = [
+        "id",
+        "booking_id",
+        "payment_status",
+        "subtotal",
+        "discount",
+        "paid",
+        "created_at",
+    ]
+    list_select_related = ["booking"]
+
+    def booking_id(self, instance):
+        return instance.booking.id

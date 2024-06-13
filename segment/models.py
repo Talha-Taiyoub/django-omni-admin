@@ -261,6 +261,7 @@ class Booking(models.Model):
     check_in = models.DateField()
     check_out = models.DateField()
     additional_info = models.TextField(null=True, blank=True)
+    placed_at = models.DateTimeField(auto_now_add=True)
 
     def clean(self):
         super().clean()
@@ -312,12 +313,8 @@ class Billing(models.Model):
     subtotal = models.DecimalField(
         max_digits=9, decimal_places=2, validators=[MinValueValidator(1)]
     )
-    discount = models.DecimalField(
-        max_digits=9, decimal_places=2, validators=[MinValueValidator(1)], default=0
-    )
-    paid = models.DecimalField(
-        max_digits=9, decimal_places=2, validators=[MinValueValidator(1)], default=0
-    )
+    discount = models.DecimalField(max_digits=9, decimal_places=2, default=0)
+    paid = models.DecimalField(max_digits=9, decimal_places=2, default=0)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
