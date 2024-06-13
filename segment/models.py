@@ -291,3 +291,49 @@ class BookingItem(models.Model):
 
     def __str__(self):
         return f"{self.booking.full_name} booked room number {self.assigned_room.room_number}"
+
+
+# we can easily subtotal,due from these fields
+class Billing(models.Model):
+    PENDING = "Pending"
+    CONFIRMED = "Confirmed"
+    CANCELLED = "Cancelled"
+    PARTIAL = "Partial"
+    PAYMENT_STATUS_CHOICES = [
+        (PENDING, "Pending"),
+        (CONFIRMED, "Confirmed"),
+        (PARTIAL, "Partial"),
+        (CANCELLED, "Cancelled"),
+    ]
+    booking = models.OneToOneField(Booking, on_delete=models.CASCADE, unique=True)
+    payment_status = models.CharField(
+        max_length=15, choices=PAYMENT_STATUS_CHOICES, default=PENDING
+    )
+    subtotal = models.DecimalField(
+        max_digits=9, decimal_places=2, validators=[MinValueValidator(1)]
+    )
+    discount = models.DecimalField(
+        max_digits=9, decimal_places=2, validators=[MinValueValidator(1)], default=0
+    )
+    paid = models.DecimalField(
+        max_digits=9, decimal_places=2, validators=[MinValueValidator(1)], default=0
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Billing for booking {self.booking.full_name}"
+
+    @property
+    def total_due(self):
+        return self.subtotal - self.discount - self.paid
+
+    def clean(self):
+        super().clean()
+        if self.discount > self.subtotal:
+            raise ValidationError(
+                {"discount": _("Discount cannot be greater than subtotal.")}
+            )
+        if self.paid > self.subtotal - self.discount:
+            raise ValidationError(
+                {"paid": _("Paid amount cannot be greater than the remaining balance.")}
+            )
