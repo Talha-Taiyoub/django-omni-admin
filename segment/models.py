@@ -271,3 +271,23 @@ class Booking(models.Model):
 
     def __str__(self):
         return f"Booking for {self.full_name} from {self.check_in} to {self.check_out}"
+
+
+# We're saving rack rate and discount in percentage when the booking is placed.
+class BookingItem(models.Model):
+    booking = models.ForeignKey(Booking, on_delete=models.CASCADE)
+    room_category = models.ForeignKey(
+        RoomCategory, on_delete=models.SET_NULL, null=True, blank=True
+    )
+    assigned_room = models.ForeignKey(
+        Room, on_delete=models.SET_NULL, null=True, blank=True
+    )
+    rack_rate = models.DecimalField(max_digits=9, decimal_places=2)
+    discount_in_percentage = models.DecimalField(max_digits=6, decimal_places=2)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ["booking", "assigned_room"]
+
+    def __str__(self):
+        return f"{self.booking.full_name} booked room number {self.assigned_room.room_number}"
