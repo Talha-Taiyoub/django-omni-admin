@@ -293,7 +293,6 @@ class BookingItem(models.Model):
         return f"{self.booking.full_name} booked room number {self.assigned_room.room_number}"
 
 
-# we can easily subtotal,due from these fields
 class Billing(models.Model):
     PENDING = "Pending"
     CONFIRMED = "Confirmed"
@@ -320,8 +319,12 @@ class Billing(models.Model):
         return f"Billing for booking {self.booking.full_name}"
 
     @property
+    def subtotal(self):
+        return self.total - self.discount
+
+    @property
     def total_due(self):
-        return self.total - self.discount - self.paid
+        return self.subtotal - self.paid
 
     def clean(self):
         super().clean()
@@ -329,7 +332,7 @@ class Billing(models.Model):
             raise ValidationError(
                 {"discount": _("Discount cannot be greater than total.")}
             )
-        if self.paid > self.total - self.discount:
+        if self.paid > self.subtotal:
             raise ValidationError(
                 {"paid": _("Paid amount cannot be greater than the charge.")}
             )

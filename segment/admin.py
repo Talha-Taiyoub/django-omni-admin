@@ -149,7 +149,9 @@ class BillingAdmin(admin.ModelAdmin):
         "payment_status",
         "total",
         "discount",
+        "subtotal",
         "paid",
+        "total_due",
         "created_at",
     ]
     list_select_related = ["booking"]
