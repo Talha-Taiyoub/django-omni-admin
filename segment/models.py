@@ -274,7 +274,7 @@ class Booking(models.Model):
         return f"Booking for {self.full_name} from {self.check_in} to {self.check_out}"
 
 
-# We're saving rack rate and discount in percentage when the booking is placed.
+# We're saving price cause price can change
 class BookingItem(models.Model):
     booking = models.ForeignKey(Booking, on_delete=models.CASCADE)
     room_category = models.ForeignKey(
