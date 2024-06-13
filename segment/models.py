@@ -3,7 +3,7 @@ from django.core.validators import MinValueValidator, RegexValidator
 from django.db import IntegrityError, models
 from django.utils.translation import gettext_lazy as _
 
-from community.models import Staff
+from community.models import Guest, Staff
 from general_app.validators import image_max_size
 
 
@@ -235,3 +235,39 @@ class Room(models.Model):
 
     def __str__(self) -> str:
         return f"{self.room_number}-{self.room_category.room_name}-{self.room_category.branch.name}"
+
+
+class Booking(models.Model):
+    PENDING = "Pending"
+    CONFIRMED = "Confirmed"
+    CANCELLED = "Cancelled"
+    CHECKED_IN = "Checked In"
+    CHECKED_OUT = "Checked Out"
+    BOOKING_STATUS_CHOICES = [
+        (PENDING, "Pending"),
+        (CONFIRMED, "Confirmed"),
+        (CANCELLED, "Cancelled"),
+        (CHECKED_IN, "Checked In"),
+        (CHECKED_OUT, "Checked Out"),
+    ]
+
+    full_name = models.CharField(max_length=255)
+    email = models.EmailField()
+    mobile = models.CharField(max_length=14)
+    guest = models.ForeignKey(Guest, on_delete=models.SET_NULL, null=True, blank=True)
+    status = models.CharField(
+        max_length=15, choices=BOOKING_STATUS_CHOICES, default=PENDING
+    )
+    check_in = models.DateField()
+    check_out = models.DateField()
+    additional_info = models.TextField(null=True, blank=True)
+
+    def clean(self):
+        super().clean()
+        if self.check_out <= self.check_in:
+            raise ValidationError(
+                {"check_out": _("Check-out date must be later than check-in date.")}
+            )
+
+    def __str__(self):
+        return f"Booking for {self.full_name} from {self.check_in} to {self.check_out}"
