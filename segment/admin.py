@@ -127,8 +127,7 @@ class BookingItemAdmin(admin.ModelAdmin):
         "booking_id",
         "room_category",
         "assigned_room",
-        "rack_rate",
-        "discount_in_percentage",
+        "price",
         "created_at",
     ]
 

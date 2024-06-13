@@ -283,8 +283,7 @@ class BookingItem(models.Model):
     assigned_room = models.ForeignKey(
         Room, on_delete=models.SET_NULL, null=True, blank=True
     )
-    rack_rate = models.DecimalField(max_digits=9, decimal_places=2)
-    discount_in_percentage = models.DecimalField(max_digits=6, decimal_places=2)
+    price = models.DecimalField(max_digits=9, decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
