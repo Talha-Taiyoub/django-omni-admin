@@ -147,7 +147,7 @@ class BillingAdmin(admin.ModelAdmin):
         "id",
         "booking_id",
         "payment_status",
-        "subtotal",
+        "total",
         "discount",
         "paid",
         "created_at",

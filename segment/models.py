@@ -309,7 +309,7 @@ class Billing(models.Model):
     payment_status = models.CharField(
         max_length=15, choices=PAYMENT_STATUS_CHOICES, default=PENDING
     )
-    subtotal = models.DecimalField(
+    total = models.DecimalField(
         max_digits=9, decimal_places=2, validators=[MinValueValidator(1)]
     )
     discount = models.DecimalField(max_digits=9, decimal_places=2, default=0)
@@ -321,15 +321,15 @@ class Billing(models.Model):
 
     @property
     def total_due(self):
-        return self.subtotal - self.discount - self.paid
+        return self.total - self.discount - self.paid
 
     def clean(self):
         super().clean()
-        if self.discount > self.subtotal:
+        if self.discount > self.total:
             raise ValidationError(
-                {"discount": _("Discount cannot be greater than subtotal.")}
+                {"discount": _("Discount cannot be greater than total.")}
             )
-        if self.paid > self.subtotal - self.discount:
+        if self.paid > self.total - self.discount:
             raise ValidationError(
-                {"paid": _("Paid amount cannot be greater than the remaining balance.")}
+                {"paid": _("Paid amount cannot be greater than the charge.")}
             )
