@@ -99,7 +99,7 @@ class RoomAmenitiesAdmin(admin.ModelAdmin):
 
 @admin.register(models.Room)
 class RoomAdmin(admin.ModelAdmin):
-    list_display = ["id", "room_number", "room_category", "created_at"]
+    list_display = ["id", "room_number", "room_category", "status", "created_at"]
     list_select_related = ["room_category", "room_category__branch"]
 
 
