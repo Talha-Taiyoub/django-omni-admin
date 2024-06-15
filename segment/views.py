@@ -103,6 +103,7 @@ class RoomCategoryViewSet(CustomResponseMixin, ModelViewSet):
             room_category_queryset.select_related("branch")
             .prefetch_related("room_amenities_set__amenity")
             .prefetch_related("gallery_set")
+            .order_by("-discount_in_percentage")
         )
         return queryset
 
