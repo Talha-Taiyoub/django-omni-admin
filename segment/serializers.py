@@ -6,6 +6,7 @@ from .models import (
     BranchSlider,
     Destination,
     Gallery,
+    Room,
     RoomAmenities,
     RoomCategory,
 )
@@ -88,10 +89,18 @@ class GallerySerializer(serializers.ModelSerializer):
         fields = ["image"]
 
 
+# Right now it's not used. But later we will use it if we need
+class RoomSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Room
+        fields = ["id", "room_number", "status", "created_at"]
+
+
 class RoomCategorySerializer(serializers.ModelSerializer):
     branch = SimpleBranchSerializer(read_only=True)
     room_amenities_set = RoomAmenitiesSerializer(many=True, read_only=True)
     gallery_set = GallerySerializer(many=True, read_only=True)
+    available_rooms_count = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = RoomCategory
@@ -109,4 +118,5 @@ class RoomCategorySerializer(serializers.ModelSerializer):
             "children",
             "regular_price",
             "discount_in_percentage",
+            "available_rooms_count",
         ]
