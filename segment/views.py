@@ -1,7 +1,8 @@
 from django.db.models import Count, IntegerField, OuterRef, Prefetch, Q, Subquery
 from rest_framework import status
+from rest_framework.mixins import CreateModelMixin, RetrieveModelMixin
 from rest_framework.response import Response
-from rest_framework.viewsets import ModelViewSet
+from rest_framework.viewsets import GenericViewSet, ModelViewSet
 
 from general_app.format_response import (
     CustomResponseMixin,
@@ -116,7 +117,9 @@ class RoomCategoryViewSet(CustomResponseMixin, ModelViewSet):
     retrieve_message = "Fetched the the room successfully."
 
 
-class CartViewSet(CustomResponseMixin, ModelViewSet):
+class CartViewSet(
+    CustomResponseMixin, CreateModelMixin, RetrieveModelMixin, GenericViewSet
+):
     http_method_names = ["post", "get"]
     queryset = Cart.objects.all().prefetch_related("items__room_category")
     serializer_class = CartSerializer
