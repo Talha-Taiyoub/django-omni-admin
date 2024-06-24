@@ -122,3 +122,9 @@ class RoomCategorySerializer(serializers.ModelSerializer):
             "discount_in_percentage",
             "available_rooms_count",
         ]
+
+
+class CartSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Cart
+        fields = ["id", "created_at"]
