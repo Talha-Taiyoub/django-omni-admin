@@ -117,5 +117,7 @@ class RoomCategoryViewSet(CustomResponseMixin, ModelViewSet):
 
 
 class CartViewSet(CustomResponseMixin, ModelViewSet):
+    http_method_names = ["post"]
     queryset = Cart.objects.all()
     serializer_class = CartSerializer
+    create_message = "Cart is created successfully"

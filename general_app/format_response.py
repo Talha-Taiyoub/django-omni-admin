@@ -40,6 +40,7 @@ def format_response_data(message, data, status_code):
 class CustomResponseMixin:
     list_message = "All the items are fetched successfully"
     retrieve_message = "The item is fetched successfully"
+    create_message = "The instance is created successfully"
 
     def list(self, request, *args, **kwargs):
         response = super().list(request, *args, **kwargs)
@@ -58,3 +59,10 @@ class CustomResponseMixin:
             data=response.data,
         )
         return Response(custom_response, status=status.HTTP_200_OK)
+
+    def create(self, request, *args, **kwargs):
+        response = super().create(request, *args, **kwargs)
+        custom_response = format_response_data(
+            message=self.create_message, status_code=201, data=response.data
+        )
+        return Response(custom_response, status=status.HTTP_201_CREATED)
