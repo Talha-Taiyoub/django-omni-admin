@@ -1,6 +1,10 @@
 from django.db.models import Count, IntegerField, OuterRef, Prefetch, Q, Subquery
 from rest_framework import status
-from rest_framework.mixins import CreateModelMixin, RetrieveModelMixin
+from rest_framework.mixins import (
+    CreateModelMixin,
+    DestroyModelMixin,
+    RetrieveModelMixin,
+)
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet, ModelViewSet
 
@@ -118,10 +122,15 @@ class RoomCategoryViewSet(CustomResponseMixin, ModelViewSet):
 
 
 class CartViewSet(
-    CustomResponseMixin, CreateModelMixin, RetrieveModelMixin, GenericViewSet
+    CustomResponseMixin,
+    CreateModelMixin,
+    RetrieveModelMixin,
+    DestroyModelMixin,
+    GenericViewSet,
 ):
-    http_method_names = ["post", "get"]
+    http_method_names = ["post", "get", "delete"]
     queryset = Cart.objects.all().prefetch_related("items__room_category")
     serializer_class = CartSerializer
     create_message = "Cart is created successfully"
     retrieve_message = "The cart is fetched successfully"
+    delete_message = "The cart is deleted successfully"

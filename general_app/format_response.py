@@ -41,6 +41,7 @@ class CustomResponseMixin:
     list_message = "All the items are fetched successfully"
     retrieve_message = "The item is fetched successfully"
     create_message = "The instance is created successfully"
+    delete_message = "The instance is deleted successfully"
 
     def list(self, request, *args, **kwargs):
         response = super().list(request, *args, **kwargs)
@@ -66,3 +67,10 @@ class CustomResponseMixin:
             message=self.create_message, status_code=201, data=response.data
         )
         return Response(custom_response, status=status.HTTP_201_CREATED)
+
+    def destroy(self, request, *args, **kwargs):
+        super().destroy(request, *args, **kwargs)
+        custom_response = format_response_data(
+            message=self.delete_message, status_code=200, data={}
+        )
+        return Response(custom_response, status=status.HTTP_204_NO_CONTENT)
