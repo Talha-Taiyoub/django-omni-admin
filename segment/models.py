@@ -244,6 +244,15 @@ class Cart(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
 
+class CartItem(models.Model):
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
+    room_category = models.ForeignKey(RoomCategory, on_delete=models.CASCADE)
+    quantity = models.PositiveSmallIntegerField(validators=[MinValueValidator(1)])
+
+    class Meta:
+        unique_together = ["cart", "room_category"]
+
+
 class Booking(models.Model):
     PENDING = "Pending"
     CONFIRMED = "Confirmed"
