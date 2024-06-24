@@ -14,6 +14,8 @@ from .models import (
     BookingItem,
     Branch,
     BranchSlider,
+    Cart,
+    CartItem,
     Destination,
     Room,
     RoomCategory,
@@ -22,6 +24,7 @@ from .paginations import CustomPagination
 from .serializers import (
     BranchSerializer,
     BranchSliderSerializer,
+    CartSerializer,
     DestinationSerializer,
     RoomCategorySerializer,
 )
@@ -111,3 +114,8 @@ class RoomCategoryViewSet(CustomResponseMixin, ModelViewSet):
     pagination_class = CustomPagination
     list_message = "Fetched all the rooms that are available"
     retrieve_message = "Fetched the the room successfully."
+
+
+class CartViewSet(CustomResponseMixin, ModelViewSet):
+    queryset = Cart.objects.all()
+    serializer_class = CartSerializer
