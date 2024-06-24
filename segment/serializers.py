@@ -147,8 +147,9 @@ class CartItemSerializer(serializers.ModelSerializer):
 
 
 class CartSerializer(serializers.ModelSerializer):
+    items = CartItemSerializer(many=True, read_only=True)
     id = serializers.UUIDField(read_only=True)
 
     class Meta:
         model = Cart
-        fields = ["id", "created_at"]
+        fields = ["id", "items", "created_at"]
