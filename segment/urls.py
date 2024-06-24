@@ -8,7 +8,7 @@ router = DefaultRouter()
 router.register("destinations", views.DestinationViewSet, basename="destination")
 router.register("branches", views.BranchViewSet, basename="branch")
 router.register("branch_sliders", views.BranchSliderViewSet, basename="branch_slider")
-
+router.register("carts", views.CartViewSet, basename="cart")
 
 branch_router = NestedDefaultRouter(router, "branches", lookup="branch")
 branch_router.register(
