@@ -121,3 +121,4 @@ class CartViewSet(CustomResponseMixin, ModelViewSet):
     queryset = Cart.objects.all()
     serializer_class = CartSerializer
     create_message = "Cart is created successfully"
+    retrieve_message = "The cart is fetched successfully"
