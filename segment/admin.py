@@ -158,3 +158,8 @@ class BillingAdmin(admin.ModelAdmin):
 
     def booking_id(self, instance):
         return instance.booking.id
+
+
+@admin.register(models.Cart)
+class CartAdmin(admin.ModelAdmin):
+    list_display = ["id", "created_at"]
