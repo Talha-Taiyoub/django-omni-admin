@@ -15,4 +15,11 @@ branch_router.register(
     "room_categories", views.RoomCategoryViewSet, basename="room_category"
 )
 
-urlpatterns = [path("", include(router.urls)), path("", include(branch_router.urls))]
+cart_router = NestedDefaultRouter(router, "carts", lookup="cart")
+cart_router.register("cartitems", views.CartItemViewSet, basename="cart_item")
+
+urlpatterns = [
+    path("", include(router.urls)),
+    path("", include(branch_router.urls)),
+    path("", include(cart_router.urls)),
+]

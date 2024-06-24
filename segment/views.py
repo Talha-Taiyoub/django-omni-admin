@@ -29,6 +29,7 @@ from .paginations import CustomPagination
 from .serializers import (
     BranchSerializer,
     BranchSliderSerializer,
+    CartItemSerializer,
     CartSerializer,
     DestinationSerializer,
     RoomCategorySerializer,
@@ -134,3 +135,14 @@ class CartViewSet(
     create_message = "Cart is created successfully"
     retrieve_message = "The cart is fetched successfully"
     delete_message = "The cart is deleted successfully"
+
+
+class CartItemViewSet(CustomResponseMixin, ModelViewSet):
+    def get_queryset(self):
+        cart_id = self.kwargs.get("cart_pk")
+        queryset = CartItem.objects.filter(cart__id=cart_id).select_related(
+            "room_category"
+        )
+        return queryset
+
+    serializer_class = CartItemSerializer
