@@ -4,6 +4,8 @@ from .models import (
     Amenities,
     Branch,
     BranchSlider,
+    Cart,
+    CartItem,
     Destination,
     Gallery,
     Room,
