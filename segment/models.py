@@ -1,3 +1,5 @@
+from uuid import uuid4
+
 from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator, RegexValidator
 from django.db import IntegrityError, models
@@ -235,6 +237,11 @@ class Room(models.Model):
 
     def __str__(self) -> str:
         return f"{self.room_number}-{self.room_category.room_name}-{self.room_category.branch.name}"
+
+
+class Cart(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid4)
+    created_at = models.DateTimeField(auto_now_add=True)
 
 
 class Booking(models.Model):
