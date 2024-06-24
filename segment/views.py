@@ -118,7 +118,7 @@ class RoomCategoryViewSet(CustomResponseMixin, ModelViewSet):
 
 class CartViewSet(CustomResponseMixin, ModelViewSet):
     http_method_names = ["post", "get"]
-    queryset = Cart.objects.all()
+    queryset = Cart.objects.all().prefetch_related("items__room_category")
     serializer_class = CartSerializer
     create_message = "Cart is created successfully"
     retrieve_message = "The cart is fetched successfully"

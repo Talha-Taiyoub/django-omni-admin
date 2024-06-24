@@ -134,6 +134,13 @@ class CartItemSerializer(serializers.ModelSerializer):
             "total_price",
         ]
 
+    room_category = serializers.SerializerMethodField(
+        method_name="get_category_name", read_only=True
+    )
+
+    def get_category_name(self, item):
+        return item.room_category.room_name
+
     total_price = serializers.SerializerMethodField(
         method_name="get_total_price", read_only=True
     )
@@ -152,4 +159,18 @@ class CartSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Cart
-        fields = ["id", "items", "created_at"]
+        fields = ["id", "items", "total_price", "created_at"]
+
+    total_price = serializers.SerializerMethodField(
+        method_name="get_total_price", read_only=True
+    )
+
+    def get_total_price(self, cart):
+        total_price = 0
+        for item in cart.items.all():
+            discount_amount = item.room_category.regular_price * (
+                item.room_category.discount_in_percentage / 100
+            )
+            discounted_price = item.room_category.regular_price - discount_amount
+            total_price += discounted_price * item.quantity
+        return total_price

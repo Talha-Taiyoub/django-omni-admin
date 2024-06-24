@@ -163,3 +163,16 @@ class BillingAdmin(admin.ModelAdmin):
 @admin.register(models.Cart)
 class CartAdmin(admin.ModelAdmin):
     list_display = ["id", "created_at"]
+
+
+@admin.register(models.CartItem)
+class CartItemAdmin(admin.ModelAdmin):
+    list_display = ["id", "room_category", "quantity", "total_price", "cart"]
+    list_select_related = ["room_category__branch", "cart"]
+
+    def total_price(self, item):
+        discount_amount = item.room_category.regular_price * (
+            item.room_category.discount_in_percentage / 100
+        )
+        discounted_price = item.room_category.regular_price - discount_amount
+        return discounted_price * item.quantity
