@@ -124,6 +124,28 @@ class RoomCategorySerializer(serializers.ModelSerializer):
         ]
 
 
+class CartItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CartItem
+        fields = [
+            "id",
+            "room_category",
+            "quantity",
+            "total_price",
+        ]
+
+    total_price = serializers.SerializerMethodField(
+        method_name="get_total_price", read_only=True
+    )
+
+    def get_total_price(self, item: CartItem):
+        discount_amount = item.room_category.regular_price * (
+            item.room_category.discount_in_percentage / 100
+        )
+        discounted_price = item.room_category.regular_price - discount_amount
+        return discounted_price * item.quantity
+
+
 class CartSerializer(serializers.ModelSerializer):
     id = serializers.UUIDField(read_only=True)
 
