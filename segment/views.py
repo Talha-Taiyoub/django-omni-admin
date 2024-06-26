@@ -145,6 +145,8 @@ class CartViewSet(
 
 
 class CartItemViewSet(CustomResponseMixin, ModelViewSet):
+    http_method_names = ["get", "post", "patch", "delete"]
+
     def get_queryset(self):
         cart_id = self.kwargs.get("cart_pk")
         queryset = CartItem.objects.filter(cart__id=cart_id).select_related(
