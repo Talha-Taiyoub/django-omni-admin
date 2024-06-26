@@ -141,9 +141,6 @@ class CartViewSet(
 
 
 class CartItemViewSet(CustomResponseMixin, ModelViewSet):
-    # def handle_exception(self, exc):
-    #     return super().handle_exception(exc)
-
     def handle_exception(self, exc):
         # Call parent's handle_exception to get the standard error response
         response = super().handle_exception(exc)
@@ -170,3 +167,15 @@ class CartItemViewSet(CustomResponseMixin, ModelViewSet):
 
     def get_serializer_context(self):
         return {"cart_id": self.kwargs["cart_pk"]}
+
+    create_message = "The room is added to the cart successfully"
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        cart_item = serializer.save()
+        serializer = CartItemSerializer(cart_item)
+        custom_response = format_response_data(
+            message=self.create_message, status_code=201, data=serializer.data
+        )
+        return Response(custom_response, status=status.HTTP_201_CREATED)
