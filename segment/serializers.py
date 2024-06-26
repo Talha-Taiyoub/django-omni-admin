@@ -184,11 +184,11 @@ class AddCartItemSerializer(serializers.ModelSerializer):
         room_category_id = validated_data["room_category_id"]
         quantity = validated_data["quantity"]
         # At first, let's check same room_category is already listed under same cart or not?
+        # If listed, we will just increase the quantity instead of creating another cart_item with the same cart and the same room category.
         try:
             cart_item = CartItem.objects.get(
                 cart_id=cart_id, room_category_id=room_category_id
             )
-            # If listed, we will just increase the quantity instead of creating another cart_item with same cart and same room category.
             cart_item.quantity += quantity
             cart_item.save()
         except CartItem.DoesNotExist:
