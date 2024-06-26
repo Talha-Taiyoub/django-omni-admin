@@ -1,4 +1,6 @@
+from django.http import Http404
 from rest_framework import status
+from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
 
 
@@ -42,6 +44,31 @@ class CustomResponseMixin:
     retrieve_message = "The item is fetched successfully"
     create_message = "The instance is created successfully"
     delete_message = "The instance is deleted successfully"
+    update_message = "The instance is updated successfully"
+    retrieve_error_message = "No object is found with this id"
+    post_create_and_post_update_serializer = None
+
+    def handle_exception(self, exc):
+        # Call parent's handle_exception to get the standard error response
+        response = super().handle_exception(exc)
+
+        # Check if the exception is not found error
+        if isinstance(exc, Http404):
+            custom_response = format_error_data(
+                message=self.retrieve_error_message,
+                errors=[{"pk": ["Invalid id"]}],
+                status_code=404,
+            )
+            return Response(custom_response, status=status.HTTP_404_NOT_FOUND)
+
+        # Check if the exception is a validation error
+        if isinstance(exc, ValidationError):
+            # Format the validation errors
+            custom_response = format_validation_error(exc.detail)
+            # Create a new response with the formatted validation errors
+            return Response(custom_response, status=response.status_code)
+
+        return response
 
     def list(self, request, *args, **kwargs):
         response = super().list(request, *args, **kwargs)
@@ -53,20 +80,37 @@ class CustomResponseMixin:
         return Response(custom_response, status=status.HTTP_200_OK)
 
     def retrieve(self, request, *args, **kwargs):
-        response = super().retrieve(request, *args, **kwargs)
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
         custom_response = format_response_data(
             message=self.retrieve_message,
             status_code=200,
-            data=response.data,
+            data=serializer.data,
         )
         return Response(custom_response, status=status.HTTP_200_OK)
 
     def create(self, request, *args, **kwargs):
-        response = super().create(request, *args, **kwargs)
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        created_instance = serializer.save()
+        if self.post_create_and_post_update_serializer is not None:
+            serializer = self.post_create_and_post_update_serializer(created_instance)
         custom_response = format_response_data(
-            message=self.create_message, status_code=201, data=response.data
+            message=self.create_message, status_code=201, data=serializer.data
         )
         return Response(custom_response, status=status.HTTP_201_CREATED)
+
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        updated_instance = serializer.save()
+        if self.post_create_and_post_update_serializer is not None:
+            serializer = self.post_create_and_post_update_serializer(updated_instance)
+        custom_response = format_response_data(
+            message=self.update_message, status_code=200, data=serializer.data
+        )
+        return Response(custom_response, status=status.HTTP_200_OK)
 
     def destroy(self, request, *args, **kwargs):
         super().destroy(request, *args, **kwargs)

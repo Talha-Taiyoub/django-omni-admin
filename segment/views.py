@@ -1,4 +1,5 @@
 from django.db.models import Count, IntegerField, OuterRef, Prefetch, Q, Subquery
+from django.http import Http404
 from rest_framework import status
 from rest_framework.exceptions import ValidationError
 from rest_framework.mixins import (
@@ -36,6 +37,7 @@ from .serializers import (
     CartSerializer,
     DestinationSerializer,
     RoomCategorySerializer,
+    UpdateCartItemSerializer,
 )
 
 
@@ -135,24 +137,14 @@ class CartViewSet(
     http_method_names = ["post", "get", "delete"]
     queryset = Cart.objects.all().prefetch_related("items__room_category")
     serializer_class = CartSerializer
+
     create_message = "Cart is created successfully"
     retrieve_message = "The cart is fetched successfully"
+    retrieve_error_message = "No cart is found with this id"
     delete_message = "The cart is deleted successfully"
 
 
 class CartItemViewSet(CustomResponseMixin, ModelViewSet):
-    def handle_exception(self, exc):
-        # Call parent's handle_exception to get the standard error response
-        response = super().handle_exception(exc)
-
-        # Check if the exception is a validation error
-        if isinstance(exc, ValidationError):
-            # Format the validation errors
-            custom_response = format_validation_error(exc.detail)
-            # Create a new response with the formatted validation errors
-            response = Response(custom_response, status=response.status_code)
-        return response
-
     def get_queryset(self):
         cart_id = self.kwargs.get("cart_pk")
         queryset = CartItem.objects.filter(cart__id=cart_id).select_related(
@@ -163,19 +155,15 @@ class CartItemViewSet(CustomResponseMixin, ModelViewSet):
     def get_serializer_class(self):
         if self.request.method == "POST":
             return AddCartItemSerializer
+        elif self.request.method == "PATCH":
+            return UpdateCartItemSerializer
         return CartItemSerializer
 
     def get_serializer_context(self):
         return {"cart_id": self.kwargs["cart_pk"]}
 
     create_message = "The room is added to the cart successfully"
-
-    def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        cart_item = serializer.save()
-        serializer = CartItemSerializer(cart_item)
-        custom_response = format_response_data(
-            message=self.create_message, status_code=201, data=serializer.data
-        )
-        return Response(custom_response, status=status.HTTP_201_CREATED)
+    update_message = "The quantity is updated successfully"
+    delete_message = "The room is removed from the cart successfully"
+    retrieve_error_message = "No cart item is found with this id"
+    post_create_and_post_update_serializer = CartItemSerializer
