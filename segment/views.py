@@ -1,5 +1,6 @@
 from django.db.models import Count, IntegerField, OuterRef, Prefetch, Q, Subquery
 from rest_framework import status
+from rest_framework.exceptions import ValidationError
 from rest_framework.mixins import (
     CreateModelMixin,
     DestroyModelMixin,
@@ -12,6 +13,7 @@ from general_app.format_response import (
     CustomResponseMixin,
     format_error_data,
     format_response_data,
+    format_validation_error,
 )
 
 from .models import (
@@ -27,6 +29,7 @@ from .models import (
 )
 from .paginations import CustomPagination
 from .serializers import (
+    AddCartItemSerializer,
     BranchSerializer,
     BranchSliderSerializer,
     CartItemSerializer,
@@ -138,6 +141,21 @@ class CartViewSet(
 
 
 class CartItemViewSet(CustomResponseMixin, ModelViewSet):
+    # def handle_exception(self, exc):
+    #     return super().handle_exception(exc)
+
+    def handle_exception(self, exc):
+        # Call parent's handle_exception to get the standard error response
+        response = super().handle_exception(exc)
+
+        # Check if the exception is a validation error
+        if isinstance(exc, ValidationError):
+            # Format the validation errors
+            custom_response = format_validation_error(exc.detail)
+            # Create a new response with the formatted validation errors
+            response = Response(custom_response, status=response.status_code)
+        return response
+
     def get_queryset(self):
         cart_id = self.kwargs.get("cart_pk")
         queryset = CartItem.objects.filter(cart__id=cart_id).select_related(
@@ -145,4 +163,10 @@ class CartItemViewSet(CustomResponseMixin, ModelViewSet):
         )
         return queryset
 
-    serializer_class = CartItemSerializer
+    def get_serializer_class(self):
+        if self.request.method == "POST":
+            return AddCartItemSerializer
+        return CartItemSerializer
+
+    def get_serializer_context(self):
+        return {"cart_id": self.kwargs["cart_pk"]}

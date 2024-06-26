@@ -36,7 +36,7 @@ def format_response_data(message, data, status_code):
     }
 
 
-# Class for overriding list and retrieve method of viewsets
+# Class for overriding list,retrieve,create and destroy methods of viewsets
 class CustomResponseMixin:
     list_message = "All the items are fetched successfully"
     retrieve_message = "The item is fetched successfully"

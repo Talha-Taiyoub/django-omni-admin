@@ -164,6 +164,40 @@ class CartItemSerializer(serializers.ModelSerializer):
         return discounted_price * item.quantity
 
 
+class AddCartItemSerializer(serializers.ModelSerializer):
+    room_category_id = serializers.IntegerField()
+
+    class Meta:
+        model = CartItem
+        fields = ["id", "room_category_id", "quantity"]
+
+    # Validating room_category_id that if it exists or not
+    def validate_room_category_id(self, value):
+        if not RoomCategory.objects.filter(pk=value).exists():
+            raise serializers.ValidationError(
+                "No room category was found with this id."
+            )
+        return value
+
+    def create(self, validated_data):
+        cart_id = self.context["cart_id"]
+        room_category_id = validated_data["room_category_id"]
+        quantity = validated_data["quantity"]
+        # At first, let's check same room_category is already listed under same cart or not?
+        try:
+            cart_item = CartItem.objects.get(
+                cart_id=cart_id, room_category_id=room_category_id
+            )
+            # If listed, we will just increase the quantity instead of creating another cart_item with same cart and same room category.
+            cart_item.quantity += quantity
+            cart_item.save()
+        except CartItem.DoesNotExist:
+            # If not listed, we will create a new cart item.
+            cart_item = CartItem.objects.create(cart_id=cart_id, **validated_data)
+
+        return cart_item
+
+
 class CartSerializer(serializers.ModelSerializer):
     items = CartItemSerializer(many=True, read_only=True)
     id = serializers.UUIDField(read_only=True)
