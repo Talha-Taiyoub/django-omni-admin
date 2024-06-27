@@ -229,7 +229,24 @@ class CartSerializer(serializers.ModelSerializer):
         return total_price
 
 
+class VerySimpleRoomCategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RoomCategory
+        fields = ["room_name"]
+
+
+class BookingItemSerializer(serializers.ModelSerializer):
+    room_category = VerySimpleRoomCategorySerializer(read_only=True)
+
+    class Meta:
+        model = BookingItem
+        fields = ["id", "room_category", "assigned_room", "price"]
+
+
 class BookingSerializer(serializers.ModelSerializer):
+    bookingitem_set = BookingItemSerializer(many=True, read_only=True)
+    branch = serializers.StringRelatedField(read_only=True)
+
     class Meta:
         model = Booking
         fields = [
@@ -240,13 +257,16 @@ class BookingSerializer(serializers.ModelSerializer):
             "status",
             "check_in",
             "check_out",
+            "branch",
             "additional_info",
             "placed_at",
+            "bookingitem_set",
         ]
 
 
 class CreateBookingSerializer(serializers.ModelSerializer):
     cart_id = serializers.UUIDField(write_only=True)
+    branch_id = serializers.IntegerField(write_only=True)
 
     class Meta:
         model = Booking
@@ -257,6 +277,7 @@ class CreateBookingSerializer(serializers.ModelSerializer):
             "mobile",
             "check_in",
             "check_out",
+            "branch_id",
             "additional_info",
         ]
 
@@ -265,9 +286,15 @@ class CreateBookingSerializer(serializers.ModelSerializer):
     def validate(self, data):
         check_in = data.get("check_in")
         check_out = data.get("check_out")
+        branch_id = data.get("branch_id")
         if check_out <= check_in:
             raise serializers.ValidationError(
                 {"check_out": "Check out date must be greater than check in date"}
+            )
+
+        elif not Branch.objects.filter(pk=branch_id).exists():
+            raise serializers.ValidationError(
+                {"branch_id": "There is no branch with this id"}
             )
         return data
 

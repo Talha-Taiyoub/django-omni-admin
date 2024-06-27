@@ -276,6 +276,7 @@ class Booking(models.Model):
     )
     check_in = models.DateField()
     check_out = models.DateField()
+    branch = models.ForeignKey(Branch, on_delete=models.CASCADE)
     additional_info = models.TextField(null=True, blank=True)
     placed_at = models.DateTimeField(auto_now_add=True)
 
@@ -308,7 +309,12 @@ class BookingItem(models.Model):
         unique_together = ["booking", "assigned_room"]
 
     def __str__(self):
-        return f"{self.booking.full_name} booked room number {self.assigned_room.room_number}"
+        booking_name = self.booking.full_name
+        # What if assigned room is Null? To handle this we should write it in this way
+        room_number = (
+            self.assigned_room.room_number if self.assigned_room else "No room assigned"
+        )
+        return f"{booking_name} booked room number {room_number}"
 
 
 class Billing(models.Model):
