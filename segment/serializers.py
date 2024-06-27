@@ -241,9 +241,17 @@ class BookingItemSerializer(serializers.ModelSerializer):
         fields = ["id", "room_category", "assigned_room", "price"]
 
     room_category = serializers.SerializerMethodField(method_name="get_room_category")
+    assigned_room = serializers.SerializerMethodField(method_name="get_room_number")
 
-    def get_room_category(self, instance):
+    def get_room_category(self, instance: BookingItem):
         return instance.room_category.room_name
+
+    def get_room_number(self, instance: BookingItem):
+        return (
+            instance.assigned_room.room_number
+            if instance.assigned_room
+            else "To be announced"
+        )
 
 
 class BookingSerializer(serializers.ModelSerializer):

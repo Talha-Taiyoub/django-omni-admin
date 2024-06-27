@@ -174,11 +174,18 @@ class CartItemViewSet(CustomResponseMixin, ModelViewSet):
 
 
 class BookingViewSet(CustomResponseMixin, ModelViewSet):
-    queryset = (
-        Booking.objects.all()
-        .select_related("branch")
-        .prefetch_related("bookingitem_set__room_category")
-    )
+
+    def get_queryset(self):
+        guest = self.request.user.guest
+        queryset = (
+            Booking.objects.filter(guest_id=guest.id)
+            .select_related("branch")
+            .prefetch_related(
+                "bookingitem_set__room_category", "bookingitem_set__assigned_room"
+            )
+            .order_by("-placed_at")
+        )
+        return queryset
 
     def get_serializer_class(self):
         if self.request.method == "POST":
