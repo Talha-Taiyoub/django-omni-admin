@@ -280,7 +280,7 @@ class Booking(models.Model):
     placed_at = models.DateTimeField(auto_now_add=True)
 
     # Clean method is applied in the admin section, not in api layer. So, this will maintain data integrity if the input is taken from the admin panel.
-    # To maintain data integrity in api layer, you have to override validate method of the serializer.
+    # To maintain data integrity in api layer, you have to override validate method of the serializer using proper logics.
     def clean(self):
         super().clean()
         if self.check_out <= self.check_in:
