@@ -2,6 +2,8 @@ from rest_framework import serializers
 
 from .models import (
     Amenities,
+    Booking,
+    BookingItem,
     Branch,
     BranchSlider,
     Cart,
@@ -225,3 +227,32 @@ class CartSerializer(serializers.ModelSerializer):
             discounted_price = item.room_category.regular_price - discount_amount
             total_price += discounted_price * item.quantity
         return total_price
+
+
+class BookingSerializer(serializers.ModelSerializer):
+    status = serializers.CharField(read_only=True)
+
+    class Meta:
+        model = Booking
+        fields = [
+            "id",
+            "full_name",
+            "email",
+            "mobile",
+            "check_in",
+            "check_out",
+            "status",
+            "additional_info",
+            "placed_at",
+        ]
+
+    # The validate method is called after all the field validations is executed.
+    # So don't worry about other validation logics that you defined in the fields of the model.
+    def validate(self, data):
+        check_in = data.get("check_in")
+        check_out = data.get("check_out")
+        if check_out <= check_in:
+            raise serializers.ValidationError(
+                {"check_out": "Check out date must be greater than check in date"}
+            )
+        return data

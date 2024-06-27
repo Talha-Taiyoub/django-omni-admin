@@ -31,6 +31,7 @@ from .models import (
 from .paginations import CustomPagination
 from .serializers import (
     AddCartItemSerializer,
+    BookingSerializer,
     BranchSerializer,
     BranchSliderSerializer,
     CartItemSerializer,
@@ -169,3 +170,8 @@ class CartItemViewSet(CustomResponseMixin, ModelViewSet):
     delete_message = "The room is removed from the cart successfully"
     retrieve_error_message = "No cart item is found with this id"
     post_create_and_post_update_serializer = CartItemSerializer
+
+
+class BookingViewSet(CustomResponseMixin, ModelViewSet):
+    queryset = Booking.objects.all()
+    serializer_class = BookingSerializer
