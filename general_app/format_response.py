@@ -66,7 +66,7 @@ class CustomResponseMixin:
             # Format the validation errors
             custom_response = format_validation_error(exc.detail)
             # Create a new response with the formatted validation errors
-            return Response(custom_response, status=response.status_code)
+            return Response(custom_response, status=status.HTTP_400_BAD_REQUEST)
         else:
             return response
 
