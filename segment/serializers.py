@@ -236,11 +236,14 @@ class VerySimpleRoomCategorySerializer(serializers.ModelSerializer):
 
 
 class BookingItemSerializer(serializers.ModelSerializer):
-    room_category = VerySimpleRoomCategorySerializer(read_only=True)
-
     class Meta:
         model = BookingItem
         fields = ["id", "room_category", "assigned_room", "price"]
+
+    room_category = serializers.SerializerMethodField(method_name="get_room_category")
+
+    def get_room_category(self, instance):
+        return instance.room_category.room_name
 
 
 class BookingSerializer(serializers.ModelSerializer):
