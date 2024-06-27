@@ -36,6 +36,7 @@ from .serializers import (
     BranchSliderSerializer,
     CartItemSerializer,
     CartSerializer,
+    CreateBookingSerializer,
     DestinationSerializer,
     RoomCategorySerializer,
     UpdateCartItemSerializer,
@@ -174,4 +175,13 @@ class CartItemViewSet(CustomResponseMixin, ModelViewSet):
 
 class BookingViewSet(CustomResponseMixin, ModelViewSet):
     queryset = Booking.objects.all()
-    serializer_class = BookingSerializer
+
+    def get_serializer_class(self):
+        if self.request.method == "POST":
+            return CreateBookingSerializer
+        return BookingSerializer
+
+    create_message = (
+        "We've received your booking. Very soon you will get a call from our staff."
+    )
+    post_create_and_post_update_serializer = BookingSerializer

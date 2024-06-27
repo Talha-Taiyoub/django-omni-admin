@@ -230,8 +230,6 @@ class CartSerializer(serializers.ModelSerializer):
 
 
 class BookingSerializer(serializers.ModelSerializer):
-    status = serializers.CharField(read_only=True)
-
     class Meta:
         model = Booking
         fields = [
@@ -239,11 +237,27 @@ class BookingSerializer(serializers.ModelSerializer):
             "full_name",
             "email",
             "mobile",
+            "status",
             "check_in",
             "check_out",
-            "status",
             "additional_info",
             "placed_at",
+        ]
+
+
+class CreateBookingSerializer(serializers.ModelSerializer):
+    cart_id = serializers.UUIDField(write_only=True)
+
+    class Meta:
+        model = Booking
+        fields = [
+            "cart_id",
+            "full_name",
+            "email",
+            "mobile",
+            "check_in",
+            "check_out",
+            "additional_info",
         ]
 
     # The validate method is called after all the field validations is executed.
@@ -256,3 +270,44 @@ class BookingSerializer(serializers.ModelSerializer):
                 {"check_out": "Check out date must be greater than check in date"}
             )
         return data
+
+    def create(self, validated_data):
+        guest = self.context["request"].user.guest
+        cart_id = validated_data.pop("cart_id")
+
+        # Check cart exists or not
+        try:
+            cart = Cart.objects.get(pk=cart_id)
+        except Cart.DoesNotExist:
+            raise serializers.ValidationError(
+                {"cart_id": "There is no cart with this id"}
+            )
+
+        cart_items = CartItem.objects.filter(cart_id=cart_id)
+        if cart_items.count() < 1:
+            raise serializers.ValidationError(
+                {"cart_id": "There is no item in the cart"}
+            )
+
+        booking = Booking.objects.create(guest=guest, **validated_data)
+        booking_items = []
+
+        for item in cart_items:
+            discount_amount = item.room_category.regular_price * (
+                item.room_category.discount_in_percentage / 100
+            )
+            discounted_price = item.room_category.regular_price - discount_amount
+            booking_items.extend(
+                [
+                    BookingItem(
+                        booking=booking,
+                        room_category=item.room_category,
+                        price=discounted_price,
+                    )
+                    for _ in range(item.quantity)
+                ]
+            )
+
+        BookingItem.objects.bulk_create(booking_items)
+        cart.delete()
+        return booking
