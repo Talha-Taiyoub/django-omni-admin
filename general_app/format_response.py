@@ -62,13 +62,13 @@ class CustomResponseMixin:
             return Response(custom_response, status=status.HTTP_404_NOT_FOUND)
 
         # Check if the exception is a validation error
-        if isinstance(exc, ValidationError):
+        elif isinstance(exc, ValidationError):
             # Format the validation errors
             custom_response = format_validation_error(exc.detail)
             # Create a new response with the formatted validation errors
             return Response(custom_response, status=response.status_code)
-
-        return response
+        else:
+            return response
 
     def list(self, request, *args, **kwargs):
         response = super().list(request, *args, **kwargs)
