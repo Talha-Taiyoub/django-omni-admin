@@ -22,10 +22,12 @@ class RestaurantAdmin(admin.ModelAdmin):
         "created_at",
     ]
 
+    list_select_related = ["branch"]
+
 
 @admin.register(models.Cuisine)
 class CuisineAdmin(admin.ModelAdmin):
-    list_display = ["id", "name"]
+    list_display = ["id", "name", "created_at"]
 
 
 @admin.register(models.RestaurantCuisine)

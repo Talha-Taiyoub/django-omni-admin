@@ -43,3 +43,6 @@ class RestaurantCuisine(models.Model):
         Restaurant, on_delete=models.CASCADE, related_name="cuisines"
     )
     cuisine = models.ForeignKey(Cuisine, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ["restaurant", "cuisine"]
