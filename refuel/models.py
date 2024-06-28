@@ -1,3 +1,4 @@
+from django.core.validators import MinValueValidator
 from django.db import models
 
 from segment.models import Branch
@@ -49,3 +50,42 @@ class RestaurantCuisine(models.Model):
 
     class Meta:
         unique_together = ["restaurant", "cuisine"]
+
+
+class Reservation(models.Model):
+    PENDING = "Pending"
+    CONFIRMED = "Confirmed"
+    COMPLETED = "Completed"
+    CANCELLED = "Cancelled"
+    RESERVATION_STATUS_CHOICES = [
+        (PENDING, "Pending"),
+        (CONFIRMED, "Confirmed"),
+        (COMPLETED, "Completed"),
+        (CANCELLED, "Cancelled"),
+    ]
+
+    PAYMENT_STATUS_CHOICES = [
+        (PENDING, "Pending"),
+        (CONFIRMED, "Confirmed"),
+        (CANCELLED, "Cancelled"),
+    ]
+
+    restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
+    status = models.CharField(
+        max_length=15, choices=RESERVATION_STATUS_CHOICES, default=PENDING
+    )
+    name = models.CharField(max_length=100)
+    email = models.EmailField()
+    mobile = models.CharField(max_length=14)
+    number_of_people = models.IntegerField(
+        validators=[MinValueValidator(1)], null=True, blank=True
+    )
+    reservation_date = models.DateField()
+    reservation_time = models.TimeField()
+    # in dashboard we will use this field against reservation description
+    additional_information = models.TextField(null=True, blank=True)
+    total_bill = models.DecimalField(max_digits=9, decimal_places=2, default=0)
+    payment_status = models.CharField(
+        max_length=15, choices=PAYMENT_STATUS_CHOICES, default=PENDING
+    )
+    placed_at = models.DateTimeField(auto_now_add=True)

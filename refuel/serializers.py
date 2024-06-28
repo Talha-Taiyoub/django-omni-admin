@@ -3,7 +3,7 @@ from rest_framework import serializers
 
 from segment.models import Branch
 
-from .models import Gallery, Restaurant, RestaurantCuisine
+from .models import Gallery, Reservation, Restaurant, RestaurantCuisine
 
 
 class RestaurantCuisineSerializer(serializers.ModelSerializer):
@@ -51,4 +51,27 @@ class RestaurantSerializer(serializers.ModelSerializer):
             "dinner_closing",
             "discount_in_percentage",
             "created_at",
+        ]
+
+
+class ReservationSerializer(serializers.ModelSerializer):
+    restaurant_id = serializers.IntegerField(write_only=True)
+    restaurant = serializers.StringRelatedField(read_only=True)
+    status = serializers.CharField(read_only=True)
+
+    class Meta:
+        model = Reservation
+        fields = [
+            "id",
+            "name",
+            "email",
+            "mobile",
+            "restaurant_id",
+            "restaurant",
+            "status",
+            "number_of_people",
+            "reservation_date",
+            "reservation_time",
+            "additional_information",
+            "placed_at",
         ]
