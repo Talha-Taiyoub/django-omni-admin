@@ -230,10 +230,10 @@ class CartSerializer(serializers.ModelSerializer):
         return total_price
 
 
-class VerySimpleRoomCategorySerializer(serializers.ModelSerializer):
+class BillingSerializer(serializers.ModelSerializer):
     class Meta:
-        model = RoomCategory
-        fields = ["room_name"]
+        model = Billing
+        fields = ["id", "payment_status", "sub_total", "paid", "total_due"]
 
 
 class BookingItemSerializer(serializers.ModelSerializer):
@@ -258,6 +258,7 @@ class BookingItemSerializer(serializers.ModelSerializer):
 class BookingSerializer(serializers.ModelSerializer):
     bookingitem_set = BookingItemSerializer(many=True, read_only=True)
     branch = serializers.StringRelatedField(read_only=True)
+    billing = BillingSerializer(read_only=True)
 
     class Meta:
         model = Booking
@@ -273,6 +274,7 @@ class BookingSerializer(serializers.ModelSerializer):
             "additional_info",
             "placed_at",
             "bookingitem_set",
+            "billing",
         ]
 
 
