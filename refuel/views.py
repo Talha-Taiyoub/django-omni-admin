@@ -33,6 +33,8 @@ class RestaurantViewSet(CustomResponseMixin, ModelViewSet):
     retrieve_error_message = "There is no restaurant with this id"
 
 
-class ReservationViewSet(ModelViewSet):
-    queryset = Reservation.objects.all()
+class ReservationViewSet(CustomResponseMixin, ModelViewSet):
+    http_method_names = ["post"]
+    queryset = Reservation.objects.all().select_related("restaurant")
     serializer_class = ReservationSerializer
+    create_message = "We have received your reservation request. You will get a call from our staff very soon."
