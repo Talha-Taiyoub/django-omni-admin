@@ -75,3 +75,8 @@ class ReservationSerializer(serializers.ModelSerializer):
             "additional_information",
             "placed_at",
         ]
+
+    def validate_restaurant_id(self, value):
+        if not Restaurant.objects.filter(pk=value).exists():
+            raise serializers.ValidationError("There is no restaurant with this id")
+        return value

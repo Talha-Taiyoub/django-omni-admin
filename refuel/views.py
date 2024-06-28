@@ -2,9 +2,9 @@ from rest_framework.viewsets import ModelViewSet
 
 from general_app.format_response import CustomResponseMixin
 
-from .models import Restaurant
+from .models import Reservation, Restaurant
 from .paginations import CustomPagination
-from .serializers import RestaurantSerializer
+from .serializers import ReservationSerializer, RestaurantSerializer
 
 # Create your views here.
 
@@ -31,3 +31,8 @@ class RestaurantViewSet(CustomResponseMixin, ModelViewSet):
     list_message = "All the restaurants are fetched successfully"
     retrieve_message = "The restaurant is fetched successfully"
     retrieve_error_message = "There is no restaurant with this id"
+
+
+class ReservationViewSet(ModelViewSet):
+    queryset = Reservation.objects.all()
+    serializer_class = ReservationSerializer
