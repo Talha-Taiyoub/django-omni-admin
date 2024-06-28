@@ -335,6 +335,7 @@ class Billing(models.Model):
     total = models.DecimalField(
         max_digits=9, decimal_places=2, validators=[MinValueValidator(1)]
     )
+    # This discount is extra discount given by the staff from the admin or dashboard
     discount = models.DecimalField(max_digits=9, decimal_places=2, default=0)
     paid = models.DecimalField(max_digits=9, decimal_places=2, default=0)
     created_at = models.DateTimeField(auto_now_add=True)
