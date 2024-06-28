@@ -2,6 +2,7 @@ from rest_framework import serializers
 
 from .models import (
     Amenities,
+    Billing,
     Booking,
     BookingItem,
     Branch,
@@ -329,12 +330,13 @@ class CreateBookingSerializer(serializers.ModelSerializer):
 
         booking = Booking.objects.create(guest=guest, **validated_data)
         booking_items = []
-
+        total_price = 0  # We will use it in Billing object creation
         for item in cart_items:
             discount_amount = item.room_category.regular_price * (
                 item.room_category.discount_in_percentage / 100
             )
             discounted_price = item.room_category.regular_price - discount_amount
+            total_price += discounted_price * item.quantity
             booking_items.extend(
                 [
                     BookingItem(
@@ -347,5 +349,6 @@ class CreateBookingSerializer(serializers.ModelSerializer):
             )
 
         BookingItem.objects.bulk_create(booking_items)
+        Billing.objects.create(booking=booking, total=total_price)
         cart.delete()
         return booking
