@@ -7,6 +7,7 @@ from rest_framework.mixins import (
     DestroyModelMixin,
     RetrieveModelMixin,
 )
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet, ModelViewSet
 
@@ -174,6 +175,8 @@ class CartItemViewSet(CustomResponseMixin, ModelViewSet):
 
 
 class BookingViewSet(CustomResponseMixin, ModelViewSet):
+    http_method_names = ["get", "post"]
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         guest = self.request.user.guest
@@ -193,4 +196,8 @@ class BookingViewSet(CustomResponseMixin, ModelViewSet):
         return BookingSerializer
 
     create_message = "We've received your booking request. You will get a call from our staff very soon."
+    list_message = "All the bookings are fetched successfully"
+    retrieve_message = "The booking is fetched successfully"
+    retrieve_error_message = "This user has no booking with this booking id"
     post_create_and_post_update_serializer = BookingSerializer
+    pagination_class = CustomPagination

@@ -1,5 +1,5 @@
 from django.http import Http404
-from rest_framework import status
+from rest_framework import exceptions, status
 from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
 
@@ -52,8 +52,18 @@ class CustomResponseMixin:
         # Call parent's handle_exception to get the standard error response
         response = super().handle_exception(exc)
 
+        if isinstance(
+            exc, (exceptions.NotAuthenticated, exceptions.AuthenticationFailed)
+        ):
+            custom_response = format_error_data(
+                message="Authentication credentials are not provided",
+                errors=[{"Log_In": ["You need to log in first"]}],
+                status_code=401,
+            )
+            return Response(custom_response, status=status.HTTP_401_UNAUTHORIZED)
+
         # Check if the exception is not found error
-        if isinstance(exc, Http404):
+        elif isinstance(exc, Http404):
             custom_response = format_error_data(
                 message=self.retrieve_error_message,
                 errors=[{"pk": ["Invalid id"]}],
