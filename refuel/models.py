@@ -21,6 +21,9 @@ class Restaurant(models.Model):
     dinner_closing = models.TimeField()
     created_at = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self) -> str:
+        return self.name
+
 
 class Gallery(models.Model):
     restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
@@ -30,6 +33,9 @@ class Gallery(models.Model):
 class Cuisine(models.Model):
     name = models.CharField(max_length=25)
     created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self) -> str:
+        return self.name
 
 
 class RestaurantCuisine(models.Model):
