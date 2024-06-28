@@ -70,13 +70,13 @@ class Reservation(models.Model):
         (CANCELLED, "Cancelled"),
     ]
 
+    name = models.CharField(max_length=100)
+    email = models.EmailField()
+    mobile = models.CharField(max_length=14)
     restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
     status = models.CharField(
         max_length=15, choices=RESERVATION_STATUS_CHOICES, default=PENDING
     )
-    name = models.CharField(max_length=100)
-    email = models.EmailField()
-    mobile = models.CharField(max_length=14)
     number_of_people = models.IntegerField(
         validators=[MinValueValidator(1)], null=True, blank=True
     )

@@ -41,3 +41,24 @@ class RestaurantCuisineAdmin(admin.ModelAdmin):
 class GalleryAdmin(admin.ModelAdmin):
     list_display = ["id", "restaurant", "image"]
     list_select_related = ["restaurant"]
+
+
+@admin.register(models.Reservation)
+class ReservationAdmin(admin.ModelAdmin):
+    list_display = [
+        "id",
+        "name",
+        "email",
+        "mobile",
+        "restaurant",
+        "status",
+        "number_of_people",
+        "reservation_date",
+        "reservation_time",
+        "additional_information",
+        "total_bill",
+        "payment_status",
+        "placed_at",
+    ]
+
+    list_select_related = ["restaurant"]
