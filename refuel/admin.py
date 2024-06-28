@@ -19,6 +19,7 @@ class RestaurantAdmin(admin.ModelAdmin):
         "lunch_closing",
         "dinner_opening",
         "dinner_closing",
+        "discount_in_percentage",
         "created_at",
     ]
 

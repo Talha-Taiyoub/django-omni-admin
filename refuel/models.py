@@ -19,6 +19,9 @@ class Restaurant(models.Model):
     lunch_closing = models.TimeField()
     dinner_opening = models.TimeField()
     dinner_closing = models.TimeField()
+    discount_in_percentage = models.DecimalField(
+        max_digits=9, decimal_places=2, default=0.00
+    )
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self) -> str:

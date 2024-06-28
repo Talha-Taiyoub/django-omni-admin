@@ -49,5 +49,6 @@ class RestaurantSerializer(serializers.ModelSerializer):
             "lunch_closing",
             "dinner_opening",
             "dinner_closing",
+            "discount_in_percentage",
             "created_at",
         ]
