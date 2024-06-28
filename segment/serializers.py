@@ -233,7 +233,7 @@ class CartSerializer(serializers.ModelSerializer):
 class BillingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Billing
-        fields = ["id", "payment_status", "sub_total", "paid", "total_due"]
+        fields = ["id", "payment_status", "subtotal", "paid", "total_due"]
 
 
 class BookingItemSerializer(serializers.ModelSerializer):

@@ -179,7 +179,7 @@ class BookingViewSet(CustomResponseMixin, ModelViewSet):
         guest = self.request.user.guest
         queryset = (
             Booking.objects.filter(guest_id=guest.id)
-            .select_related("branch")
+            .select_related("branch", "billing")
             .prefetch_related(
                 "bookingitem_set__room_category", "bookingitem_set__assigned_room"
             )
@@ -192,7 +192,5 @@ class BookingViewSet(CustomResponseMixin, ModelViewSet):
             return CreateBookingSerializer
         return BookingSerializer
 
-    create_message = (
-        "We've received your booking. Very soon you will get a call from our staff."
-    )
+    create_message = "We've received your booking request. You will get a call from our staff very soon."
     post_create_and_post_update_serializer = BookingSerializer
