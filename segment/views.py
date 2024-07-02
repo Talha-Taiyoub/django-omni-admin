@@ -4,7 +4,7 @@ from rest_framework.mixins import (
     DestroyModelMixin,
     RetrieveModelMixin,
 )
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.viewsets import GenericViewSet, ModelViewSet
 
 from general_app.format_response import CustomResponseMixin
@@ -17,6 +17,7 @@ from .models import (
     Cart,
     CartItem,
     Destination,
+    Review,
     Room,
     RoomCategory,
     TouristSpot,
@@ -31,6 +32,7 @@ from .serializers import (
     CartSerializer,
     CreateBookingSerializer,
     DestinationSerializer,
+    ReviewSerializer,
     RoomCategorySerializer,
     TouristSpotSerializer,
     UpdateCartItemSerializer,
@@ -211,3 +213,16 @@ class TouristSpotViewSet(CustomResponseMixin, ModelViewSet):
     list_message = "Fetched all the tourist spots successfully"
     retrieve_message = "Fetched the tourist spot successfully"
     retrieve_error_message = "There is no tourist spot listed with this id"
+
+
+class ReviewViewSet(CustomResponseMixin, ModelViewSet):
+    http_method_names = ["get", "post"]
+    queryset = Review.objects.all().order_by("-rating", "-created_at")
+    serializer_class = ReviewSerializer
+
+    def get_permissions(self):
+        if self.request.method == "POST":
+            return [IsAuthenticated()]
+        return [AllowAny()]
+
+    pagination_class = CustomPagination
