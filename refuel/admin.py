@@ -62,3 +62,32 @@ class ReservationAdmin(admin.ModelAdmin):
     ]
 
     list_select_related = ["restaurant"]
+
+
+@admin.register(models.Gender)
+class GenderAdmin(admin.ModelAdmin):
+    list_display = ["id", "name", "created_at"]
+
+
+@admin.register(models.GymGender)
+class GymGenderAdmin(admin.ModelAdmin):
+    list_display = ["id", "gym", "gender", "created_at"]
+    list_select_related = ["gym", "gender"]
+
+
+@admin.register(models.Gym)
+class GymAdmin(admin.ModelAdmin):
+    list_display = [
+        "id",
+        "name",
+        "branch",
+        "status",
+        "featured_image",
+        "area",
+        "fees",
+        "opening",
+        "closing",
+        "created_at",
+    ]
+
+    list_select_related = ["branch"]
