@@ -206,6 +206,7 @@ class BookingViewSet(CustomResponseMixin, ModelViewSet):
 
 
 class TouristSpotViewSet(CustomResponseMixin, ModelViewSet):
+    http_method_names = ["get"]
     queryset = TouristSpot.objects.all()
     serializer_class = TouristSpotSerializer
     pagination_class = CustomPagination
