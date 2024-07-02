@@ -43,14 +43,17 @@ class GymViewSet(CustomResponseMixin, ModelViewSet):
     http_method_names = ["get"]
 
     def get_queryset(self):
-        branch_id = self.kwargs.get("branch_pk")
+        branch_id = self.request.query_params.get("branch_id")
         queryset = (
-            Gym.objects.filter(branch_id=branch_id)
-            .filter(status="Active")
+            Gym.objects.filter(status="Active")
             .select_related("branch")
             .prefetch_related("gallery", "gender_allowance__gender")
             .order_by("-created_at")
         )
+
+        if branch_id is not None:
+            queryset = queryset.filter(branch_id=branch_id)
+
         return queryset
 
     serializer_class = GymSerializer
