@@ -89,3 +89,25 @@ class Reservation(models.Model):
         max_length=15, choices=PAYMENT_STATUS_CHOICES, default=PENDING
     )
     placed_at = models.DateTimeField(auto_now_add=True)
+
+
+class Gym(models.Model):
+    ACTIVE = "Active"
+    OUT_OF_ORDER = "Out Of Order"
+    GYM_STATUS_CHOICES = [(ACTIVE, "Active"), (OUT_OF_ORDER, "Out Of order")]
+
+    name = models.CharField(max_length=255)
+    branch = models.ForeignKey(Branch, on_delete=models.PROTECT)
+    status = models.CharField(max_length=15, choices=GYM_STATUS_CHOICES, default=ACTIVE)
+    featured_image = models.ImageField(upload_to="refuel/images")
+    overview = models.TextField()
+    area = models.PositiveSmallIntegerField()
+    fees = models.DecimalField(
+        max_digits=9, decimal_places=2, validators=[MinValueValidator(0)]
+    )
+    opening = models.TimeField()
+    closing = models.TimeField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self) -> str:
+        return self.name
