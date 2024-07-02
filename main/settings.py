@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     "community",
     "account",
     "general_app",  # customize app for general purpose
+    "common_use",
 ]
 
 MIDDLEWARE = [
