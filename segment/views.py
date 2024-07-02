@@ -210,7 +210,9 @@ class TouristSpotViewSet(CustomResponseMixin, ModelViewSet):
 
     def get_queryset(self):
         branch_id = self.kwargs.get("branch_pk")
-        queryset = TouristSpot.objects.filter(branch_id=branch_id)
+        queryset = TouristSpot.objects.filter(branch_id=branch_id).order_by(
+            "distance_from_hotel_in_km"
+        )
         return queryset
 
     serializer_class = TouristSpotSerializer
