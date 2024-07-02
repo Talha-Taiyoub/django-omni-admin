@@ -147,7 +147,6 @@ class GymMembershipSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         gym_id = self.context["gym_id"]
-        print("GYM ID", gym_id)
 
         try:
             gym = Gym.objects.get(pk=gym_id)

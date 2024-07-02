@@ -98,3 +98,21 @@ class GymAdmin(admin.ModelAdmin):
     ]
 
     list_select_related = ["branch"]
+
+
+@admin.register(models.GymMembership)
+class GymMembershipAdmin(admin.ModelAdmin):
+    list_display = fields = [
+        "id",
+        "gym",
+        "status",
+        "name",
+        "gender",
+        "age",
+        "mobile",
+        "email",
+        "monthly_fees",
+        "additional_info",
+        "created_at",
+    ]
+    list_select_related = ["gym"]
