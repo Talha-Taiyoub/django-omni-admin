@@ -131,10 +131,10 @@ class Gender(models.Model):
 
 
 class GymGender(models.Model):
-    gender = models.ForeignKey(
-        Gender, on_delete=models.CASCADE, related_name="gender_allowance"
+    gender = models.ForeignKey(Gender, on_delete=models.CASCADE)
+    gym = models.ForeignKey(
+        Gym, on_delete=models.CASCADE, related_name="gender_allowance"
     )
-    gym = models.ForeignKey(Gym, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:

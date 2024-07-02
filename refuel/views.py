@@ -2,9 +2,9 @@ from rest_framework.viewsets import ModelViewSet
 
 from general_app.format_response import CustomResponseMixin
 
-from .models import Reservation, Restaurant
+from .models import Gym, Reservation, Restaurant
 from .paginations import CustomPagination
-from .serializers import ReservationSerializer, RestaurantSerializer
+from .serializers import GymSerializer, ReservationSerializer, RestaurantSerializer
 
 # Create your views here.
 
@@ -14,7 +14,6 @@ class RestaurantViewSet(CustomResponseMixin, ModelViewSet):
 
     def get_queryset(self):
         branch_id = self.request.query_params.get("branch_id")
-        print("IM HERE", branch_id)
         queryset = (
             Restaurant.objects.filter(status="Active")
             .select_related("branch")
@@ -38,3 +37,23 @@ class ReservationViewSet(CustomResponseMixin, ModelViewSet):
     queryset = Reservation.objects.all().select_related("restaurant")
     serializer_class = ReservationSerializer
     create_message = "We have received your reservation request. You will get a call from our staff very soon."
+
+
+class GymViewSet(CustomResponseMixin, ModelViewSet):
+    http_method_names = ["get"]
+
+    def get_queryset(self):
+        branch_id = self.kwargs.get("branch_pk")
+        queryset = (
+            Gym.objects.filter(branch_id=branch_id)
+            .filter(status="Active")
+            .select_related("branch")
+            .prefetch_related("gallery", "gender_allowance__gender")
+            .order_by("-created_at")
+        )
+        return queryset
+
+    serializer_class = GymSerializer
+    list_message = "All the gyms are fetched successfully"
+    retrieve_message = "The gym is fetched successfully"
+    retrieve_error_message = "There is no gym listed with this id"
