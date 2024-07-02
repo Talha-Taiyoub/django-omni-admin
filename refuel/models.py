@@ -1,4 +1,4 @@
-from django.core.validators import MinValueValidator
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 
 from segment.models import Branch
@@ -142,3 +142,33 @@ class GymGender(models.Model):
 
     class Meta:
         unique_together = ["gender", "gym"]
+
+
+class GymMembership(models.Model):
+    PENDING = "Pending"
+    CONFIRMED = "Confirmed"
+    COMPLETED = "Completed"
+    STATUS_CHOICES = [
+        (PENDING, "Pending"),
+        (CONFIRMED, "Confirmed"),
+        (COMPLETED, "Completed"),
+    ]
+
+    MALE = "Male"
+    FEMALE = "Female"
+    GENDER_CHOICES = [(MALE, "Male"), (FEMALE, "Female")]
+
+    gym = models.ForeignKey(Gym, on_delete=models.CASCADE, related_name="memberships")
+    status = models.CharField(max_length=15, choices=STATUS_CHOICES, default=PENDING)
+    name = models.CharField(max_length=99)
+    gender = models.CharField(max_length=6, choices=GENDER_CHOICES)
+    age = models.PositiveSmallIntegerField(
+        validators=[MinValueValidator(4), MaxValueValidator(100)]
+    )
+    mobile = models.CharField(max_length=14)
+    email = models.EmailField()
+    monthly_fees = models.DecimalField(
+        max_digits=9, decimal_places=2, validators=[MinValueValidator(0)]
+    )
+    additional_info = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
