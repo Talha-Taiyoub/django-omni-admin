@@ -374,8 +374,11 @@ class TouristSpotSerializer(serializers.ModelSerializer):
 
 
 class ReviewSerializer(serializers.ModelSerializer):
-    guest_id = serializers.IntegerField(write_only=True)
-
     class Meta:
         model = Review
-        fields = ["id", "guest_id", "rating", "description", "created_at"]
+        fields = ["id", "rating", "description", "created_at"]
+
+    def create(self, validated_data):
+        guest = self.context["request"].user.guest
+        review = Review.objects.create(guest=guest, **validated_data)
+        return review
