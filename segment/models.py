@@ -366,12 +366,13 @@ class Billing(models.Model):
 class TouristSpot(models.Model):
     name = models.CharField(max_length=255)
     branch = models.ForeignKey(Branch, on_delete=models.CASCADE)
-    distance_from_hotel = models.DecimalField(
+    distance_from_hotel_in_km = models.DecimalField(
         max_digits=5, decimal_places=2, validators=[MinValueValidator(0)]
     )
     featured_image = models.ImageField(
         upload_to="segment/images", validators=[image_max_size]
     )
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self) -> str:
         return self.name

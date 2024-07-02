@@ -15,6 +15,7 @@ from .models import (
     Room,
     RoomAmenities,
     RoomCategory,
+    TouristSpot,
 )
 
 
@@ -356,3 +357,15 @@ class CreateBookingSerializer(serializers.ModelSerializer):
             Billing.objects.create(booking=booking, total=total_price)
             cart.delete()
             return booking
+
+
+class TouristSpotSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TouristSpot
+        fields = [
+            "id",
+            "name",
+            "distance_from_hotel_in_km",
+            "featured_image",
+            "created_at",
+        ]
