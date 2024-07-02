@@ -1,8 +1,8 @@
 from uuid import uuid4
 
 from django.core.exceptions import ValidationError
-from django.core.validators import MinValueValidator, RegexValidator
-from django.db import IntegrityError, models
+from django.core.validators import MinValueValidator
+from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from community.models import Guest, Staff
@@ -361,3 +361,17 @@ class Billing(models.Model):
             raise ValidationError(
                 {"paid": _("Paid amount cannot be greater than the charge.")}
             )
+
+
+class TouristSpot(models.Model):
+    name = models.CharField(max_length=255)
+    branch = models.ForeignKey(Branch, on_delete=models.CASCADE)
+    distance_from_hotel = models.DecimalField(
+        max_digits=5, decimal_places=2, validators=[MinValueValidator(0)]
+    )
+    featured_image = models.ImageField(
+        upload_to="segment/images", validators=[image_max_size]
+    )
+
+    def __str__(self) -> str:
+        return self.name
