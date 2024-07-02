@@ -176,3 +176,17 @@ class CartItemAdmin(admin.ModelAdmin):
         )
         discounted_price = item.room_category.regular_price - discount_amount
         return discounted_price * item.quantity
+
+
+@admin.register(models.TouristSpot)
+class TouristSpotAdmin(admin.ModelAdmin):
+    list_display = [
+        "id",
+        "name",
+        "branch",
+        "distance_from_hotel_in_km",
+        "featured_image",
+        "created_at",
+    ]
+
+    list_select_related = ["branch"]

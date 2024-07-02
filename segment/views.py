@@ -210,6 +210,6 @@ class TouristSpotViewSet(CustomResponseMixin, ModelViewSet):
     queryset = TouristSpot.objects.all()
     serializer_class = TouristSpotSerializer
     pagination_class = CustomPagination
-    list_message = "Fetched all the nearby attractions successfully"
-    retrieve_message = "Fetched the nearby attraction successfully"
-    retrieve_error_message = "There is no nearby attraction listed with this id"
+    list_message = "Fetched all the tourist spots successfully"
+    retrieve_message = "Fetched the tourist spot successfully"
+    retrieve_error_message = "There is no tourist spot listed with this id"

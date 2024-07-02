@@ -15,7 +15,10 @@ branch_router = NestedDefaultRouter(router, "branches", lookup="branch")
 branch_router.register(
     "room_categories", views.RoomCategoryViewSet, basename="room_category"
 )
-branch_router.register("attractions", views.TouristSpotViewSet, basename="attraction")
+
+branch_router.register(
+    "tourist_spots", views.TouristSpotViewSet, basename="tourist_spot"
+)
 
 cart_router = NestedDefaultRouter(router, "carts", lookup="cart")
 cart_router.register("cartitems", views.CartItemViewSet, basename="cart_item")
