@@ -93,6 +93,7 @@ class GymAdmin(admin.ModelAdmin):
         "fees",
         "opening",
         "closing",
+        "discount_in_percentage",
         "created_at",
     ]
 

@@ -18,6 +18,7 @@ class RestaurantViewSet(CustomResponseMixin, ModelViewSet):
             Restaurant.objects.filter(status="Active")
             .select_related("branch")
             .prefetch_related("cuisines__cuisine", "gallery_set")
+            .order_by("-discount_in_percentage")
         )
 
         if branch_id is not None:
@@ -48,7 +49,7 @@ class GymViewSet(CustomResponseMixin, ModelViewSet):
             Gym.objects.filter(status="Active")
             .select_related("branch")
             .prefetch_related("gallery", "gender_allowance__gender")
-            .order_by("-created_at")
+            .order_by("-discount_in_percentage")
         )
 
         if branch_id is not None:
