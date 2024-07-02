@@ -1,6 +1,8 @@
 from django.db import transaction
 from rest_framework import serializers
 
+from common_use.serializers import SimpleGuestSerializer
+
 from .models import (
     Amenities,
     Billing,
@@ -374,9 +376,11 @@ class TouristSpotSerializer(serializers.ModelSerializer):
 
 
 class ReviewSerializer(serializers.ModelSerializer):
+    guest = SimpleGuestSerializer(read_only=True)
+
     class Meta:
         model = Review
-        fields = ["id", "rating", "description", "created_at"]
+        fields = ["id", "guest", "rating", "description", "created_at"]
 
     def create(self, validated_data):
         guest = self.context["request"].user.guest

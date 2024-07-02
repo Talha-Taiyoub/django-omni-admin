@@ -217,7 +217,9 @@ class TouristSpotViewSet(CustomResponseMixin, ModelViewSet):
 
 class ReviewViewSet(CustomResponseMixin, ModelViewSet):
     http_method_names = ["get", "post"]
-    queryset = Review.objects.all().order_by("-rating", "-created_at")
+    queryset = (
+        Review.objects.all().select_related("guest").order_by("-rating", "-created_at")
+    )
     serializer_class = ReviewSerializer
 
     def get_permissions(self):
@@ -226,3 +228,7 @@ class ReviewViewSet(CustomResponseMixin, ModelViewSet):
         return [AllowAny()]
 
     pagination_class = CustomPagination
+    list_message = "All the reviews are fetched successfully"
+    retrieve_message = "The review is fetched successfully"
+    create_message = "The review is created successfully"
+    retrieve_error_message = "There is no review listed with this id"
