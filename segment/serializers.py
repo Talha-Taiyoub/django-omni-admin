@@ -365,6 +365,7 @@ class TouristSpotSerializer(serializers.ModelSerializer):
         fields = [
             "id",
             "name",
+            "branch_id",
             "distance_from_hotel_in_km",
             "featured_image",
             "created_at",

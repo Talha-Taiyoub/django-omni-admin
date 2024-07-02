@@ -207,7 +207,12 @@ class BookingViewSet(CustomResponseMixin, ModelViewSet):
 
 class TouristSpotViewSet(CustomResponseMixin, ModelViewSet):
     http_method_names = ["get"]
-    queryset = TouristSpot.objects.all()
+
+    def get_queryset(self):
+        branch_id = self.kwargs.get("branch_pk")
+        queryset = TouristSpot.objects.filter(branch_id=branch_id)
+        return queryset
+
     serializer_class = TouristSpotSerializer
     pagination_class = CustomPagination
     list_message = "Fetched all the tourist spots successfully"
