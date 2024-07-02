@@ -2,7 +2,16 @@ from rest_framework import serializers
 
 from common_use.serializers import VerySimpleBranchSerializer
 
-from .models import Gallery, Reservation, Restaurant, RestaurantCuisine
+from .models import (
+    Gallery,
+    Gender,
+    Gym,
+    GymGallery,
+    GymGender,
+    Reservation,
+    Restaurant,
+    RestaurantCuisine,
+)
 
 
 class RestaurantCuisineSerializer(serializers.ModelSerializer):
@@ -72,3 +81,41 @@ class ReservationSerializer(serializers.ModelSerializer):
         if not Restaurant.objects.filter(pk=value).exists():
             raise serializers.ValidationError("There is no restaurant with this id")
         return value
+
+
+class GymGallerySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = GymGallery
+        fields = ["id", "image"]
+
+
+class GymGenderSerializer(serializers.ModelSerializer):
+    gender = serializers.StringRelatedField(read_only=True)
+
+    class Meta:
+        model = GymGender
+        fields = ["id", "gender"]
+
+
+class GymSerializer(serializers.ModelSerializer):
+    branch = VerySimpleBranchSerializer(read_only=True)
+    gallery = GymGallerySerializer(many=True, read_only=True)
+    gender_allowance = GymGenderSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Gym
+        fields = [
+            "id",
+            "name",
+            "branch",
+            "status",
+            "featured_image",
+            "overview",
+            "gallery",
+            "gender_allowance",
+            "area",
+            "fees",
+            "opening",
+            "closing",
+            "created_at",
+        ]
