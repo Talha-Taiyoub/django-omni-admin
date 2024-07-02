@@ -12,6 +12,7 @@ from .models import (
     CartItem,
     Destination,
     Gallery,
+    Review,
     Room,
     RoomAmenities,
     RoomCategory,
@@ -370,3 +371,11 @@ class TouristSpotSerializer(serializers.ModelSerializer):
             "featured_image",
             "created_at",
         ]
+
+
+class ReviewSerializer(serializers.ModelSerializer):
+    guest_id = serializers.IntegerField(write_only=True)
+
+    class Meta:
+        model = Review
+        fields = ["id", "guest_id", "rating", "description", "created_at"]
