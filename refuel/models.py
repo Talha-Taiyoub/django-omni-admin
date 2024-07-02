@@ -111,3 +111,31 @@ class Gym(models.Model):
 
     def __str__(self) -> str:
         return self.name
+
+
+class GymGallery(models.Model):
+    gym = models.ForeignKey(Gym, on_delete=models.CASCADE, related_name="gallery")
+    image = models.ImageField(upload_to="refuel/images")
+
+
+class Gender(models.Model):
+    MALE = "Male"
+    FEMALE = "Female"
+    GENDER_CHOICES = [(MALE, "Male"), (FEMALE, "Female")]
+
+    name = models.CharField(max_length=6, choices=GENDER_CHOICES, unique=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self) -> str:
+        return self.name
+
+
+class GymGender(models.Model):
+    gender = models.ForeignKey(
+        Gender, on_delete=models.CASCADE, related_name="gender_allowance"
+    )
+    gym = models.ForeignKey(Gym, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ["gender", "gym"]
