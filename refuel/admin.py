@@ -75,6 +75,12 @@ class GymGenderAdmin(admin.ModelAdmin):
     list_select_related = ["gym", "gender"]
 
 
+@admin.register(models.GymGallery)
+class GymGalleryAdmin(admin.ModelAdmin):
+    list_display = ["id", "gym", "image"]
+    list_select_related = ["gym"]
+
+
 @admin.register(models.Gym)
 class GymAdmin(admin.ModelAdmin):
     list_display = [
