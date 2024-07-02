@@ -60,3 +60,4 @@ class GymViewSet(CustomResponseMixin, ModelViewSet):
     list_message = "All the gyms are fetched successfully"
     retrieve_message = "The gym is fetched successfully"
     retrieve_error_message = "There is no gym listed with this id"
+    pagination_class = CustomPagination
