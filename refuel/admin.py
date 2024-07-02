@@ -102,7 +102,7 @@ class GymAdmin(admin.ModelAdmin):
 
 @admin.register(models.GymMembership)
 class GymMembershipAdmin(admin.ModelAdmin):
-    list_display = fields = [
+    list_display = [
         "id",
         "gym",
         "status",
