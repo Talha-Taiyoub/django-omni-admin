@@ -28,6 +28,7 @@ from .models import (
     Destination,
     Room,
     RoomCategory,
+    TouristSpot,
 )
 from .paginations import CustomPagination
 from .serializers import (
@@ -40,6 +41,7 @@ from .serializers import (
     CreateBookingSerializer,
     DestinationSerializer,
     RoomCategorySerializer,
+    TouristSpotSerializer,
     UpdateCartItemSerializer,
 )
 
@@ -201,3 +203,12 @@ class BookingViewSet(CustomResponseMixin, ModelViewSet):
     retrieve_error_message = "This user has no booking with this booking id"
     post_create_and_post_update_serializer = BookingSerializer
     pagination_class = CustomPagination
+
+
+class TouristSpotViewSet(CustomResponseMixin, ModelViewSet):
+    queryset = TouristSpot.objects.all()
+    serializer_class = TouristSpotSerializer
+    pagination_class = CustomPagination
+    list_message = "Fetched all the nearby attractions successfully"
+    retrieve_message = "Fetched the nearby attraction successfully"
+    retrieve_error_message = "There is no nearby attraction listed with this id"
