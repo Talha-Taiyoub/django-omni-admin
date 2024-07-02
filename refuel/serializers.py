@@ -1,7 +1,6 @@
-# To avoid circular dependencies, we will not use anything in segment.serializer from this module
 from rest_framework import serializers
 
-from segment.models import Branch
+from common_use.serializers import VerySimpleBranchSerializer
 
 from .models import Gallery, Reservation, Restaurant, RestaurantCuisine
 
@@ -18,13 +17,6 @@ class GallerySerializer(serializers.ModelSerializer):
     class Meta:
         model = Gallery
         fields = ["id", "image"]
-
-
-# I know I can inherit SimpleBranchSerializer from segments.serializer. But I want to keep it here.
-class VerySimpleBranchSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Branch
-        fields = ["id", "name"]
 
 
 class RestaurantSerializer(serializers.ModelSerializer):
