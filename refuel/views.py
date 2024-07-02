@@ -2,9 +2,14 @@ from rest_framework.viewsets import ModelViewSet
 
 from general_app.format_response import CustomResponseMixin
 
-from .models import Gym, Reservation, Restaurant
+from .models import Gym, GymMembership, Reservation, Restaurant
 from .paginations import CustomPagination
-from .serializers import GymSerializer, ReservationSerializer, RestaurantSerializer
+from .serializers import (
+    GymMembershipSerializer,
+    GymSerializer,
+    ReservationSerializer,
+    RestaurantSerializer,
+)
 
 # Create your views here.
 
@@ -62,3 +67,14 @@ class GymViewSet(CustomResponseMixin, ModelViewSet):
     retrieve_message = "The gym is fetched successfully"
     retrieve_error_message = "There is no gym listed with this id"
     pagination_class = CustomPagination
+
+
+class GymMembershipViewSet(CustomResponseMixin, ModelViewSet):
+    http_method_names = ["post"]
+    queryset = GymMembership.objects.all().select_related("gym")
+    serializer_class = GymMembershipSerializer
+
+    def get_serializer_context(self):
+        return {"gym_id": self.kwargs["gym_pk"]}
+
+    create_message = "We have received your membership request. You will get a call from our staff very soon."

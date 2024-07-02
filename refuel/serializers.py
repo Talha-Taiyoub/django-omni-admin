@@ -4,10 +4,10 @@ from common_use.serializers import VerySimpleBranchSerializer
 
 from .models import (
     Gallery,
-    Gender,
     Gym,
     GymGallery,
     GymGender,
+    GymMembership,
     Reservation,
     Restaurant,
     RestaurantCuisine,
@@ -120,3 +120,46 @@ class GymSerializer(serializers.ModelSerializer):
             "discount_in_percentage",
             "created_at",
         ]
+
+
+class GymMembershipSerializer(serializers.ModelSerializer):
+    gym = serializers.StringRelatedField(read_only=True)
+    status = serializers.CharField(max_length=15, read_only=True)
+    monthly_fees = serializers.DecimalField(
+        max_digits=9, decimal_places=2, read_only=True
+    )
+
+    class Meta:
+        model = GymMembership
+        fields = [
+            "id",
+            "gym",
+            "status",
+            "name",
+            "gender",
+            "age",
+            "mobile",
+            "email",
+            "monthly_fees",
+            "additional_info",
+            "created_at",
+        ]
+
+    def create(self, validated_data):
+        gym_id = self.context["gym_id"]
+        print("GYM ID", gym_id)
+
+        try:
+            gym = Gym.objects.get(pk=gym_id)
+        except Gym.DoesNotExist:
+            raise serializers.ValidationError(
+                {"gym_id": ["There is no gym listed with this id"]}
+            )
+
+        discount_amount = gym.fees * (gym.discount_in_percentage / 100)
+        discounted_fees = gym.fees - discount_amount
+
+        membership = GymMembership.objects.create(
+            monthly_fees=discounted_fees, gym=gym, **validated_data
+        )
+        return membership
