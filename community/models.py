@@ -30,7 +30,8 @@ class Guest(models.Model):
         ordering = ["name"]
 
     def __str__(self):
-        return f"{self.name}"
+        name = self.name if self.name else "name is not set yet"
+        return name
 
 
 ROLE_CHOICES = [
