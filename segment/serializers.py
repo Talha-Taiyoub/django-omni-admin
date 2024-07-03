@@ -386,3 +386,27 @@ class ReviewSerializer(serializers.ModelSerializer):
         guest = self.context["request"].user.guest
         review = Review.objects.create(guest=guest, **validated_data)
         return review
+
+
+class SpecialBranchSerializer(serializers.ModelSerializer):
+    destination = SimpleDestinationSerializer(read_only=True)
+    discount = serializers.DecimalField(max_digits=9, decimal_places=2, read_only=True)
+    roomcategory_set = SimpleRoomCategorySerializer(many=True)
+
+    class Meta:
+        model = Branch
+        fields = [
+            "id",
+            "name",
+            "nick_name",
+            "destination",
+            "initial",
+            "address",
+            "logo",
+            "overview",
+            "email",
+            "telephone",
+            "mobile",
+            "discount",
+            "roomcategory_set",
+        ]

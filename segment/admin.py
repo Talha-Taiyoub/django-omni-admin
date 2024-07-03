@@ -58,6 +58,7 @@ class RoomCategoryAdmin(admin.ModelAdmin):
         "created_at",
     ]
 
+    list_editable = ["status", "discount_in_percentage"]
     list_select_related = ["branch"]
     ordering = ["branch__name", "room_name", "status"]
 
@@ -102,6 +103,7 @@ class RoomAmenitiesAdmin(admin.ModelAdmin):
 class RoomAdmin(admin.ModelAdmin):
     list_display = ["id", "room_number", "room_category", "status", "created_at"]
     list_select_related = ["room_category", "room_category__branch"]
+    list_editable = ["status"]
 
     ordering = [
         "room_category__branch__name",

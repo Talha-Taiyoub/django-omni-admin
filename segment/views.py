@@ -1,13 +1,16 @@
-from django.db.models import Count, Q
+from django.db.models import Count, Max, OuterRef, Prefetch, Q, Subquery
+from rest_framework import status
+from rest_framework.decorators import action
 from rest_framework.mixins import (
     CreateModelMixin,
     DestroyModelMixin,
     RetrieveModelMixin,
 )
 from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet, ModelViewSet
 
-from general_app.format_response import CustomResponseMixin
+from general_app.format_response import CustomResponseMixin, format_response_data
 
 from .models import (
     Booking,
@@ -34,6 +37,7 @@ from .serializers import (
     DestinationSerializer,
     ReviewSerializer,
     RoomCategorySerializer,
+    SpecialBranchSerializer,
     TouristSpotSerializer,
     UpdateCartItemSerializer,
 )
@@ -53,8 +57,87 @@ class BranchViewSet(CustomResponseMixin, ModelViewSet):
         Branch.objects.all().select_related("destination").prefetch_related("sliders")
     )
     serializer_class = BranchSerializer
+    pagination_class = CustomPagination
     list_message = "Fetched all the branches successfully."
     retrieve_message = "Fetched the branch successfully."
+    retrieve_error_message = "There is no branch listed with this id"
+
+    @action(detail=False)
+    def available(self, request):
+        check_in = self.request.query_params.get("check_in")
+        check_out = self.request.query_params.get("check_out")
+        adults = self.request.query_params.get("adults")
+
+        # Filter the bookings which are confirmed and overlap with user's check_in and check_out
+        bookings = Booking.objects.filter(
+            status__in=["Confirmed", "Checked In"]
+        ).filter(check_in__lt=check_out, check_out__gt=check_in)
+
+        # Find out the rooms that are already assigned
+        assigned_rooms = (
+            BookingItem.objects.filter(booking__in=bookings)
+            .values_list("assigned_room", flat=True)
+            .distinct()
+        )
+
+        # Filter out rooms that are not assigned and active
+        room_queryset = Room.objects.exclude(id__in=assigned_rooms).filter(
+            status="Active"
+        )
+
+        # Filter out the room categories which are active and have the same adults as adults in the query params
+        room_category_queryset = RoomCategory.objects.filter(status="Active").filter(
+            adults=int(adults)
+        )
+
+        # Annotate available rooms count and exclude the room categories which have zero available room
+        room_category_queryset = room_category_queryset.annotate(
+            available_rooms_count=Count(
+                "room",
+                filter=Q(room__in=room_queryset),
+            )
+        ).filter(available_rooms_count__gt=0)
+
+        # Filter out the branches which are active
+        branch_queryset = Branch.objects.filter(status="Active")
+
+        # Keep only the branches which have at least one available room category for booking
+        branch_queryset = branch_queryset.annotate(
+            available_room_categories_count=Count(
+                "roomcategory", filter=Q(roomcategory__in=room_category_queryset)
+            )
+        ).filter(available_room_categories_count__gt=0)
+
+        # Include the room categories which are available in each branch
+        branch_queryset = branch_queryset.prefetch_related(
+            Prefetch("roomcategory_set", room_category_queryset)
+        )
+
+        # Subquery to find the maximum discount for the filtered room categories
+        max_discount_subquery = (
+            room_category_queryset.filter(branch_id=OuterRef("pk"))
+            .values("branch")
+            .annotate(max_discount=Max("discount_in_percentage"))
+            .values("max_discount")
+        )
+
+        # Annotate branches with the maximum discount of their filtered room categories
+        branch_queryset = branch_queryset.annotate(
+            discount=Subquery(max_discount_subquery)
+        ).order_by("-discount")
+
+        queryset = branch_queryset.select_related("destination")
+
+        # paginated queryset:
+        page = self.paginate_queryset(queryset)
+        serializer = SpecialBranchSerializer(page, many=True)
+        response = self.get_paginated_response(serializer.data)
+        custom_response = format_response_data(
+            message=self.list_message,
+            status_code=200,
+            data=response.data,
+        )
+        return Response(custom_response, status=status.HTTP_200_OK)
 
 
 # Created this view so that the frontend dev can get all the sliders at once
