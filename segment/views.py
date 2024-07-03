@@ -85,7 +85,7 @@ class BranchViewSet(CustomResponseMixin, ModelViewSet):
             status="Active"
         )
 
-        # Filter out the room categories which are active and have the same adults as adults in the query params
+        # Filter out the room categories which are active and have the same adults as adults of the query params
         room_category_queryset = RoomCategory.objects.filter(status="Active").filter(
             adults=int(adults)
         )
