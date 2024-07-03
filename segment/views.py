@@ -74,55 +74,69 @@ class RoomCategoryViewSet(CustomResponseMixin, ModelViewSet):
         # dates should be in YYYY-MM-DD format
         check_in = self.request.query_params.get("check_in")
         check_out = self.request.query_params.get("check_out")
+        adults = self.request.query_params.get("adults")
 
-        # Filter the bookings which are confirmed and overlap with user's check_in and check_out
-        bookings = Booking.objects.filter(
-            status__in=["Confirmed", "Checked In"]
-        ).filter(check_in__lt=check_out, check_out__gt=check_in)
+        if check_in and check_out and adults:
+            # Filter the bookings which are confirmed and overlap with user's check_in and check_out
+            bookings = Booking.objects.filter(
+                status__in=["Confirmed", "Checked In"]
+            ).filter(check_in__lt=check_out, check_out__gt=check_in)
 
-        # Find out the rooms that are already assigned
-        assigned_rooms = (
-            BookingItem.objects.filter(booking__in=bookings)
-            .values_list("assigned_room", flat=True)
-            .distinct()
-        )
-
-        # Filter out rooms that are not assigned and active
-        room_queryset = Room.objects.exclude(id__in=assigned_rooms).filter(
-            status="Active"
-        )
-
-        room_category_queryset = (
-            RoomCategory.objects.filter(branch__id=branch_id)
-            .filter(branch__status="Active")
-            .filter(status="Active")
-        )
-
-        # Annotate available rooms count and exclude the room categories which have zero available room
-        room_category_queryset = room_category_queryset.annotate(
-            available_rooms_count=Count(
-                "room",
-                filter=Q(room__in=room_queryset),
+            # Find out the rooms that are already assigned
+            assigned_rooms = (
+                BookingItem.objects.filter(booking__in=bookings)
+                .values_list("assigned_room", flat=True)
+                .distinct()
             )
-        ).filter(available_rooms_count__gt=0)
 
-        # Include available rooms in the queryset
-        # room_category_queryset = room_category_queryset.prefetch_related(
-        #     Prefetch("room_set", queryset=room_queryset)
-        # )
+            # Filter out rooms that are not assigned and active
+            room_queryset = Room.objects.exclude(id__in=assigned_rooms).filter(
+                status="Active"
+            )
 
-        queryset = (
-            room_category_queryset.select_related("branch")
-            .prefetch_related("room_amenities_set__amenity")
-            .prefetch_related("gallery_set")
-            .order_by("-discount_in_percentage")
-        )
+            room_category_queryset = (
+                RoomCategory.objects.filter(branch__id=branch_id)
+                .filter(branch__status="Active")
+                .filter(status="Active")
+                .filter(adults=int(adults))
+            )
+
+            # Annotate available rooms count and exclude the room categories which have zero available room
+            room_category_queryset = room_category_queryset.annotate(
+                available_rooms_count=Count(
+                    "room",
+                    filter=Q(room__in=room_queryset),
+                )
+            ).filter(available_rooms_count__gt=0)
+
+            # Include available rooms in the queryset
+            # room_category_queryset = room_category_queryset.prefetch_related(
+            #     Prefetch("room_set", queryset=room_queryset)
+            # )
+
+            queryset = (
+                room_category_queryset.select_related("branch")
+                .prefetch_related("room_amenities_set__amenity")
+                .prefetch_related("gallery_set")
+                .order_by("-discount_in_percentage")
+            )
+        else:
+            queryset = (
+                RoomCategory.objects.filter(branch__id=branch_id)
+                .filter(branch__status="Active")
+                .filter(status="Active")
+                .annotate(
+                    available_rooms_count=Count("room", filter=Q(room__status="Active"))
+                )
+                .order_by("-discount_in_percentage")
+            )
         return queryset
 
     serializer_class = RoomCategorySerializer
     pagination_class = CustomPagination
     list_message = "Fetched all the rooms that are available"
     retrieve_message = "Fetched the the room successfully."
+    retrieve_error_message = "There is no room listed with this id in this branch"
 
 
 class CartViewSet(
