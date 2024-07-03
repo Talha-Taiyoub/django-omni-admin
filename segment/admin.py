@@ -59,6 +59,7 @@ class RoomCategoryAdmin(admin.ModelAdmin):
     ]
 
     list_select_related = ["branch"]
+    ordering = ["branch__name", "room_name", "status"]
 
 
 @admin.register(models.Gallery)
@@ -101,6 +102,12 @@ class RoomAmenitiesAdmin(admin.ModelAdmin):
 class RoomAdmin(admin.ModelAdmin):
     list_display = ["id", "room_number", "room_category", "status", "created_at"]
     list_select_related = ["room_category", "room_category__branch"]
+
+    ordering = [
+        "room_category__branch__name",
+        "room_category__room_name",
+        "room_number",
+    ]
 
 
 @admin.register(models.Booking)
