@@ -214,6 +214,14 @@ class RoomCategoryViewSet(CustomResponseMixin, ModelViewSet):
                 )
             ).filter(available_rooms_count__gt=0)
 
+            # Annotate discounted price
+            discounted_price = F("regular_price") - (
+                F("regular_price") * F("discount_in_percentage") / 100
+            )
+            room_category_queryset = room_category_queryset.annotate(
+                discounted_price=discounted_price
+            )
+
             # Include available rooms in the queryset
             # room_category_queryset = room_category_queryset.prefetch_related(
             #     Prefetch("room_set", queryset=room_queryset)
