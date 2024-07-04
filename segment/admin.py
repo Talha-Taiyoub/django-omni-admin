@@ -27,6 +27,9 @@ class BranchAdmin(admin.ModelAdmin):
         "created_at",
     ]
 
+    list_select_related = ["destination"]
+    list_editable = ["status"]
+
 
 @admin.register(models.BranchSlider)
 class BranchSliderAdmin(admin.ModelAdmin):

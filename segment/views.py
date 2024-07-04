@@ -54,7 +54,10 @@ class DestinationViewSet(CustomResponseMixin, ModelViewSet):
 class BranchViewSet(CustomResponseMixin, ModelViewSet):
     http_method_names = ["get"]
     queryset = (
-        Branch.objects.all().select_related("destination").prefetch_related("sliders")
+        Branch.objects.all()
+        .filter(status="Active")
+        .select_related("destination")
+        .prefetch_related("sliders")
     )
     serializer_class = BranchSerializer
     pagination_class = CustomPagination
@@ -150,10 +153,22 @@ class BranchViewSet(CustomResponseMixin, ModelViewSet):
 # Created this view so that the frontend dev can get all the sliders at once
 class BranchSliderViewSet(CustomResponseMixin, ModelViewSet):
     http_method_names = ["get"]
-    queryset = BranchSlider.objects.all().select_related("branch")
+
+    def get_queryset(self):
+        branch_id = self.request.query_params.get("branch_id")
+        queryset = BranchSlider.objects.filter(branch__status="Active").select_related(
+            "branch"
+        )
+        if branch_id is not None:
+            queryset = queryset.filter(branch_id=branch_id)
+
+        return queryset
+
     serializer_class = BranchSliderSerializer
-    list_message = "Fetched all the sliders for all the branches successfully."
+    pagination_class = CustomPagination
+    list_message = "Fetched all the sliders successfully."
     retrieve_message = "Fetched the slider successfully."
+    retrieve_error_message = "There is no slider listed with this id"
 
 
 class RoomCategoryViewSet(CustomResponseMixin, ModelViewSet):
