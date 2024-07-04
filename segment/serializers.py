@@ -159,8 +159,20 @@ class SimpleRoomCategorySerializer(serializers.ModelSerializer):
         return room_category.regular_price - discount_amount
 
 
+class SpecialRoomCategorySerializer(RoomCategorySerializer):
+    discounted_price = serializers.SerializerMethodField(
+        "get_discounted_price", read_only=True
+    )
+
+    def get_discounted_price(self, room_category: RoomCategory):
+        discounted_price = room_category.regular_price - (
+            room_category.regular_price * room_category.discount_in_percentage / 100
+        )
+        return discounted_price
+
+
 class FavoriteRoomCategorySerializer(serializers.ModelSerializer):
-    room_category = RoomCategorySerializer(read_only=True)
+    room_category = SpecialRoomCategorySerializer(read_only=True)
 
     class Meta:
         model = FavoriteRoomCategory

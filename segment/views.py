@@ -244,6 +244,9 @@ class RoomCategoryViewSet(CustomResponseMixin, ModelViewSet):
                 .filter(branch__status="Active")
                 .filter(status="Active")
                 .annotate(discounted_price=discounted_price)
+                .select_related("branch")
+                .prefetch_related("room_amenities_set__amenity")
+                .prefetch_related("gallery_set")
                 .order_by("-discount_in_percentage")
             )
         return queryset
@@ -264,8 +267,10 @@ class FavoriteRoomCategoryViewSet(CustomResponseMixin, ModelViewSet):
             FavoriteRoomCategory.objects.filter(
                 room_category__branch__id=branch_id, room_category__status="Active"
             )
-            .order_by("-room_category__discount_in_percentage")
             .select_related("room_category__branch")
+            .prefetch_related("room_category__room_amenities_set__amenity")
+            .prefetch_related("room_category__gallery_set")
+            .order_by("-room_category__discount_in_percentage")
         )
         return queryset
 
