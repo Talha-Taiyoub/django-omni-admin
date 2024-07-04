@@ -391,9 +391,7 @@ class ReviewSerializer(serializers.ModelSerializer):
 class SpecialBranchSerializer(serializers.ModelSerializer):
     destination = SimpleDestinationSerializer(read_only=True)
     discount = serializers.DecimalField(max_digits=9, decimal_places=2, read_only=True)
-    starts_from = serializers.SerializerMethodField(
-        method_name="get_starts_from", read_only=True
-    )
+    starts_from = serializers.DecimalField(max_digits=9, decimal_places=2)
 
     class Meta:
         model = Branch
@@ -412,15 +410,3 @@ class SpecialBranchSerializer(serializers.ModelSerializer):
             "discount",
             "starts_from",
         ]
-
-    def get_starts_from(self, branch: Branch):
-        price = None
-        for room_category in branch.roomcategory_set.all():
-            discount = room_category.regular_price * (
-                room_category.discount_in_percentage / 100
-            )
-            discounted_amount = room_category.regular_price - discount
-            if price is None or discounted_amount < price:
-                price = discounted_amount
-
-        return price

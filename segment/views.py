@@ -1,4 +1,4 @@
-from django.db.models import Count, Max, OuterRef, Prefetch, Q, Subquery
+from django.db.models import Count, F, Max, Min, OuterRef, Prefetch, Q, Subquery
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.mixins import (
@@ -113,18 +113,25 @@ class BranchViewSet(CustomResponseMixin, ModelViewSet):
             Prefetch("roomcategory_set", room_category_queryset)
         )
 
-        # Subquery to find the maximum discount for the filtered room categories
-        max_discount_subquery = (
-            room_category_queryset.filter(branch_id=OuterRef("pk"))
-            .values("branch")
-            .annotate(max_discount=Max("discount_in_percentage"))
-            .values("max_discount")
-        )
-
-        # Annotate branches with the maximum discount of their filtered room categories
+        # Annotate each branch with the highest discount of it's room categories and order by discount
         branch_queryset = branch_queryset.annotate(
-            discount=Subquery(max_discount_subquery)
+            discount=Max(
+                "roomcategory__discount_in_percentage",
+                filter=Q(roomcategory__in=room_category_queryset),
+            )
         ).order_by("-discount")
+
+        # Calculate the price of the room categories after discount of a branch, find the lowest price and annotate it with the field starts_from
+        discounted_price = F("roomcategory__regular_price") - (
+            F("roomcategory__regular_price")
+            * F("roomcategory__discount_in_percentage")
+            / 100
+        )
+        branch_queryset = branch_queryset.annotate(
+            starts_from=Min(
+                discounted_price, filter=Q(roomcategory__in=room_category_queryset)
+            )
+        )
 
         queryset = branch_queryset.select_related("destination")
 
