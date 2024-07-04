@@ -115,6 +115,13 @@ class RoomAdmin(admin.ModelAdmin):
     ]
 
 
+@admin.register(models.FavoriteRoom)
+class FavoriteRoomAdmin(admin.ModelAdmin):
+    list_display = ["id", "room_category", "created_at"]
+    list_select_related = ["room_category", "room_category__branch"]
+    ordering = ["room_category__branch__name", "room_category__room_name"]
+
+
 @admin.register(models.Booking)
 class BookingAdmin(admin.ModelAdmin):
     list_display = [
