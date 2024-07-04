@@ -240,7 +240,7 @@ class Room(models.Model):
 
 
 class FavoriteRoom(models.Model):
-    room_category = models.ForeignKey(RoomCategory, on_delete=models.CASCADE)
+    room_category = models.OneToOneField(RoomCategory, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
 
