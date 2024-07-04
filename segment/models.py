@@ -239,6 +239,11 @@ class Room(models.Model):
         return f"{self.room_number}-{self.room_category.room_name}-{self.room_category.branch.name}"
 
 
+class FavoriteRoom(models.Model):
+    room_category = models.ForeignKey(RoomCategory, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+
 class Cart(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid4)
     created_at = models.DateTimeField(auto_now_add=True)
