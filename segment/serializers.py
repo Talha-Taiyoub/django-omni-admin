@@ -149,6 +149,38 @@ class SimpleRoomCategorySerializer(serializers.ModelSerializer):
         return room_category.regular_price - discount_amount
 
 
+class RoomCategorySerializerForSpecificNeed(serializers.ModelSerializer):
+    branch = SimpleBranchSerializer(read_only=True)
+    room_amenities_set = RoomAmenitiesSerializer(many=True, read_only=True)
+    gallery_set = GallerySerializer(many=True, read_only=True)
+
+    class Meta:
+        model = RoomCategory
+        fields = [
+            "id",
+            "room_name",
+            "branch",
+            "status",
+            "featured_image",
+            "overview",
+            "gallery_set",
+            "panorama",
+            "room_amenities_set",
+            "adults",
+            "children",
+            "regular_price",
+            "discount_in_percentage",
+        ]
+
+
+class FavoriteRoomCategorySerializer(serializers.ModelSerializer):
+    room_category = RoomCategorySerializerForSpecificNeed(read_only=True)
+
+    class Meta:
+        model = FavoriteRoomCategory
+        fields = ["id", "room_category"]
+
+
 class CartItemSerializer(serializers.ModelSerializer):
     room_category = SimpleRoomCategorySerializer(read_only=True)
 
