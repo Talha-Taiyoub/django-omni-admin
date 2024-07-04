@@ -234,10 +234,14 @@ class RoomCategoryViewSet(CustomResponseMixin, ModelViewSet):
                 .order_by("-discount_in_percentage")
             )
         else:
+            discounted_price = F("regular_price") - (
+                F("regular_price") * F("discount_in_percentage") / 100
+            )
             queryset = (
                 RoomCategory.objects.filter(branch__id=branch_id)
                 .filter(branch__status="Active")
                 .filter(status="Active")
+                .annotate(discounted_price=discounted_price)
                 .order_by("-discount_in_percentage")
             )
         return queryset
