@@ -20,6 +20,7 @@ from .models import (
     Cart,
     CartItem,
     Destination,
+    FavoriteRoomCategory,
     Review,
     Room,
     RoomCategory,
@@ -35,6 +36,7 @@ from .serializers import (
     CartSerializer,
     CreateBookingSerializer,
     DestinationSerializer,
+    FavoriteRoomCategorySerializer,
     ReviewSerializer,
     RoomCategorySerializer,
     SpecialBranchSerializer,
@@ -251,6 +253,27 @@ class RoomCategoryViewSet(CustomResponseMixin, ModelViewSet):
     list_message = "Fetched all the rooms that are available"
     retrieve_message = "Fetched the the room successfully."
     retrieve_error_message = "There is no room listed with this id in this branch"
+
+
+class FavoriteRoomCategoryViewSet(CustomResponseMixin, ModelViewSet):
+    http_method_names = ["get"]
+
+    def get_queryset(self):
+        branch_id = self.kwargs.get("branch_pk")
+        queryset = (
+            FavoriteRoomCategory.objects.filter(
+                room_category__branch__id=branch_id, room_category__status="Active"
+            )
+            .order_by("-room_category__discount_in_percentage")
+            .select_related("room_category__branch")
+        )
+        return queryset
+
+    serializer_class = FavoriteRoomCategorySerializer
+    pagination_class = CustomPagination
+    list_message = "All the favorite rooms are fetched successfully"
+    retrieve_message = "The favorite room is fetched successfully"
+    retrieve_error_message = "There is no favorite room listed with this id"
 
 
 class CartViewSet(
