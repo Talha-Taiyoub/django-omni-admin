@@ -230,9 +230,6 @@ class RoomCategoryViewSet(CustomResponseMixin, ModelViewSet):
                 RoomCategory.objects.filter(branch__id=branch_id)
                 .filter(branch__status="Active")
                 .filter(status="Active")
-                .annotate(
-                    available_rooms_count=Count("room", filter=Q(room__status="Active"))
-                )
                 .order_by("-discount_in_percentage")
             )
         return queryset
