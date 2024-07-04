@@ -13,6 +13,7 @@ from .models import (
     Cart,
     CartItem,
     Destination,
+    FavoriteRoomCategory,
     Gallery,
     Review,
     Room,

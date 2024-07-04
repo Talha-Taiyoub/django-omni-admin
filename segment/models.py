@@ -239,7 +239,7 @@ class Room(models.Model):
         return f"{self.room_number}-{self.room_category.room_name}-{self.room_category.branch.name}"
 
 
-class FavoriteRoom(models.Model):
+class FavoriteRoomCategory(models.Model):
     room_category = models.OneToOneField(RoomCategory, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
