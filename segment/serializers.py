@@ -111,6 +111,7 @@ class RoomCategorySerializer(serializers.ModelSerializer):
     branch = SimpleBranchSerializer(read_only=True)
     room_amenities_set = RoomAmenitiesSerializer(many=True, read_only=True)
     gallery_set = GallerySerializer(many=True, read_only=True)
+    discounted_price = serializers.DecimalField(max_digits=9, decimal_places=2)
     available_rooms_count = serializers.IntegerField(read_only=True)
 
     class Meta:
@@ -128,6 +129,7 @@ class RoomCategorySerializer(serializers.ModelSerializer):
             "adults",
             "children",
             "regular_price",
+            "discounted_price",
             "discount_in_percentage",
             "available_rooms_count",
         ]
