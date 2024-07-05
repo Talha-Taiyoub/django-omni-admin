@@ -265,7 +265,9 @@ class FavoriteRoomCategoryViewSet(CustomResponseMixin, ModelViewSet):
         branch_id = self.kwargs.get("branch_pk")
         queryset = (
             FavoriteRoomCategory.objects.filter(
-                room_category__branch__id=branch_id, room_category__status="Active"
+                room_category__branch__id=branch_id,
+                room_category__branch__status="Active",
+                room_category__status="Active",
             )
             .select_related("room_category__branch")
             .prefetch_related("room_category__room_amenities_set__amenity")
