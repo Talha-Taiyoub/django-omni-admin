@@ -441,3 +441,20 @@ class SpecialBranchSerializer(serializers.ModelSerializer):
             "discount",
             "starts_from",
         ]
+
+
+class OfferSerializer(serializers.Serializer):
+    id = serializers.IntegerField(read_only=True)
+    name = serializers.CharField(max_length=255, read_only=True)
+    branch = SimpleBranchSerializer(read_only=True)
+    featured_image = serializers.ImageField(read_only=True)
+    discount_in_percentage = serializers.DecimalField(
+        max_digits=5, decimal_places=2, read_only=True
+    )
+    regular_price = serializers.DecimalField(
+        max_digits=9, decimal_places=2, read_only=True
+    )
+    discounted_price = serializers.DecimalField(
+        max_digits=9, decimal_places=2, read_only=True
+    )
+    see_details = serializers.CharField(max_length=255, read_only=True)

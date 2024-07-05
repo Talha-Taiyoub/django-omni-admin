@@ -11,6 +11,7 @@ router.register("branch_sliders", views.BranchSliderViewSet, basename="branch_sl
 router.register("carts", views.CartViewSet, basename="cart")
 router.register("bookings", views.BookingViewSet, basename="booking")
 router.register("reviews", views.ReviewViewSet, basename="review")
+router.register("offers", views.OfferViewSet, basename="offer")
 
 branch_router = NestedDefaultRouter(router, "branches", lookup="branch")
 branch_router.register(

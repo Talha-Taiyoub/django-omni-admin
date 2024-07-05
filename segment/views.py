@@ -1,4 +1,16 @@
-from django.db.models import Count, F, Max, Min, OuterRef, Prefetch, Q, Subquery
+from django.db.models import (
+    CharField,
+    Count,
+    F,
+    Max,
+    Min,
+    OuterRef,
+    Prefetch,
+    Q,
+    Subquery,
+    Value,
+)
+from django.db.models.functions import Concat
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.mixins import (
@@ -10,6 +22,7 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet, ModelViewSet
 
+from common_use.models import Gym, Restaurant
 from general_app.format_response import CustomResponseMixin, format_response_data
 
 from .models import (
@@ -37,6 +50,7 @@ from .serializers import (
     CreateBookingSerializer,
     DestinationSerializer,
     FavoriteRoomCategorySerializer,
+    OfferSerializer,
     ReviewSerializer,
     RoomCategorySerializer,
     SpecialBranchSerializer,
@@ -390,3 +404,94 @@ class ReviewViewSet(CustomResponseMixin, ModelViewSet):
     retrieve_message = "The review is fetched successfully"
     create_message = "The review is created successfully"
     retrieve_error_message = "There is no review listed with this id"
+
+
+class OfferViewSet(ModelViewSet):
+    http_method_names = ["get"]
+    queryset = Branch.objects.all()
+    serializer_class = OfferSerializer
+    pagination_class = CustomPagination
+
+    def list(self, request, *args, **kwargs):
+        data = []
+        branch_id = request.query_params.get("branch_id")
+
+        # Annotate discounted price for room category
+        room_category_discounted_price = F("regular_price") - (
+            F("regular_price") * F("discount_in_percentage") / 100
+        )
+
+        # Annotate discounted price for gym
+        gym_discounted_price = F("fees") - (
+            F("fees") * F("discount_in_percentage") / 100
+        )
+
+        room_category_queryset = (
+            RoomCategory.objects.filter(branch__status="Active", status="Active")
+            .filter(discount_in_percentage__gt=0)
+            .annotate(name=F("room_name"))
+            .annotate(discounted_price=room_category_discounted_price)
+            .annotate(
+                see_details=Concat(
+                    Value("segments/branches/"),
+                    F("branch_id"),
+                    Value("/room_categories/"),
+                    F("id"),
+                    Value("/"),
+                    output_field=CharField(),
+                )
+            )
+            .select_related("branch")
+            .order_by("-discount_in_percentage")
+        )
+
+        restaurant_queryset = (
+            Restaurant.objects.filter(branch__status="Active", status="Active")
+            .filter(discount_in_percentage__gt=0)
+            .annotate(
+                see_details=Concat(
+                    Value("refuel/restaurants/"),
+                    F("id"),
+                    Value("/"),
+                    output_field=CharField(),
+                )
+            )
+            .select_related("branch")
+            .order_by("-discount_in_percentage")
+        )
+
+        gym_queryset = (
+            Gym.objects.filter(branch__status="Active", status="Active")
+            .filter(discount_in_percentage__gt=0)
+            .annotate(regular_price=F("fees"))
+            .annotate(discounted_price=gym_discounted_price)
+            .annotate(
+                see_details=Concat(
+                    Value("refuel/gyms/"),
+                    F("id"),
+                    Value("/"),
+                    output_field=CharField(),
+                )
+            )
+            .select_related("branch")
+            .order_by("-discount_in_percentage")
+        )
+
+        if branch_id is not None:
+            room_category_queryset = room_category_queryset.filter(branch_id=branch_id)
+            restaurant_queryset = restaurant_queryset.filter(branch_id=branch_id)
+            gym_queryset = gym_queryset.filter(branch_id=branch_id)
+
+        data.extend(list(room_category_queryset))
+        data.extend(list(restaurant_queryset))
+        data.extend(list(gym_queryset))
+
+        page = self.paginate_queryset(data)
+        serializer = OfferSerializer(page, many=True)
+        response = self.get_paginated_response(serializer.data)
+        custom_response = format_response_data(
+            data=response.data,
+            message="All the offers are fetched successfully",
+            status_code=200,
+        )
+        return Response(custom_response, status=status.HTTP_200_OK)
