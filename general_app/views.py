@@ -1,5 +1,5 @@
 from django.shortcuts import HttpResponse, render
-
+from segment.models import Branch
 # Create your views here.
 
 
@@ -8,12 +8,26 @@ def index(request):
 
 
 def branch(request):
-    return render(request, "branch.html")
+    branch_queryset = Branch.objects.all().select_related("destination").prefetch_related("branchstaff_set__staff")
+    active=0
+    inactive=0
+    branch_data=[]
+    for branch in branch_queryset:
+        branch_manager = branch.branchstaff_set.filter(staff__role="Branch Manager").first()
+        branch_data.append({"data": branch , "manager" : branch_manager})
+        if branch.status =="Active":
+            active+=1
+        else:
+            inactive+=1
+    
+
+    return render(request, "branch.html",{'branches': branch_data, 'active_counter': active, 'inactive_counter' : inactive})
 
 
 def crud_branch(request):
-    return render(request, "add-edit-branch.html")
+    
 
+    return render(request, "add-edit-branch.html")
 
 def booking(request):
     return render(request, "booking.html")
