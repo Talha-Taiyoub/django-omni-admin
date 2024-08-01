@@ -1,5 +1,10 @@
-from django.shortcuts import HttpResponse, render
-from segment.models import Branch
+from django.core.files.storage import FileSystemStorage
+from django.shortcuts import HttpResponse, redirect, render
+
+from segment.models import Branch, Destination
+
+from .forms import BranchForm
+
 # Create your views here.
 
 
@@ -8,26 +13,77 @@ def index(request):
 
 
 def branch(request):
-    branch_queryset = Branch.objects.all().select_related("destination").prefetch_related("branchstaff_set__staff")
-    active=0
-    inactive=0
-    branch_data=[]
+    branch_queryset = (
+        Branch.objects.all()
+        .select_related("destination")
+        .prefetch_related("branchstaff_set__staff")
+    )
+    active = 0
+    inactive = 0
+    branch_data = []
     for branch in branch_queryset:
-        branch_manager = branch.branchstaff_set.filter(staff__role="Branch Manager").first()
-        branch_data.append({"data": branch , "manager" : branch_manager})
-        if branch.status =="Active":
-            active+=1
+        branch_manager = branch.branchstaff_set.filter(
+            staff__role="Branch Manager"
+        ).first()
+        branch_data.append({"data": branch, "manager": branch_manager})
+        if branch.status == "Active":
+            active += 1
         else:
-            inactive+=1
-    
+            inactive += 1
 
-    return render(request, "branch.html",{'branches': branch_data, 'active_counter': active, 'inactive_counter' : inactive})
+    return render(
+        request,
+        "branch.html",
+        {
+            "branches": branch_data,
+            "active_counter": active,
+            "inactive_counter": inactive,
+        },
+    )
 
 
 def crud_branch(request):
-    
+    destination_queryset = Destination.objects.all()
+    if request.method == "POST":
+        form = BranchForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            # return redirect('success_url')  # Redirect after successful save
+            print("saved")
+            form = BranchForm()
+            return redirect("branch")  # Redirect after successful save
 
-    return render(request, "add-edit-branch.html")
+    else:
+        form = BranchForm()
+
+    return render(
+        request,
+        "add-edit-branch.html",
+        {"form": form, "destinations": destination_queryset},
+    )
+
+
+def edit_branch(request, id):
+    destination_queryset = Destination.objects.all()
+    # Retrieve the branch to be edited
+    branch = Branch.objects.filter(pk=id).first()
+
+    if request.method == "POST":
+        # Bind the form to the POST data and files
+        form = BranchForm(request.POST, request.FILES, instance=branch)
+        if form.is_valid():
+            form.save()
+            return redirect("branch")  # Redirect after successful save
+    else:
+        # Create a form instance with the existing branch data
+        form = BranchForm(instance=branch)
+
+    return render(
+        request,
+        "add-edit-branch.html",
+        {"form": form, "destinations": destination_queryset},
+    )
+
 
 def booking(request):
     return render(request, "booking.html")
