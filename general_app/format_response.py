@@ -127,4 +127,4 @@ class CustomResponseMixin:
         custom_response = format_response_data(
             message=self.delete_message, status_code=200, data={}
         )
-        return Response(custom_response, status=status.HTTP_204_NO_CONTENT)
+        return Response(custom_response, status=status.HTTP_200_OK)
