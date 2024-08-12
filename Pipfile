@@ -12,6 +12,7 @@ drf-nested-routers = "*"
 djoser = "*"
 djangorestframework-simplejwt = "*"
 django-debug-toolbar = "*"
+django-cors-headers = "*"
 
 [dev-packages]
 
