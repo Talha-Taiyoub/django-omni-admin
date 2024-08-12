@@ -3,6 +3,7 @@
         "branchstaff",
         "corsheaders",
         "djoser",
-        "paginations"
+        "paginations",
+        "whitenoise"
     ]
 }
