@@ -109,7 +109,8 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
         "NAME": "django_omni_admin",
-        "HOST": "127.0.0.1",
+        # "HOST": "127.0.0.1",
+        "HOST": "mysql",
         "USER": "root",
         "PASSWORD": "marakha7057",
     }
