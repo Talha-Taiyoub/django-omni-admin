@@ -487,7 +487,7 @@ class OfferViewSet(ModelViewSet):
         data.extend(list(gym_queryset))
 
         page = self.paginate_queryset(data)
-        serializer = OfferSerializer(page, many=True)
+        serializer = OfferSerializer(page, many=True, context={"request": request})
         response = self.get_paginated_response(serializer.data)
         custom_response = format_response_data(
             data=response.data,
