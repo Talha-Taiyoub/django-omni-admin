@@ -19,6 +19,7 @@ from .models import (
     Room,
     RoomAmenities,
     RoomCategory,
+    Story,
     TouristSpot,
 )
 
@@ -458,3 +459,9 @@ class OfferSerializer(serializers.Serializer):
         max_digits=9, decimal_places=2, read_only=True
     )
     see_details = serializers.CharField(max_length=255, read_only=True)
+
+
+class StorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Story
+        fields = ["id", "title", "description", "image", "created_at"]

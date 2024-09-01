@@ -392,3 +392,10 @@ class Review(models.Model):
     )
     description = models.CharField(max_length=900, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
+
+
+class Story(models.Model):
+    title = models.CharField(max_length=500)
+    description = models.TextField()
+    image = models.ImageField(upload_to="segment/images", validators=[image_max_size])
+    created_at = models.DateTimeField(auto_now_add=True)

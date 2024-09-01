@@ -215,3 +215,8 @@ class TouristSpotAdmin(admin.ModelAdmin):
 class ReviewAdmin(admin.ModelAdmin):
     list_display = ["id", "guest", "rating", "description", "created_at"]
     list_select_related = ["guest"]
+
+
+@admin.register(models.Story)
+class StoryAdmin(admin.ModelAdmin):
+    list_display = ["id", "title", "image", "created_at"]

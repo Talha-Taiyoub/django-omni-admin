@@ -37,6 +37,7 @@ from .models import (
     Review,
     Room,
     RoomCategory,
+    Story,
     TouristSpot,
 )
 from .paginations import CustomPagination
@@ -54,6 +55,7 @@ from .serializers import (
     ReviewSerializer,
     RoomCategorySerializer,
     SpecialBranchSerializer,
+    StorySerializer,
     TouristSpotSerializer,
     UpdateCartItemSerializer,
 )
@@ -495,3 +497,13 @@ class OfferViewSet(ModelViewSet):
             status_code=200,
         )
         return Response(custom_response, status=status.HTTP_200_OK)
+
+
+class StoryViewSet(CustomResponseMixin, ModelViewSet):
+    http_method_names = ["get"]
+    queryset = Story.objects.all().order_by("-created_at")
+    serializer_class = StorySerializer
+    pagination_class = CustomPagination
+    list_message = "All the stories are fetched successfully"
+    retrieve_message = "The story is fetched successfully"
+    retrieve_error_message = "There is no story listed with this id"
