@@ -221,7 +221,7 @@ class RoomCategoryViewSet(CustomResponseMixin, ModelViewSet):
                 RoomCategory.objects.filter(branch__id=branch_id)
                 .filter(branch__status="Active")
                 .filter(status="Active")
-                .filter(adults=int(adults))
+                .filter(adults__gte=int(adults))
             )
 
             # Annotate available rooms count and exclude the room categories which have zero available room
@@ -443,6 +443,7 @@ class OfferViewSet(ModelViewSet):
                     output_field=CharField(),
                 )
             )
+            .annotate(service_type=Value("room_category", output_field=CharField()))
             .select_related("branch")
             .order_by("-discount_in_percentage")
         )
@@ -458,6 +459,7 @@ class OfferViewSet(ModelViewSet):
                     output_field=CharField(),
                 )
             )
+            .annotate(service_type=Value("restaurant", output_field=CharField()))
             .select_related("branch")
             .order_by("-discount_in_percentage")
         )
@@ -475,6 +477,7 @@ class OfferViewSet(ModelViewSet):
                     output_field=CharField(),
                 )
             )
+            .annotate(service_type=Value("gym", output_field=CharField()))
             .select_related("branch")
             .order_by("-discount_in_percentage")
         )

@@ -459,6 +459,7 @@ class OfferSerializer(serializers.Serializer):
         max_digits=9, decimal_places=2, read_only=True
     )
     see_details = serializers.CharField(max_length=255, read_only=True)
+    service_type = serializers.CharField(max_length=255, read_only=True)
 
 
 class StorySerializer(serializers.ModelSerializer):
