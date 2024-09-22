@@ -246,6 +246,8 @@ class FavoriteRoomCategory(models.Model):
 
 class Cart(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid4)
+    check_in = models.DateField(null=True, blank=True)
+    check_out = models.DateField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
 

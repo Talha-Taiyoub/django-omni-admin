@@ -189,6 +189,7 @@ class CartItemSerializer(serializers.ModelSerializer):
             "id",
             "room_category",
             "quantity",
+            "days",
             "total_price",
         ]
 
@@ -196,12 +197,18 @@ class CartItemSerializer(serializers.ModelSerializer):
         method_name="get_total_price", read_only=True
     )
 
+    days = serializers.SerializerMethodField(method_name="get_duration", read_only=True)
+
+    def get_duration(self, item: CartItem):
+        return (item.cart.check_out - item.cart.check_in).days
+
     def get_total_price(self, item: CartItem):
-        discount_amount = item.room_category.regular_price * (
-            item.room_category.discount_in_percentage / 100
+        duration = (item.cart.check_out - item.cart.check_in).days
+        price = item.room_category.regular_price * duration * item.quantity
+        discounted_price = price - (
+            price * (item.room_category.discount_in_percentage / 100)
         )
-        discounted_price = item.room_category.regular_price - discount_amount
-        return discounted_price * item.quantity
+        return discounted_price
 
 
 class AddCartItemSerializer(serializers.ModelSerializer):
@@ -250,7 +257,7 @@ class CartSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Cart
-        fields = ["id", "items", "total_price", "created_at"]
+        fields = ["id", "check_in", "check_out", "items", "total_price", "created_at"]
 
     total_price = serializers.SerializerMethodField(
         method_name="get_total_price", read_only=True
@@ -259,11 +266,12 @@ class CartSerializer(serializers.ModelSerializer):
     def get_total_price(self, cart):
         total_price = 0
         for item in cart.items.all():
-            discount_amount = item.room_category.regular_price * (
-                item.room_category.discount_in_percentage / 100
+            duration = (item.cart.check_out - item.cart.check_in).days
+            price = item.room_category.regular_price * duration * item.quantity
+            discounted_price = price - (
+                price * (item.room_category.discount_in_percentage / 100)
             )
-            discounted_price = item.room_category.regular_price - discount_amount
-            total_price += discounted_price * item.quantity
+            total_price += discounted_price
         return total_price
 
 
@@ -372,17 +380,29 @@ class CreateBookingSerializer(serializers.ModelSerializer):
             booking_items = []
             total_price = 0  # We will use it in Billing object creation
             for item in cart_items:
-                discount_amount = item.room_category.regular_price * (
-                    item.room_category.discount_in_percentage / 100
+                duration = (item.cart.check_out - item.cart.check_in).days
+                price = item.room_category.regular_price * duration * item.quantity
+                discounted_price = price - (
+                    price * (item.room_category.discount_in_percentage / 100)
                 )
-                discounted_price = item.room_category.regular_price - discount_amount
-                total_price += discounted_price * item.quantity
+                total_price += discounted_price
+
+                # We will use it in the following loop only
+                discounted_price_for_specific_room = (
+                    item.room_category.regular_price * duration
+                    - (
+                        item.room_category.regular_price
+                        * duration
+                        * (item.room_category.discount_in_percentage / 100)
+                    )
+                )
+
                 booking_items.extend(
                     [
                         BookingItem(
                             booking=booking,
                             room_category=item.room_category,
-                            price=discounted_price,
+                            price=discounted_price_for_specific_room,
                         )
                         for _ in range(item.quantity)
                     ]
