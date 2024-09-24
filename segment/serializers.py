@@ -33,7 +33,69 @@ class SimpleDestinationSerializer(serializers.ModelSerializer):
 class BranchSliderSerializer(serializers.ModelSerializer):
     class Meta:
         model = BranchSlider
-        fields = "__all__"
+        fields = [
+            "branch",
+            "type",
+            "featured_image",
+            "video_slider_title",
+            "video_slider_subtitle",
+            "video_slider_button_one_title",
+            "video_slider_button_one_link",
+            "video_slider_button_two_title",
+            "video_slider_button_two_link",
+            "video_slider_youtube_link",
+            "static_sliders",
+            "created_at",
+        ]
+
+    static_sliders = serializers.SerializerMethodField(
+        method_name="get_static_sliders", read_only=True
+    )
+
+    def get_static_sliders(self, obj: BranchSlider):
+        base_url = "https://api.hotelomniresidency.com:9443"
+        sliders = [
+            {
+                "static_slider_one_title": obj.static_slider_one_title,
+                "static_slider_one_subtitle": obj.static_slider_one_subtitle,
+                "static_slider_one_button_one_title": obj.static_slider_one_button_one_title,
+                "static_slider_one_button_one_link": obj.static_slider_one_button_one_link,
+                "static_slider_one_button_two_title": obj.static_slider_one_button_two_title,
+                "static_slider_one_button_two_link": obj.static_slider_one_button_two_link,
+                "static_slider_one_image_link": (
+                    base_url + obj.static_slider_one_image_link.url
+                    if obj.static_slider_one_image_link
+                    else None
+                ),
+            },
+            {
+                "static_slider_two_title": obj.static_slider_two_title,
+                "static_slider_two_subtitle": obj.static_slider_two_subtitle,
+                "static_slider_two_button_one_title": obj.static_slider_two_button_one_title,
+                "static_slider_two_button_one_link": obj.static_slider_two_button_one_link,
+                "static_slider_two_button_two_title": obj.static_slider_two_button_two_title,
+                "static_slider_two_button_two_link": obj.static_slider_two_button_two_link,
+                "static_slider_two_image_link": (
+                    base_url + obj.static_slider_two_image_link.url
+                    if obj.static_slider_two_image_link
+                    else None
+                ),
+            },
+            {
+                "static_slider_three_title": obj.static_slider_three_title,
+                "static_slider_three_subtitle": obj.static_slider_three_subtitle,
+                "static_slider_three_button_one_title": obj.static_slider_three_button_one_title,
+                "static_slider_three_button_one_link": obj.static_slider_three_button_one_link,
+                "static_slider_three_button_two_title": obj.static_slider_three_button_two_title,
+                "static_slider_three_button_two_link": obj.static_slider_three_button_two_link,
+                "static_slider_three_image_link": (
+                    base_url + obj.static_slider_three_image_link.url
+                    if obj.static_slider_three_image_link
+                    else None
+                ),
+            },
+        ]
+        return sliders
 
 
 class BranchSerializer(serializers.ModelSerializer):
