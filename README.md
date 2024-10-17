@@ -8,7 +8,7 @@ You can explore the website at [Omni Residency](https://hotelomniresidency.com/)
 
 #### For Guests:
 - **Registration & Profile Management**: Guests can register, verify their email, and manage their profiles. A confirmation email is sent at every step.
-- **Room Search & Booking**: Users can search for rooms by date, check availability, view discounts, and book multiple rooms. They can pay online (payment gateway integration is in the final stage) and receive a confirmation email with a receipt.
+- **Room Search & Booking**: Users can search for rooms by date, check availability, view discounts, add multiple rooms to the cart, and book those. They can pay online (payment gateway integration is in the final stage) and receive a confirmation email with a receipt.
 - **Booking History**: Guests can review their booking history.
 - **Restaurant & Gym Reservations**: Users can book tables at restaurants and purchase gym memberships.
 - **Reviews & Stories**: Guests can leave reviews, view others’ feedback, and explore stories and tourist attractions shared by staff.
