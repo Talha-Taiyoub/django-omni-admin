@@ -1,3 +1,4 @@
+from datetime import date, timedelta
 from uuid import uuid4
 
 from django.core.exceptions import ValidationError
@@ -244,10 +245,14 @@ class FavoriteRoomCategory(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
 
+def default_check_out():
+    return date.today() + timedelta(days=1)
+
+
 class Cart(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid4)
-    check_in = models.DateField(null=True, blank=True)
-    check_out = models.DateField(null=True, blank=True)
+    check_in = models.DateField(default=date.today)
+    check_out = models.DateField(default=default_check_out)
     created_at = models.DateTimeField(auto_now_add=True)
 
 
