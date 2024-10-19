@@ -292,7 +292,7 @@ class AddCartItemSerializer(serializers.ModelSerializer):
         cart_id = self.context["cart_id"]
 
         try:
-            cart = Cart.objects.get(pk=cart_id)
+            Cart.objects.get(pk=cart_id)
         except Cart.DoesNotExist:
             raise serializers.ValidationError(
                 {"cart_id": "There is no cart with this id"}
