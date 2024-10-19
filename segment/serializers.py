@@ -290,6 +290,14 @@ class AddCartItemSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         cart_id = self.context["cart_id"]
+
+        try:
+            cart = Cart.objects.get(pk=cart_id)
+        except Cart.DoesNotExist:
+            raise serializers.ValidationError(
+                {"cart_id": "There is no cart with this id"}
+            )
+
         room_category_id = validated_data["room_category_id"]
         quantity = validated_data["quantity"]
         # At first, let's check same room_category is already listed under same cart or not?
