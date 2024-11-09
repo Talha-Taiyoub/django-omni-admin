@@ -409,4 +409,5 @@ class Story(models.Model):
     tag1 = models.CharField(max_length=25, null=True, blank=True)
     tag2 = models.CharField(max_length=25, null=True, blank=True)
     tag3 = models.CharField(max_length=25, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
     last_update = models.DateTimeField(auto_now=True)
