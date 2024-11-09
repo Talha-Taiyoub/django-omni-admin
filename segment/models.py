@@ -402,7 +402,11 @@ class Review(models.Model):
 
 
 class Story(models.Model):
+    header = models.CharField(max_length=500, null=True, blank=True)
     title = models.CharField(max_length=500)
     description = models.TextField()
     image = models.ImageField(upload_to="segment/images", validators=[image_max_size])
-    created_at = models.DateTimeField(auto_now_add=True)
+    tag1 = models.CharField(max_length=25, null=True, blank=True)
+    tag2 = models.CharField(max_length=25, null=True, blank=True)
+    tag3 = models.CharField(max_length=25, null=True, blank=True)
+    last_update = models.DateTimeField(auto_now=True)
