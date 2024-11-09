@@ -32,6 +32,12 @@ class RestaurantSerializer(serializers.ModelSerializer):
     branch = VerySimpleBranchSerializer(read_only=True)
     cuisines = RestaurantCuisineSerializer(many=True, read_only=True)
     gallery_set = GallerySerializer(many=True, read_only=True)
+    breakfast_opening = serializers.SerializerMethodField()
+    breakfast_closing = serializers.SerializerMethodField()
+    lunch_opening = serializers.SerializerMethodField()
+    lunch_closing = serializers.SerializerMethodField()
+    dinner_opening = serializers.SerializerMethodField()
+    dinner_closing = serializers.SerializerMethodField()
 
     class Meta:
         model = Restaurant
@@ -53,6 +59,24 @@ class RestaurantSerializer(serializers.ModelSerializer):
             "discount_in_percentage",
             "created_at",
         ]
+
+    def get_breakfast_opening(self, restaurant: Restaurant):
+        return restaurant.breakfast_opening.strftime("%I:%M%p")
+
+    def get_breakfast_closing(self, restaurant: Restaurant):
+        return restaurant.breakfast_closing.strftime("%I:%M%p")
+
+    def get_lunch_opening(self, restaurant: Restaurant):
+        return restaurant.lunch_opening.strftime("%I:%M%p")
+
+    def get_lunch_closing(self, restaurant: Restaurant):
+        return restaurant.lunch_closing.strftime("%I:%M%p")
+
+    def get_dinner_opening(self, restaurant: Restaurant):
+        return restaurant.dinner_opening.strftime("%I:%M%p")
+
+    def get_dinner_closing(self, restaurant: Restaurant):
+        return restaurant.dinner_closing.strftime("%I:%M%p")
 
 
 class ReservationSerializer(serializers.ModelSerializer):
@@ -101,6 +125,8 @@ class GymSerializer(serializers.ModelSerializer):
     branch = VerySimpleBranchSerializer(read_only=True)
     gallery = GymGallerySerializer(many=True, read_only=True)
     gender_allowance = GymGenderSerializer(many=True, read_only=True)
+    opening = serializers.SerializerMethodField()
+    closing = serializers.SerializerMethodField()
 
     class Meta:
         model = Gym
@@ -120,6 +146,12 @@ class GymSerializer(serializers.ModelSerializer):
             "discount_in_percentage",
             "created_at",
         ]
+
+    def get_opening(self, gym: Gym):
+        return gym.opening.strftime("%I:%M%p")
+
+    def get_closing(self, gym: Gym):
+        return gym.closing.strftime("%I:%M%p")
 
 
 class GymMembershipSerializer(serializers.ModelSerializer):
