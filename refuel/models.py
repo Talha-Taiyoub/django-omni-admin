@@ -29,8 +29,10 @@ class Restaurant(models.Model):
         return self.name
 
 
-class Gallery(models.Model):
-    restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
+class RestaurantGallery(models.Model):
+    restaurant = models.ForeignKey(
+        Restaurant, on_delete=models.CASCADE, related_name="gallery_set"
+    )
     image = models.ImageField(upload_to="refuel/images")
 
 

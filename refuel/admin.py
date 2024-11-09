@@ -37,8 +37,8 @@ class RestaurantCuisineAdmin(admin.ModelAdmin):
     list_select_related = ["restaurant", "cuisine"]
 
 
-@admin.register(models.Gallery)
-class GalleryAdmin(admin.ModelAdmin):
+@admin.register(models.RestaurantGallery)
+class RestaurantGalleryAdmin(admin.ModelAdmin):
     list_display = ["id", "restaurant", "image"]
     list_select_related = ["restaurant"]
 

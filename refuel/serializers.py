@@ -3,7 +3,6 @@ from rest_framework import serializers
 from common_use.serializers import VerySimpleBranchSerializer
 
 from .models import (
-    Gallery,
     Gym,
     GymGallery,
     GymGender,
@@ -11,6 +10,7 @@ from .models import (
     Reservation,
     Restaurant,
     RestaurantCuisine,
+    RestaurantGallery,
 )
 
 
@@ -22,16 +22,16 @@ class RestaurantCuisineSerializer(serializers.ModelSerializer):
         fields = ["id", "cuisine"]
 
 
-class GallerySerializer(serializers.ModelSerializer):
+class RestaurantGallerySerializer(serializers.ModelSerializer):
     class Meta:
-        model = Gallery
+        model = RestaurantGallery
         fields = ["id", "image"]
 
 
 class RestaurantSerializer(serializers.ModelSerializer):
     branch = VerySimpleBranchSerializer(read_only=True)
     cuisines = RestaurantCuisineSerializer(many=True, read_only=True)
-    gallery_set = GallerySerializer(many=True, read_only=True)
+    gallery_set = RestaurantGallerySerializer(many=True, read_only=True)
     breakfast_opening = serializers.SerializerMethodField()
     breakfast_closing = serializers.SerializerMethodField()
     lunch_opening = serializers.SerializerMethodField()
