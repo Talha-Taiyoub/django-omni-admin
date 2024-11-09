@@ -553,6 +553,27 @@ class OfferSerializer(serializers.Serializer):
 
 
 class StorySerializer(serializers.ModelSerializer):
+    tags = serializers.SerializerMethodField(method_name="get_tags", read_only=True)
+
     class Meta:
         model = Story
-        fields = ["id", "title", "description", "image", "created_at"]
+        fields = [
+            "id",
+            "header",
+            "title",
+            "description",
+            "image",
+            "tags",
+            "created_at",
+            "last_update",
+        ]
+
+    def get_tags(self, story: Story):
+        arr = []
+        if story.tag1:
+            arr.append(story.tag1)
+        if story.tag2:
+            arr.append(story.tag2)
+        if story.tag3:
+            arr.append(story.tag3)
+        return arr

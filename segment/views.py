@@ -504,7 +504,7 @@ class OfferViewSet(ModelViewSet):
 
 class StoryViewSet(CustomResponseMixin, ModelViewSet):
     http_method_names = ["get"]
-    queryset = Story.objects.all().order_by("-created_at")
+    queryset = Story.objects.all().order_by("-created_at", "-last_update")
     serializer_class = StorySerializer
     pagination_class = CustomPagination
     list_message = "All the stories are fetched successfully"

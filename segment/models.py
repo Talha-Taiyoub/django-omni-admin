@@ -404,6 +404,7 @@ class Review(models.Model):
 class Story(models.Model):
     header = models.CharField(max_length=500, null=True, blank=True)
     title = models.CharField(max_length=500)
+    author = models.CharField(max_length=100, default="Omni Residency")
     description = models.TextField()
     image = models.ImageField(upload_to="segment/images", validators=[image_max_size])
     tag1 = models.CharField(max_length=25, null=True, blank=True)
