@@ -219,4 +219,14 @@ class ReviewAdmin(admin.ModelAdmin):
 
 @admin.register(models.Story)
 class StoryAdmin(admin.ModelAdmin):
-    list_display = ["id", "title", "image", "created_at"]
+    list_display = [
+        "id",
+        "header",
+        "title",
+        "author",
+        "image",
+        "tag1",
+        "tag2",
+        "tag3",
+        "created_at",
+    ]

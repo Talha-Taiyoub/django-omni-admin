@@ -554,6 +554,8 @@ class OfferSerializer(serializers.Serializer):
 
 class StorySerializer(serializers.ModelSerializer):
     tags = serializers.SerializerMethodField(method_name="get_tags", read_only=True)
+    created_at = serializers.SerializerMethodField()
+    last_update = serializers.SerializerMethodField()
 
     class Meta:
         model = Story
@@ -561,6 +563,7 @@ class StorySerializer(serializers.ModelSerializer):
             "id",
             "header",
             "title",
+            "author",
             "description",
             "image",
             "tags",
@@ -577,3 +580,9 @@ class StorySerializer(serializers.ModelSerializer):
         if story.tag3:
             arr.append(story.tag3)
         return arr
+
+    def get_created_at(self, story: Story):
+        return story.created_at.strftime("%d-%m-%Y %I:%M%p")
+
+    def get_last_update(self, story: Story):
+        return story.last_update.strftime("%d-%m-%Y %I:%M%p")
