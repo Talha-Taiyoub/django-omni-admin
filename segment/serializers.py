@@ -418,7 +418,7 @@ class CreateBookingSerializer(serializers.ModelSerializer):
         branch_id = data.get("branch_id")
         if check_out <= check_in:
             raise serializers.ValidationError(
-                {"check_out": "Check out date must be greater than check in date"}
+                {"check_out": "You can't check out before check in"}
             )
 
         elif not Branch.objects.filter(pk=branch_id).exists():
